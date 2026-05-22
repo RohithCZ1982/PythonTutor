@@ -99,57 +99,6 @@
 
   </div><!-- /auth-card -->
 
-  <!-- Admin setup link -->
-  <div class="auth-footer">
-    <span>First time?</span>
-    <a href="#" id="setup-link">Set up admin account</a>
-  </div>
-
-  <!-- ADMIN SETUP PANEL -->
-  <div class="auth-card auth-setup-card hidden" id="setup-card">
-    <div class="setup-header">
-      <button class="setup-back" id="setup-back">‹ Back</button>
-      <h2>Admin Setup</h2>
-      <p>Create the administrator account. This can only be done once.</p>
-    </div>
-    <div class="auth-alert hidden" id="setup-alert"></div>
-    <form class="auth-form active" id="form-setup" novalidate>
-      <div class="field-group">
-        <label class="field-label" for="setup-name">Full name</label>
-        <div class="field-wrap">
-          <span class="field-icon">👤</span>
-          <input class="field-input" type="text" id="setup-name" placeholder="Admin Name" required/>
-        </div>
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="setup-email">Email address</label>
-        <div class="field-wrap">
-          <span class="field-icon">✉</span>
-          <input class="field-input" type="email" id="setup-email" placeholder="admin@example.com" required/>
-        </div>
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="setup-password">Password</label>
-        <div class="field-wrap">
-          <span class="field-icon">🔒</span>
-          <input class="field-input" type="password" id="setup-password" placeholder="••••••••" required/>
-        </div>
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="setup-key">
-          Setup Key <span class="field-hint">(optional — from ADMIN_SETUP_KEY env var)</span>
-        </label>
-        <div class="field-wrap">
-          <span class="field-icon">🗝</span>
-          <input class="field-input" type="text" id="setup-key" placeholder="Leave blank if not set"/>
-        </div>
-      </div>
-      <button type="submit" class="auth-btn" id="setup-btn">
-        <span class="btn-text">Create Admin Account</span>
-        <span class="btn-spinner hidden">⟳</span>
-      </button>
-    </form>
-  </div>
 
 </div><!-- /auth-shell -->
 
@@ -286,47 +235,6 @@
     document.getElementById('form-login').classList.add('active');
   });
 
-  // ── Admin setup panel
-  document.getElementById('setup-link').addEventListener('click', e => {
-    e.preventDefault();
-    document.getElementById('auth-card').classList.add('hidden');
-    document.getElementById('setup-card').classList.remove('hidden');
-  });
-  document.getElementById('setup-back').addEventListener('click', () => {
-    document.getElementById('setup-card').classList.add('hidden');
-    document.getElementById('auth-card').classList.remove('hidden');
-  });
-
-  document.getElementById('form-setup').addEventListener('submit', async e => {
-    e.preventDefault();
-    hideAlert('setup-alert');
-    const name      = document.getElementById('setup-name').value.trim();
-    const email     = document.getElementById('setup-email').value.trim();
-    const password  = document.getElementById('setup-password').value;
-    const setup_key = document.getElementById('setup-key').value.trim();
-
-    setLoading('setup-btn', true);
-    try {
-      const res  = await fetch('/api/admin/setup', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({name, email, password, setup_key}),
-      });
-      const data = await res.json();
-      if (!res.ok) { showAlert('setup-alert', data.error || 'Setup failed.'); return; }
-      showAlert('setup-alert', 'Admin account created! Please sign in.', 'success');
-      setTimeout(() => {
-        document.getElementById('setup-card').classList.add('hidden');
-        document.getElementById('auth-card').classList.remove('hidden');
-        document.querySelector('[data-tab="login"]').click();
-        document.getElementById('login-email').value = email;
-      }, 1500);
-    } catch(err) {
-      showAlert('setup-alert', 'Network error. Please try again.');
-    } finally {
-      setLoading('setup-btn', false);
-    }
-  });
 })();
 </script>
 </body>
