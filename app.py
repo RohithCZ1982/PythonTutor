@@ -5,6 +5,9 @@ import re
 from datetime import datetime, timedelta, timezone
 from functools import wraps
 
+from dotenv import load_dotenv
+load_dotenv()  # loads .env into os.environ
+
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
