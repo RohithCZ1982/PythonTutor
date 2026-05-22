@@ -1137,3 +1137,95 @@ img { max-width: 100%; }
 .lesson-nav-btn.prev { flex-direction: row; }
 .lesson-nav-btn.next { flex-direction: row-reverse; }
 
+/* ─── AUTH TOPBAR ELEMENTS ──────────────────────────────────── */
+.user-chip {
+  font-size: 13px; font-weight: 600; color: var(--text-secondary);
+  background: var(--bg-surface); border: 1px solid var(--border);
+  padding: 4px 12px; border-radius: 20px;
+  white-space: nowrap; max-width: 140px;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.trial-chip {
+  font-size: 12px; font-weight: 700;
+  background: rgba(255,179,0,.15); border: 1px solid rgba(255,179,0,.35);
+  color: #ffb300; padding: 4px 10px; border-radius: 20px; white-space: nowrap;
+}
+.logout-btn { font-size: 16px; opacity: .7; }
+.logout-btn:hover { opacity: 1; color: var(--red); }
+
+/* ─── LOCKED SIDEBAR MODULE ─────────────────────────────────── */
+.sidebar-module.locked .sidebar-module-header {
+  opacity: .55; cursor: pointer;
+}
+.sidebar-module.locked .sidebar-module-header:hover { opacity: .85; }
+.module-lock-badge {
+  margin-left: auto; font-size: 13px;
+}
+
+/* ─── UPGRADE WALL ──────────────────────────────────────────── */
+.upgrade-wall {
+  max-width: 520px; width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 40px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.upgrade-lock { font-size: 56px; margin-bottom: 16px; }
+.upgrade-title {
+  font-size: 26px; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--teal));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.upgrade-subtitle {
+  color: var(--text-secondary); line-height: 1.6;
+  margin-bottom: 28px; font-size: 15px;
+}
+.upgrade-features {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+.upgrade-feature {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; color: var(--text-secondary);
+  padding: 8px 16px;
+  background: var(--bg-surface);
+  border-radius: 8px;
+}
+.uf-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(0,196,140,.2); color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.upgrade-cta { margin-bottom: 28px; }
+.upgrade-cta-msg {
+  padding: 16px 20px; border-radius: 12px;
+  background: rgba(124,106,247,.1); border: 1px solid rgba(124,106,247,.25);
+  color: var(--text-secondary); font-size: 14px; line-height: 1.6;
+}
+.upgrade-back-btn {
+  background: none; border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 22px; cursor: pointer;
+  color: var(--text-secondary); font: 600 14px var(--font-body);
+  transition: var(--transition);
+}
+.upgrade-back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* locked module card */
+.module-card.locked {
+  opacity: .65;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--bg-card),
+    var(--bg-card) 8px,
+    rgba(124,106,247,.03) 8px,
+    rgba(124,106,247,.03) 16px
+  );
+}
+.module-card.locked:hover { opacity: .9; }
+

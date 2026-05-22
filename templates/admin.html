@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard – Python Mastery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/auth.css"/>
+</head>
+<body class="admin-body">
+
+<!-- ── Top Bar ── -->
+<header class="admin-topbar">
+  <div class="admin-brand">
+    <span>🐍</span>
+    <span>Python<span class="gradient-text">Mastery</span> Admin</span>
+  </div>
+  <div class="admin-topbar-right">
+    <span class="admin-user-badge" id="admin-name">…</span>
+    <button class="admin-logout-btn" id="logout-btn">Sign Out</button>
+  </div>
+</header>
+
+<!-- ── Stats Row ── -->
+<div class="admin-stats-row" id="stats-row">
+  <div class="stat-pill" id="stat-total">
+    <span class="stat-pill-num">—</span>
+    <span class="stat-pill-label">Total Students</span>
+  </div>
+  <div class="stat-pill pending" id="stat-pending">
+    <span class="stat-pill-num">—</span>
+    <span class="stat-pill-label">Pending Approval</span>
+  </div>
+  <div class="stat-pill trial" id="stat-trial">
+    <span class="stat-pill-num">—</span>
+    <span class="stat-pill-label">Active Trial</span>
+  </div>
+  <div class="stat-pill full" id="stat-full">
+    <span class="stat-pill-num">—</span>
+    <span class="stat-pill-label">Active Full</span>
+  </div>
+  <div class="stat-pill expired" id="stat-expired">
+    <span class="stat-pill-num">—</span>
+    <span class="stat-pill-label">Expired</span>
+  </div>
+</div>
+
+<!-- ── Main Content ── -->
+<div class="admin-main">
+  <div class="admin-panel">
+    <div class="panel-header">
+      <h2 class="panel-title">Student Management</h2>
+      <div class="panel-actions">
+        <input type="text" class="admin-search" id="student-search" placeholder="🔍  Search students…"/>
+        <select class="admin-filter" id="status-filter">
+          <option value="">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="active-trial">Active Trial</option>
+          <option value="active-full">Active Full</option>
+          <option value="expired">Expired</option>
+        </select>
+        <button class="admin-refresh-btn" id="refresh-btn" title="Refresh">↺</button>
+      </div>
+    </div>
+
+    <div class="admin-alert hidden" id="page-alert"></div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="student-table" id="student-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Expires</th>
+            <th>Days Left</th>
+            <th>Registered</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="student-tbody">
+          <tr class="table-loading-row">
+            <td colspan="7"><span class="table-loading">Loading students…</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     APPROVAL MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="approve-modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modal-title">Approve Student</h3>
+      <button class="modal-close-btn" id="modal-close">✕</button>
+    </div>
+
+    <div class="modal-student-info" id="modal-student-info"></div>
+
+    <div class="modal-alert hidden" id="modal-alert"></div>
+
+    <form id="approve-form" novalidate>
+      <input type="hidden" id="modal-user-id"/>
+      <input type="hidden" id="modal-mode"/> <!-- 'approve' | 'edit' -->
+
+      <div class="modal-field-group">
+        <label class="modal-label">Access Type</label>
+        <div class="access-type-row">
+          <label class="access-type-card" id="card-trial">
+            <input type="radio" name="access_type" value="trial" checked/>
+            <span class="access-card-body">
+              <span class="access-icon">⏱</span>
+              <span class="access-name">Trial</span>
+              <span class="access-desc">Limited days, 3 modules</span>
+            </span>
+          </label>
+          <label class="access-type-card" id="card-full">
+            <input type="radio" name="access_type" value="full"/>
+            <span class="access-card-body">
+              <span class="access-icon">🌟</span>
+              <span class="access-name">Full Access</span>
+              <span class="access-desc">365 days, all modules</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-field-group" id="trial-days-group">
+        <label class="modal-label" for="trial-days-input">Trial Duration (days)</label>
+        <div class="trial-days-wrap">
+          <input type="number" id="trial-days-input" class="modal-input" value="30" min="1" max="365"/>
+          <span class="trial-days-hint">days from today</span>
+        </div>
+        <div class="trial-days-presets">
+          <button type="button" class="preset-btn" data-days="7">7d</button>
+          <button type="button" class="preset-btn" data-days="14">14d</button>
+          <button type="button" class="preset-btn" data-days="30">30d</button>
+          <button type="button" class="preset-btn" data-days="60">60d</button>
+          <button type="button" class="preset-btn" data-days="90">90d</button>
+        </div>
+      </div>
+
+      <div class="modal-field-group hidden" id="full-info-group">
+        <div class="full-access-info">
+          <span class="full-access-icon">📅</span>
+          <span>365 days of full access from today</span>
+        </div>
+      </div>
+
+      <button type="submit" class="auth-btn modal-submit-btn" id="modal-submit-btn">
+        <span class="btn-text">Approve Student</span>
+        <span class="btn-spinner hidden">⟳</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  const TOKEN_KEY = 'pytm_auth';
+
+  // ── Auth guard
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) { window.location.replace('/login'); return; }
+  let adminUser;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (payload.role !== 'admin') { window.location.replace('/login'); return; }
+    if (payload.exp * 1000 < Date.now()) { localStorage.removeItem(TOKEN_KEY); window.location.replace('/login'); return; }
+    adminUser = payload;
+  } catch(e) { window.location.replace('/login'); return; }
+
+  document.getElementById('admin-name').textContent = adminUser.name;
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem('pytm_user');
+    window.location.replace('/login');
+  });
+
+  const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token };
+
+  // ── Utilities
+  function fmt(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  }
+  function statusBadge(status) {
+    const map = {
+      'pending':      ['badge-pending',  'Pending'],
+      'active-trial': ['badge-trial',    'Active Trial'],
+      'active-full':  ['badge-full',     'Active Full'],
+      'expired':      ['badge-expired',  'Expired'],
+    };
+    const [cls, label] = map[status] || ['badge-pending', status];
+    return `<span class="status-badge ${cls}">${label}</span>`;
+  }
+
+  function showPageAlert(msg, type = 'error') {
+    const el = document.getElementById('page-alert');
+    el.className = `admin-alert ${type}`;
+    el.textContent = msg;
+    setTimeout(() => el.classList.add('hidden'), 4000);
+  }
+  function showModalAlert(msg, type = 'error') {
+    const el = document.getElementById('modal-alert');
+    el.className = `admin-alert ${type}`;
+    el.textContent = msg;
+  }
+
+  // ── Load Stats
+  async function loadStats() {
+    try {
+      const res  = await fetch('/api/admin/stats', {headers});
+      const data = await res.json();
+      if (!res.ok) return;
+      document.querySelector('#stat-total   .stat-pill-num').textContent = data.total;
+      document.querySelector('#stat-pending .stat-pill-num').textContent = data.pending;
+      document.querySelector('#stat-trial   .stat-pill-num').textContent = data.active_trial;
+      document.querySelector('#stat-full    .stat-pill-num').textContent = data.active_full;
+      document.querySelector('#stat-expired .stat-pill-num').textContent = data.expired;
+    } catch(e) {}
+  }
+
+  // ── Load Students
+  let allStudents = [];
+
+  async function loadStudents() {
+    const tbody = document.getElementById('student-tbody');
+    tbody.innerHTML = '<tr class="table-loading-row"><td colspan="7"><span class="table-loading">Loading…</span></td></tr>';
+    try {
+      const res  = await fetch('/api/admin/students', {headers});
+      const data = await res.json();
+      if (!res.ok) { tbody.innerHTML = `<tr><td colspan="7" class="table-empty">Error: ${data.error}</td></tr>`; return; }
+      allStudents = data;
+      renderTable();
+    } catch(e) {
+      tbody.innerHTML = '<tr><td colspan="7" class="table-empty">Failed to load students.</td></tr>';
+    }
+  }
+
+  function renderTable() {
+    const tbody   = document.getElementById('student-tbody');
+    const search  = document.getElementById('student-search').value.toLowerCase();
+    const filter  = document.getElementById('status-filter').value;
+
+    const rows = allStudents.filter(s => {
+      const matchSearch = !search || s.name.toLowerCase().includes(search) || s.email.toLowerCase().includes(search);
+      const matchFilter = !filter || s.status === filter;
+      return matchSearch && matchFilter;
+    });
+
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="table-empty">No students found.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = rows.map(s => `
+      <tr class="student-row" data-status="${s.status}">
+        <td class="td-student">
+          <div class="student-avatar">${s.name.charAt(0).toUpperCase()}</div>
+          <div>
+            <div class="student-name">${esc(s.name)}</div>
+            <div class="student-email">${esc(s.email)}</div>
+          </div>
+        </td>
+        <td>${statusBadge(s.status)}</td>
+        <td>${s.approval_type ? `<span class="type-chip ${s.approval_type}">${s.approval_type === 'trial' ? '⏱ Trial' : '🌟 Full'}</span>` : '—'}</td>
+        <td>${fmt(s.expires_at)}</td>
+        <td>${s.status.startsWith('active') ? `<span class="days-left">${s.days_remaining}d</span>` : '—'}</td>
+        <td class="td-date">${fmt(s.created_at)}</td>
+        <td class="td-actions">
+          ${s.status === 'pending'
+            ? `<button class="action-btn approve-btn" data-id="${s.id}" data-name="${esc(s.name)}" data-email="${esc(s.email)}" data-mode="approve">Approve</button>`
+            : `<button class="action-btn edit-btn" data-id="${s.id}" data-name="${esc(s.name)}" data-email="${esc(s.email)}" data-type="${s.approval_type}" data-tdays="${s.trial_days||30}" data-mode="edit">Edit Access</button>`
+          }
+        </td>
+      </tr>
+    `).join('');
+
+    // Bind action buttons
+    tbody.querySelectorAll('.approve-btn, .edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => openModal(btn.dataset));
+    });
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── Search / filter
+  document.getElementById('student-search').addEventListener('input', renderTable);
+  document.getElementById('status-filter').addEventListener('change', renderTable);
+  document.getElementById('refresh-btn').addEventListener('click', () => { loadStudents(); loadStats(); });
+
+  // ── Modal
+  const modal = document.getElementById('approve-modal');
+
+  function openModal(data) {
+    const mode   = data.mode;
+    const isEdit = mode === 'edit';
+    document.getElementById('modal-user-id').value  = data.id;
+    document.getElementById('modal-mode').value     = mode;
+    document.getElementById('modal-title').textContent = isEdit ? 'Edit Student Access' : 'Approve Student';
+    document.getElementById('modal-student-info').innerHTML = `
+      <div class="modal-student-avatar">${data.name.charAt(0).toUpperCase()}</div>
+      <div>
+        <div class="modal-student-name">${data.name}</div>
+        <div class="modal-student-email">${data.email}</div>
+      </div>
+    `;
+    document.getElementById('modal-alert').className = 'modal-alert hidden';
+    document.getElementById('modal-submit-btn').querySelector('.btn-text').textContent =
+      isEdit ? 'Update Access' : 'Approve Student';
+
+    // Pre-fill for edit
+    if (isEdit && data.type) {
+      document.querySelector(`[name="access_type"][value="${data.type}"]`).checked = true;
+      if (data.type === 'trial') document.getElementById('trial-days-input').value = data.tdays || 30;
+      updateTypeUI(data.type);
+    } else {
+      document.querySelector('[name="access_type"][value="trial"]').checked = true;
+      document.getElementById('trial-days-input').value = 30;
+      updateTypeUI('trial');
+    }
+
+    modal.classList.remove('hidden');
+  }
+
+  document.getElementById('modal-close').addEventListener('click', () => modal.classList.add('hidden'));
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('hidden'); });
+
+  // ── Access type toggle
+  function updateTypeUI(type) {
+    const trialGroup = document.getElementById('trial-days-group');
+    const fullGroup  = document.getElementById('full-info-group');
+    document.getElementById('card-trial').classList.toggle('selected', type === 'trial');
+    document.getElementById('card-full').classList.toggle('selected', type === 'full');
+    trialGroup.classList.toggle('hidden', type !== 'trial');
+    fullGroup.classList.toggle('hidden',  type !== 'full');
+  }
+
+  document.querySelectorAll('[name="access_type"]').forEach(radio => {
+    radio.addEventListener('change', () => updateTypeUI(radio.value));
+  });
+
+  // ── Preset days buttons
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('trial-days-input').value = btn.dataset.days;
+    });
+  });
+
+  // ── Form submit
+  document.getElementById('approve-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const userId      = document.getElementById('modal-user-id').value;
+    const mode        = document.getElementById('modal-mode').value;
+    const type        = document.querySelector('[name="access_type"]:checked')?.value;
+    const trialDays   = parseInt(document.getElementById('trial-days-input').value) || 30;
+    document.getElementById('modal-alert').classList.add('hidden');
+
+    const btn = document.getElementById('modal-submit-btn');
+    btn.disabled = true;
+    btn.querySelector('.btn-text').classList.add('hidden');
+    btn.querySelector('.btn-spinner').classList.remove('hidden');
+
+    try {
+      let res, data;
+      if (mode === 'approve') {
+        res  = await fetch('/api/admin/approve', {
+          method: 'POST', headers,
+          body: JSON.stringify({user_id: parseInt(userId), approval_type: type, trial_days: trialDays}),
+        });
+      } else {
+        res  = await fetch(`/api/admin/approval/${userId}`, {
+          method: 'PATCH', headers,
+          body: JSON.stringify({approval_type: type, trial_days: trialDays}),
+        });
+      }
+      data = await res.json();
+      if (!res.ok) { showModalAlert(data.error || 'Action failed.'); return; }
+
+      modal.classList.add('hidden');
+      showPageAlert(data.message, 'success');
+      loadStudents();
+      loadStats();
+    } catch(err) {
+      showModalAlert('Network error. Please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.querySelector('.btn-text').classList.remove('hidden');
+      btn.querySelector('.btn-spinner').classList.add('hidden');
+    }
+  });
+
+  // ── Init
+  loadStats();
+  loadStudents();
+})();
+</script>
+</body>
+</html>

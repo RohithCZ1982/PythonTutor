@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In – Python Mastery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/auth.css"/>
+</head>
+<body>
+<div class="auth-bg">
+  <div class="auth-bg-grid"></div>
+  <div class="auth-orb auth-orb-1"></div>
+  <div class="auth-orb auth-orb-2"></div>
+</div>
+
+<div class="auth-shell">
+
+  <!-- Brand -->
+  <div class="auth-brand">
+    <span class="auth-brand-icon">🐍</span>
+    <span class="auth-brand-name">Python<span class="gradient-text">Mastery</span></span>
+  </div>
+
+  <!-- Card -->
+  <div class="auth-card" id="auth-card">
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Sign In</button>
+      <button class="auth-tab" data-tab="register">Create Account</button>
+    </div>
+
+    <!-- Alert -->
+    <div class="auth-alert hidden" id="auth-alert"></div>
+
+    <!-- LOGIN FORM -->
+    <form class="auth-form active" id="form-login" data-form="login" autocomplete="off" novalidate>
+      <div class="field-group">
+        <label class="field-label" for="login-email">Email address</label>
+        <div class="field-wrap">
+          <span class="field-icon">✉</span>
+          <input class="field-input" type="email" id="login-email" placeholder="you@example.com" required autocomplete="email"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="login-password">Password</label>
+        <div class="field-wrap">
+          <span class="field-icon">🔒</span>
+          <input class="field-input" type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password"/>
+          <button type="button" class="field-eye" data-target="login-password">👁</button>
+        </div>
+      </div>
+      <button type="submit" class="auth-btn" id="login-btn">
+        <span class="btn-text">Sign In</span>
+        <span class="btn-spinner hidden">⟳</span>
+      </button>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form class="auth-form" id="form-register" data-form="register" autocomplete="off" novalidate>
+      <div class="field-group">
+        <label class="field-label" for="reg-name">Full name</label>
+        <div class="field-wrap">
+          <span class="field-icon">👤</span>
+          <input class="field-input" type="text" id="reg-name" placeholder="John Doe" required/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="reg-email">Email address</label>
+        <div class="field-wrap">
+          <span class="field-icon">✉</span>
+          <input class="field-input" type="email" id="reg-email" placeholder="you@example.com" required autocomplete="email"/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="reg-password">Password <span class="field-hint">(min 6 chars)</span></label>
+        <div class="field-wrap">
+          <span class="field-icon">🔒</span>
+          <input class="field-input" type="password" id="reg-password" placeholder="••••••••" required autocomplete="new-password"/>
+          <button type="button" class="field-eye" data-target="reg-password">👁</button>
+        </div>
+      </div>
+      <button type="submit" class="auth-btn" id="register-btn">
+        <span class="btn-text">Create Account</span>
+        <span class="btn-spinner hidden">⟳</span>
+      </button>
+    </form>
+
+    <!-- Success panel (post-register) -->
+    <div class="auth-success hidden" id="reg-success">
+      <div class="success-icon">✅</div>
+      <h3>Account Created!</h3>
+      <p>Your account is pending admin approval.<br/>You'll be able to log in once approved.</p>
+      <button class="auth-btn" id="back-to-login-btn">Back to Sign In</button>
+    </div>
+
+  </div><!-- /auth-card -->
+
+  <!-- Admin setup link -->
+  <div class="auth-footer">
+    <span>First time?</span>
+    <a href="#" id="setup-link">Set up admin account</a>
+  </div>
+
+  <!-- ADMIN SETUP PANEL -->
+  <div class="auth-card auth-setup-card hidden" id="setup-card">
+    <div class="setup-header">
+      <button class="setup-back" id="setup-back">‹ Back</button>
+      <h2>Admin Setup</h2>
+      <p>Create the administrator account. This can only be done once.</p>
+    </div>
+    <div class="auth-alert hidden" id="setup-alert"></div>
+    <form class="auth-form active" id="form-setup" novalidate>
+      <div class="field-group">
+        <label class="field-label" for="setup-name">Full name</label>
+        <div class="field-wrap">
+          <span class="field-icon">👤</span>
+          <input class="field-input" type="text" id="setup-name" placeholder="Admin Name" required/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="setup-email">Email address</label>
+        <div class="field-wrap">
+          <span class="field-icon">✉</span>
+          <input class="field-input" type="email" id="setup-email" placeholder="admin@example.com" required/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="setup-password">Password</label>
+        <div class="field-wrap">
+          <span class="field-icon">🔒</span>
+          <input class="field-input" type="password" id="setup-password" placeholder="••••••••" required/>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="setup-key">
+          Setup Key <span class="field-hint">(optional — from ADMIN_SETUP_KEY env var)</span>
+        </label>
+        <div class="field-wrap">
+          <span class="field-icon">🗝</span>
+          <input class="field-input" type="text" id="setup-key" placeholder="Leave blank if not set"/>
+        </div>
+      </div>
+      <button type="submit" class="auth-btn" id="setup-btn">
+        <span class="btn-text">Create Admin Account</span>
+        <span class="btn-spinner hidden">⟳</span>
+      </button>
+    </form>
+  </div>
+
+</div><!-- /auth-shell -->
+
+<script>
+(function () {
+  'use strict';
+
+  const TOKEN_KEY = 'pytm_auth';
+
+  // If already logged in, go home
+  const existing = localStorage.getItem(TOKEN_KEY);
+  if (existing) {
+    try {
+      const payload = JSON.parse(atob(existing.split('.')[1]));
+      if (payload.exp * 1000 > Date.now()) {
+        window.location.replace(payload.role === 'admin' ? '/admin' : '/');
+      }
+    } catch (e) {}
+  }
+
+  // ── Tab switching
+  document.querySelectorAll('.auth-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('form-' + tab.dataset.tab)?.classList.add('active');
+      hideAlert('auth-alert');
+      document.getElementById('reg-success')?.classList.add('hidden');
+    });
+  });
+
+  // ── Eye toggle
+  document.querySelectorAll('.field-eye').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const inp = document.getElementById(btn.dataset.target);
+      if (!inp) return;
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+    });
+  });
+
+  // ── Alert helpers
+  function showAlert(id, msg, type = 'error') {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = `auth-alert ${type}`;
+    el.textContent = msg;
+  }
+  function hideAlert(id) {
+    const el = document.getElementById(id);
+    if (el) el.className = 'auth-alert hidden';
+  }
+
+  function setLoading(btnId, loading) {
+    const btn  = document.getElementById(btnId);
+    if (!btn) return;
+    const text = btn.querySelector('.btn-text');
+    const spin = btn.querySelector('.btn-spinner');
+    btn.disabled = loading;
+    text.classList.toggle('hidden', loading);
+    spin.classList.toggle('hidden', !loading);
+  }
+
+  // ── Login
+  document.getElementById('form-login').addEventListener('submit', async e => {
+    e.preventDefault();
+    hideAlert('auth-alert');
+    const email    = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    if (!email || !password) { showAlert('auth-alert', 'Please fill in all fields.'); return; }
+
+    setLoading('login-btn', true);
+    try {
+      const res  = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, password}),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        const msg = data.code === 'PENDING'
+          ? '⏳ Your account is pending admin approval.'
+          : data.code === 'EXPIRED'
+            ? '⌛ Your access has expired. Contact the administrator.'
+            : data.error || 'Login failed.';
+        showAlert('auth-alert', msg, data.code ? 'warning' : 'error');
+        return;
+      }
+      localStorage.setItem(TOKEN_KEY, data.token);
+      localStorage.setItem('pytm_user', JSON.stringify(data.user));
+      window.location.replace(data.user.role === 'admin' ? '/admin' : '/');
+    } catch(err) {
+      showAlert('auth-alert', 'Network error. Please try again.');
+    } finally {
+      setLoading('login-btn', false);
+    }
+  });
+
+  // ── Register
+  document.getElementById('form-register').addEventListener('submit', async e => {
+    e.preventDefault();
+    hideAlert('auth-alert');
+    const name     = document.getElementById('reg-name').value.trim();
+    const email    = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    if (!name || !email || !password) { showAlert('auth-alert', 'Please fill in all fields.'); return; }
+    if (password.length < 6) { showAlert('auth-alert', 'Password must be at least 6 characters.'); return; }
+
+    setLoading('register-btn', true);
+    try {
+      const res  = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name, email, password}),
+      });
+      const data = await res.json();
+      if (!res.ok) { showAlert('auth-alert', data.error || 'Registration failed.'); return; }
+      document.getElementById('form-register').classList.remove('active');
+      document.getElementById('reg-success').classList.remove('hidden');
+    } catch(err) {
+      showAlert('auth-alert', 'Network error. Please try again.');
+    } finally {
+      setLoading('register-btn', false);
+    }
+  });
+
+  // ── Back to login
+  document.getElementById('back-to-login-btn')?.addEventListener('click', () => {
+    document.getElementById('reg-success').classList.add('hidden');
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector('[data-tab="login"]').classList.add('active');
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    document.getElementById('form-login').classList.add('active');
+  });
+
+  // ── Admin setup panel
+  document.getElementById('setup-link').addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('auth-card').classList.add('hidden');
+    document.getElementById('setup-card').classList.remove('hidden');
+  });
+  document.getElementById('setup-back').addEventListener('click', () => {
+    document.getElementById('setup-card').classList.add('hidden');
+    document.getElementById('auth-card').classList.remove('hidden');
+  });
+
+  document.getElementById('form-setup').addEventListener('submit', async e => {
+    e.preventDefault();
+    hideAlert('setup-alert');
+    const name      = document.getElementById('setup-name').value.trim();
+    const email     = document.getElementById('setup-email').value.trim();
+    const password  = document.getElementById('setup-password').value;
+    const setup_key = document.getElementById('setup-key').value.trim();
+
+    setLoading('setup-btn', true);
+    try {
+      const res  = await fetch('/api/admin/setup', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name, email, password, setup_key}),
+      });
+      const data = await res.json();
+      if (!res.ok) { showAlert('setup-alert', data.error || 'Setup failed.'); return; }
+      showAlert('setup-alert', 'Admin account created! Please sign in.', 'success');
+      setTimeout(() => {
+        document.getElementById('setup-card').classList.add('hidden');
+        document.getElementById('auth-card').classList.remove('hidden');
+        document.querySelector('[data-tab="login"]').click();
+        document.getElementById('login-email').value = email;
+      }, 1500);
+    } catch(err) {
+      showAlert('setup-alert', 'Network error. Please try again.');
+    } finally {
+      setLoading('setup-btn', false);
+    }
+  });
+})();
+</script>
+</body>
+</html>

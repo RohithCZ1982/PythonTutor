@@ -26,42 +26,77 @@
 
   <!-- App CSS -->
   <link rel="stylesheet" href="/static/css/main.css" />
+  <link rel="stylesheet" href="/static/css/auth.css" />
+
+  <!-- Early auth redirect (before DOM) -->
+  <script>
+    (function () {
+      var token = localStorage.getItem('pytm_auth');
+      if (!token) { window.location.replace('/login'); }
+    })();
+  </script>
 </head>
 <body>
 
 <!-- ═══════════════════════════════════════════════════════════════
+     LOADING SCREEN (shown during auth check)
+═══════════════════════════════════════════════════════════════ -->
+<div id="loading-screen" style="
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg-base,#0d0d1a);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+">
+  <span style="font-size:42px;">🐍</span>
+  <div style="width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;">
+    <div id="loading-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#7c6af7,#00d4ff);border-radius:99px;transition:width .3s ease;"></div>
+  </div>
+  <span style="font-size:14px;color:#9090b8;">Verifying access…</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ACCESS DENIED SCREENS (pending / expired)
+═══════════════════════════════════════════════════════════════ -->
+<div id="access-screen" class="hidden" style="
+  position:fixed;inset:0;z-index:9998;
+  background:var(--bg-base,#0d0d1a);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+">
+  <div style="
+    max-width:460px;width:100%;
+    background:var(--bg-card,#1a1a36);
+    border:1px solid var(--border,#2a2a4a);
+    border-radius:20px;padding:40px 32px;text-align:center;
+  ">
+    <div id="access-icon" style="font-size:52px;margin-bottom:16px;">⏳</div>
+    <h2 id="access-title" style="font-size:22px;font-weight:700;margin-bottom:10px;"></h2>
+    <p id="access-msg" style="color:#9090b8;line-height:1.6;margin-bottom:28px;"></p>
+    <button onclick="doLogout()" style="
+      padding:12px 28px;border-radius:9px;border:1px solid #2a2a4a;
+      background:transparent;color:#9090b8;font:600 14px 'Inter',sans-serif;cursor:pointer;
+    ">← Sign Out</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
      WELCOME SCREEN
 ═══════════════════════════════════════════════════════════════ -->
-<div id="welcome-screen">
+<div id="welcome-screen" class="hidden">
   <div class="welcome-bg-grid"></div>
   <div class="welcome-content">
-    <div class="welcome-badge">🐍 FREE · INTERACTIVE · JOB-READY</div>
+    <div class="welcome-badge">🐍 INTERACTIVE · JOB-READY</div>
     <h1 class="welcome-title">
       Python Mastery<br/>
       <span class="gradient-text">for Engineers</span>
     </h1>
-    <p class="welcome-subtitle">
+    <p class="welcome-subtitle" id="welcome-subtitle">
       From zero to job-ready. 17 modules, 100+ exercises, built-in code playground.
-      Learn Python the way top companies use it.
     </p>
 
     <div class="welcome-stats">
-      <div class="stat-card">
-        <span class="stat-number">17</span>
-        <span class="stat-label">Modules</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number">100+</span>
-        <span class="stat-label">Exercises</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number">∞</span>
-        <span class="stat-label">Playground Runs</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number">0</span>
-        <span class="stat-label">Prerequisites</span>
-      </div>
+      <div class="stat-card"><span class="stat-number">17</span><span class="stat-label">Modules</span></div>
+      <div class="stat-card"><span class="stat-number">100+</span><span class="stat-label">Exercises</span></div>
+      <div class="stat-card"><span class="stat-number">∞</span><span class="stat-label">Playground Runs</span></div>
+      <div class="stat-card"><span class="stat-number">0</span><span class="stat-label">Prerequisites</span></div>
     </div>
 
     <div class="welcome-features">
@@ -71,11 +106,10 @@
       <div class="feature-chip">💼 Job-market focused</div>
     </div>
 
-    <button id="start-btn" class="btn-primary btn-xl">
-      Start Learning  →
-    </button>
+    <button id="start-btn" class="btn-primary btn-xl">Start Learning  →</button>
 
-    <p class="welcome-note">Progress saved in your browser · No signup needed</p>
+    <!-- trial notice injected here by auth.js -->
+    <div id="trial-notice"></div>
   </div>
 </div>
 
@@ -99,7 +133,10 @@
     </div>
 
     <div class="topbar-right">
+      <span id="user-chip" class="user-chip hidden"></span>
+      <span id="trial-chip" class="trial-chip hidden"></span>
       <button id="theme-toggle" class="icon-btn" title="Toggle theme">🌙</button>
+      <button id="logout-topbar-btn" class="icon-btn logout-btn hidden" title="Sign out">⏏</button>
     </div>
   </header>
 
@@ -118,17 +155,14 @@
 
     <!-- MAIN CONTENT AREA -->
     <main id="main">
-      <div id="content-home"><!-- Welcome dashboard rendered here --></div>
+      <div id="content-home"></div>
       <div id="content-lesson" class="hidden"></div>
     </main>
 
-  </div><!-- /app-body -->
+  </div>
+</div>
 
-</div><!-- /app -->
-
-<!-- ═══════════════════════════════════════════════════════════════
-     GLOBAL MODALS / OVERLAYS
-═══════════════════════════════════════════════════════════════ -->
+<!-- SOLUTION MODAL -->
 <div id="solution-modal" class="modal-overlay hidden">
   <div class="modal-box">
     <div class="modal-header">
@@ -142,10 +176,16 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SCRIPTS
-═══════════════════════════════════════════════════════════════ -->
+<!-- SCRIPTS -->
 <script src="/static/js/course-data.js"></script>
 <script src="/static/js/app.js"></script>
+
+<script>
+  function doLogout() {
+    localStorage.removeItem('pytm_auth');
+    localStorage.removeItem('pytm_user');
+    window.location.replace('/login');
+  }
+</script>
 </body>
 </html>

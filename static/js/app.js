@@ -1,6 +1,13 @@
-/* app.js — Python Mastery SPA */
+/* app.js — Python Mastery SPA  (with auth + trial restrictions) */
 (function () {
 'use strict';
+
+const TOKEN_KEY    = 'pytm_auth';
+const USER_KEY     = 'pytm_user';
+const LS_COMPLETED = 'pytm_completed';
+const LS_THEME     = 'pytm_theme';
+const LS_LAST      = 'pytm_last';
+const TRIAL_LIMIT  = 3;   // trial users can access modules 1–3
 
 // ─── State ───────────────────────────────────────────────────────────────────
 const state = {
@@ -9,21 +16,183 @@ const state = {
   completed: new Set(),
   sidebarOpen: true,
   editors: {},
+  user: null,       // { id, name, email, role, approval }
 };
 
-const LS_COMPLETED = 'pytm_completed';
-const LS_THEME     = 'pytm_theme';
-const LS_LAST      = 'pytm_last';
+// ─── Auth helpers ─────────────────────────────────────────────────────────────
+function getToken()    { return localStorage.getItem(TOKEN_KEY); }
+function getUser()     { try { return JSON.parse(localStorage.getItem(USER_KEY)); } catch { return null; } }
+function clearAuth()   { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); }
+function authHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken() }; }
+
+function isTrialUser() {
+  return state.user && state.user.role === 'student' && state.user.approval?.type === 'trial';
+}
+function isModuleLocked(moduleId) {
+  return isTrialUser() && moduleId > TRIAL_LIMIT;
+}
+
+function setLoadingBar(pct) {
+  const bar = document.getElementById('loading-bar');
+  if (bar) bar.style.width = pct + '%';
+}
+function hideLoading() {
+  const el = document.getElementById('loading-screen');
+  if (el) el.style.display = 'none';
+}
+function showAccessScreen(user) {
+  hideLoading();
+  const screen = document.getElementById('access-screen');
+  const icon   = document.getElementById('access-icon');
+  const title  = document.getElementById('access-title');
+  const msg    = document.getElementById('access-msg');
+  if (!screen) return;
+
+  const pending = !user.approval;
+  icon.textContent  = pending ? '⏳' : '⌛';
+  title.textContent = pending ? 'Awaiting Approval' : 'Access Expired';
+  msg.textContent   = pending
+    ? 'Your account is pending admin approval. Please contact your administrator or check back later.'
+    : 'Your access period has ended. Please contact your administrator to renew your subscription.';
+  screen.classList.remove('hidden');
+}
 
 // ─── Bootstrap ───────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  setLoadingBar(30);
+
+  const token = getToken();
+  if (!token) { window.location.replace('/login'); return; }
+
+  setLoadingBar(60);
+
+  try {
+    const resp = await fetch('/api/auth/me', { headers: authHeaders() });
+
+    if (resp.status === 503) {
+      // DB not configured — run in open mode (legacy behaviour)
+      hideLoading();
+      bootApp(null);
+      return;
+    }
+
+    if (!resp.ok) {
+      clearAuth();
+      window.location.replace('/login');
+      return;
+    }
+
+    const user = await resp.json();
+    state.user = user;
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+
+    setLoadingBar(90);
+
+    // Redirect admins to their dashboard
+    if (user.role === 'admin') {
+      window.location.replace('/admin');
+      return;
+    }
+
+    // Student access checks
+    if (!user.approval || !user.approval.active) {
+      showAccessScreen(user);
+      return;
+    }
+
+    setLoadingBar(100);
+    setTimeout(() => { hideLoading(); bootApp(user); }, 200);
+
+  } catch (e) {
+    // Network error — check if we have cached user for offline fallback
+    const cached = getUser();
+    if (cached) {
+      state.user = cached;
+      hideLoading();
+      bootApp(cached);
+    } else {
+      clearAuth();
+      window.location.replace('/login');
+    }
+  }
+});
+
+function bootApp(user) {
   loadProgress();
   applyTheme(localStorage.getItem(LS_THEME) || 'dark');
+  setupAuthUI(user);
   bindGlobal();
   renderSidebar();
   updateProgressBar();
-});
 
+  // Resume last position or show welcome
+  const last = localStorage.getItem(LS_LAST);
+  if (last) {
+    try {
+      const { moduleId, lessonId } = JSON.parse(last);
+      const mod = COURSE_DATA.modules.find(m => m.id === moduleId);
+      if (mod) {
+        document.getElementById('welcome-screen').classList.add('hidden');
+        document.getElementById('app').classList.remove('hidden');
+        if (lessonId) { navigateToLesson(moduleId, lessonId); return; }
+        navigateToOutline(moduleId);
+        return;
+      }
+    } catch (e) {}
+  }
+
+  // Show welcome
+  document.getElementById('welcome-screen').classList.remove('hidden');
+}
+
+// ─── Auth UI ──────────────────────────────────────────────────────────────────
+function setupAuthUI(user) {
+  if (!user) return;
+
+  const chip    = document.getElementById('user-chip');
+  const trial   = document.getElementById('trial-chip');
+  const logBtn  = document.getElementById('logout-topbar-btn');
+
+  if (chip) {
+    chip.textContent = user.name;
+    chip.classList.remove('hidden');
+  }
+
+  if (trial && isTrialUser()) {
+    const days = user.approval?.days_remaining ?? '?';
+    trial.textContent = `⏱ Trial · ${days}d left`;
+    trial.classList.remove('hidden');
+  }
+
+  if (logBtn) {
+    logBtn.classList.remove('hidden');
+    logBtn.addEventListener('click', () => {
+      clearAuth();
+      window.location.replace('/login');
+    });
+  }
+
+  // Welcome screen subtitle
+  const sub = document.getElementById('welcome-subtitle');
+  if (sub) sub.textContent = `Welcome back, ${user.name}! Continue your Python journey.`;
+
+  // Trial notice on welcome screen
+  if (isTrialUser()) {
+    const notice = document.getElementById('trial-notice');
+    if (notice) notice.innerHTML = `
+      <div style="
+        margin-top:20px;padding:12px 20px;
+        background:rgba(255,179,0,.12);border:1px solid rgba(255,179,0,.3);
+        border-radius:10px;font-size:14px;color:#ffb300;
+        display:flex;align-items:center;gap:8px;
+      ">
+        ⏱ <strong>Trial Access</strong> — Modules 1–3 are unlocked.
+        ${user.approval.days_remaining} day${user.approval.days_remaining !== 1 ? 's' : ''} remaining.
+      </div>`;
+  }
+}
+
+// ─── Progress ────────────────────────────────────────────────────────────────
 function loadProgress() {
   try {
     const saved = localStorage.getItem(LS_COMPLETED);
@@ -38,7 +207,8 @@ function saveProgress() {
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  document.getElementById('theme-toggle').textContent = theme === 'light' ? '🌙' : '☀️';
+  const toggle = document.getElementById('theme-toggle');
+  if (toggle) toggle.textContent = theme === 'light' ? '🌙' : '☀️';
   localStorage.setItem(LS_THEME, theme);
   Object.values(state.editors).forEach(cm => {
     cm.setOption('theme', theme === 'dark' ? 'dracula' : 'default');
@@ -47,29 +217,27 @@ function applyTheme(theme) {
 
 // ─── Global bindings ─────────────────────────────────────────────────────────
 function bindGlobal() {
-  document.getElementById('start-btn').addEventListener('click', enterApp);
+  document.getElementById('start-btn')?.addEventListener('click', enterApp);
 
-  document.getElementById('home-link').addEventListener('click', e => {
-    e.preventDefault();
-    showHome();
+  document.getElementById('home-link')?.addEventListener('click', e => {
+    e.preventDefault(); showHome();
   });
 
-  document.getElementById('menu-toggle').addEventListener('click', toggleSidebar);
+  document.getElementById('menu-toggle')?.addEventListener('click', toggleSidebar);
 
-  document.getElementById('theme-toggle').addEventListener('click', () => {
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const cur = document.documentElement.getAttribute('data-theme') || 'dark';
     applyTheme(cur === 'dark' ? 'light' : 'dark');
   });
 
-  document.getElementById('module-search').addEventListener('input', onSearch);
+  document.getElementById('module-search')?.addEventListener('input', onSearch);
 
-  // Solution modal close
   document.querySelectorAll('[data-close]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.getElementById(btn.dataset.close).classList.add('hidden');
+      document.getElementById(btn.dataset.close)?.classList.add('hidden');
     });
   });
-  document.getElementById('solution-modal').addEventListener('click', e => {
+  document.getElementById('solution-modal')?.addEventListener('click', e => {
     if (e.target === e.currentTarget) e.currentTarget.classList.add('hidden');
   });
 }
@@ -78,19 +246,6 @@ function bindGlobal() {
 function enterApp() {
   document.getElementById('welcome-screen').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
-
-  try {
-    const last = localStorage.getItem(LS_LAST);
-    if (last) {
-      const { moduleId, lessonId } = JSON.parse(last);
-      const mod = COURSE_DATA.modules.find(m => m.id === moduleId);
-      if (mod) {
-        if (mod.outline) { navigateToOutline(moduleId); return; }
-        if (lessonId) { navigateToLesson(moduleId, lessonId); return; }
-      }
-    }
-  } catch (e) {}
-
   showHome();
 }
 
@@ -108,9 +263,13 @@ function toggleSidebar() {
 // ─── Progress bar ─────────────────────────────────────────────────────────────
 function updateProgressBar() {
   let total = 0;
-  COURSE_DATA.modules.forEach(m => { if (!m.outline && m.lessons) total += m.lessons.length; });
+  const modules = isTrialUser()
+    ? COURSE_DATA.modules.filter(m => m.id <= TRIAL_LIMIT)
+    : COURSE_DATA.modules;
+  modules.forEach(m => { if (!m.outline && m.lessons) total += m.lessons.length; });
+
   const done = state.completed.size;
-  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  const pct  = total > 0 ? Math.round(done / total * 100) : 0;
   document.getElementById('top-progress-fill').style.width = pct + '%';
   document.getElementById('top-progress-label').textContent = `${done} / ${total} lessons complete`;
 }
@@ -123,13 +282,14 @@ function renderSidebar() {
 }
 
 function buildSidebarModule(mod) {
-  const wrap = document.createElement('div');
-  wrap.className = 'sidebar-module';
+  const locked  = isModuleLocked(mod.id);
+  const wrap    = document.createElement('div');
+  wrap.className = 'sidebar-module' + (locked ? ' locked' : '');
   wrap.dataset.moduleId = mod.id;
 
-  const lessons = mod.lessons || [];
+  const lessons   = mod.lessons || [];
   const doneCount = lessons.filter(l => state.completed.has(l.id)).length;
-  const total = lessons.length;
+  const total     = lessons.length;
 
   const hdr = document.createElement('div');
   hdr.className = 'sidebar-module-header';
@@ -143,7 +303,10 @@ function buildSidebarModule(mod) {
   titleEl.textContent = mod.title;
 
   const badgeEl = document.createElement('span');
-  if (mod.outline) {
+  if (locked) {
+    badgeEl.className = 'module-lock-badge';
+    badgeEl.textContent = '🔒';
+  } else if (mod.outline) {
     badgeEl.className = 'module-outline-badge';
     badgeEl.textContent = 'Outline';
   } else if (total > 0) {
@@ -161,6 +324,11 @@ function buildSidebarModule(mod) {
   hdr.appendChild(chevron);
   wrap.appendChild(hdr);
 
+  if (locked) {
+    hdr.addEventListener('click', () => showUpgradeMessage(mod));
+    return wrap;
+  }
+
   if (!mod.outline && lessons.length) {
     const list = document.createElement('ul');
     list.className = 'sidebar-lessons';
@@ -168,16 +336,12 @@ function buildSidebarModule(mod) {
       const li = document.createElement('li');
       li.className = 'sidebar-lesson-item' + (state.completed.has(lesson.id) ? ' done' : '');
       li.dataset.lessonId = lesson.id;
-      li.innerHTML = `<span class="lesson-dot"></span><span class="sidebar-lesson-title">${lesson.title}</span><span class="sidebar-lesson-duration">${lesson.duration}</span>`;
+      li.innerHTML = `<span class="lesson-dot"></span><span class="sidebar-lesson-title">${lesson.title}</span>`;
       li.addEventListener('click', e => { e.stopPropagation(); navigateToLesson(mod.id, lesson.id); });
       list.appendChild(li);
     });
     wrap.appendChild(list);
-
-    hdr.addEventListener('click', () => {
-      const isOpen = wrap.classList.contains('open');
-      wrap.classList.toggle('open', !isOpen);
-    });
+    hdr.addEventListener('click', () => wrap.classList.toggle('open'));
   } else {
     hdr.addEventListener('click', () => navigateToOutline(mod.id));
   }
@@ -189,7 +353,7 @@ function onSearch(e) {
   const q = e.target.value.toLowerCase();
   document.querySelectorAll('.sidebar-module').forEach(item => {
     const modId = parseInt(item.dataset.moduleId);
-    const mod = COURSE_DATA.modules.find(m => m.id === modId);
+    const mod   = COURSE_DATA.modules.find(m => m.id === modId);
     if (!mod) return;
     const text = (mod.title + ' ' + (mod.lessons || []).map(l => l.title).join(' ')).toLowerCase();
     item.style.display = text.includes(q) ? '' : 'none';
@@ -206,8 +370,7 @@ function highlightSidebarLesson(moduleId, lessonId) {
       wrap.querySelector('.sidebar-module-header')?.classList.add('active');
       if (lessonId) {
         wrap.classList.add('open');
-        const li = wrap.querySelector(`.sidebar-lesson-item[data-lesson-id="${lessonId}"]`);
-        if (li) li.classList.add('active');
+        wrap.querySelector(`.sidebar-lesson-item[data-lesson-id="${lessonId}"]`)?.classList.add('active');
       }
     }
   }
@@ -221,19 +384,57 @@ function refreshSidebarLesson(lessonId) {
   const wrap = li.closest('.sidebar-module');
   if (!wrap) return;
   const modId = parseInt(wrap.dataset.moduleId);
-  const mod = COURSE_DATA.modules.find(m => m.id === modId);
+  const mod   = COURSE_DATA.modules.find(m => m.id === modId);
   if (!mod || !mod.lessons) return;
-
   const doneCount = mod.lessons.filter(l => state.completed.has(l.id)).length;
   const badge = wrap.querySelector('.module-progress-badge');
   if (badge) badge.textContent = `${doneCount}/${mod.lessons.length}`;
-
-  // Update sidebar module header state
   const hdr = wrap.querySelector('.sidebar-module-header');
   if (hdr) {
     hdr.classList.toggle('completed', doneCount === mod.lessons.length);
     hdr.classList.toggle('in-progress', doneCount > 0 && doneCount < mod.lessons.length);
   }
+}
+
+// ─── Upgrade Message ──────────────────────────────────────────────────────────
+function showUpgradeMessage(mod) {
+  state.currentModuleId = mod.id;
+  state.currentLessonId = null;
+  document.getElementById('content-home').classList.add('hidden');
+  document.getElementById('content-lesson').classList.remove('hidden');
+  highlightSidebarLesson(mod.id, null);
+  document.getElementById('main').scrollTop = 0;
+
+  const days = state.user?.approval?.days_remaining ?? '?';
+  document.getElementById('content-lesson').innerHTML = `
+    <div class="lesson-wrapper anim-fadein" style="display:flex;align-items:center;justify-content:center;min-height:70vh;">
+      <div class="upgrade-wall">
+        <div class="upgrade-lock">🔐</div>
+        <h2 class="upgrade-title">Full Access Required</h2>
+        <p class="upgrade-subtitle">
+          <strong>Module ${mod.id}: ${esc(mod.title)}</strong><br/>
+          is part of the complete Python Mastery course.
+        </p>
+
+        <div class="upgrade-features">
+          <div class="upgrade-feature"><span class="uf-check">✓</span> All 17 modules unlocked</div>
+          <div class="upgrade-feature"><span class="uf-check">✓</span> 100+ hands-on exercises</div>
+          <div class="upgrade-feature"><span class="uf-check">✓</span> Interview preparation questions</div>
+          <div class="upgrade-feature"><span class="uf-check">✓</span> Live code playground for every lesson</div>
+          <div class="upgrade-feature"><span class="uf-check">✓</span> 365 days of full access</div>
+        </div>
+
+        <div class="upgrade-cta">
+          <div class="upgrade-cta-msg">
+            🛡️ You currently have <strong>trial access</strong> — ${days} day${days !== 1 ? 's' : ''} remaining.<br/>
+            Contact your administrator to upgrade to full access.
+          </div>
+        </div>
+
+        <button class="upgrade-back-btn" onclick="showHome()">← Back to Dashboard</button>
+      </div>
+    </div>
+  `;
 }
 
 // ─── Home Dashboard ───────────────────────────────────────────────────────────
@@ -244,15 +445,20 @@ function showHome() {
   document.getElementById('content-lesson').classList.add('hidden');
   localStorage.removeItem(LS_LAST);
 
-  const total = COURSE_DATA.modules.reduce((s, m) => s + (m.lessons ? m.lessons.length : 0), 0);
-  const done = state.completed.size;
-  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  const modules = COURSE_DATA.modules;
+  const total   = modules.reduce((s, m) => s + (m.lessons ? m.lessons.length : 0), 0);
+  const done    = state.completed.size;
+  const pct     = total > 0 ? Math.round(done / total * 100) : 0;
+  const trial   = isTrialUser();
 
   document.getElementById('content-home').innerHTML = `
     <div class="home-dashboard">
       <div class="home-hero">
         <h1>${COURSE_DATA.title}</h1>
-        <p class="home-subtitle">Your journey to becoming a job-ready Python engineer starts here.</p>
+        <p class="home-subtitle">${trial
+          ? `⏱ Trial access — Modules 1–3 unlocked · ${state.user?.approval?.days_remaining ?? '?'} days remaining`
+          : 'Your journey to becoming a job-ready Python engineer starts here.'
+        }</p>
         <div class="home-progress-wrap">
           <div class="home-progress-bar">
             <div class="home-progress-fill" style="width:${pct}%"></div>
@@ -268,14 +474,14 @@ function showHome() {
 
   document.querySelectorAll('.module-card').forEach(card => {
     card.addEventListener('click', () => {
-      const modId = parseInt(card.dataset.modId);
-      const mod = COURSE_DATA.modules.find(m => m.id === modId);
+      const modId  = parseInt(card.dataset.modId);
+      const mod    = COURSE_DATA.modules.find(m => m.id === modId);
       if (!mod) return;
-      if (mod.outline) {
-        navigateToOutline(modId);
-      } else if (mod.lessons && mod.lessons.length) {
-        const firstIncomplete = mod.lessons.find(l => !state.completed.has(l.id)) || mod.lessons[0];
-        navigateToLesson(modId, firstIncomplete.id);
+      if (isModuleLocked(modId)) { showUpgradeMessage(mod); return; }
+      if (mod.outline) { navigateToOutline(modId); return; }
+      if (mod.lessons?.length) {
+        const first = mod.lessons.find(l => !state.completed.has(l.id)) || mod.lessons[0];
+        navigateToLesson(modId, first.id);
       }
     });
   });
@@ -283,24 +489,28 @@ function showHome() {
 
 function buildModuleCard(mod) {
   const lessons = mod.lessons || [];
-  const done = lessons.filter(l => state.completed.has(l.id)).length;
-  const total = lessons.length;
-  const pct = total > 0 ? Math.round(done / total * 100) : 0;
-  const cls = mod.outline ? 'outline' : (done === total && total > 0 ? 'complete' : done > 0 ? 'in-progress' : '');
+  const done    = lessons.filter(l => state.completed.has(l.id)).length;
+  const total   = lessons.length;
+  const pct     = total > 0 ? Math.round(done / total * 100) : 0;
+  const locked  = isModuleLocked(mod.id);
+  const cls     = locked ? 'locked'
+    : mod.outline ? 'outline'
+    : done === total && total > 0 ? 'complete'
+    : done > 0 ? 'in-progress' : '';
 
   return `
     <div class="module-card ${cls}" data-mod-id="${mod.id}">
       <div class="module-card-header">
-        <span class="module-card-icon">${mod.icon || '📘'}</span>
+        <span class="module-card-icon">${locked ? '🔒' : (mod.icon || '📘')}</span>
         <span class="module-card-num">Module ${mod.id}</span>
       </div>
       <h3>${mod.title}</h3>
       <p>${mod.description || ''}</p>
       <div class="module-card-meta">
-        <span class="meta-chip">${mod.outline ? 'Outline' : `${total} lesson${total !== 1 ? 's' : ''}`}</span>
-        ${!mod.outline && total > 0 ? `<span class="meta-chip">${done}/${total} done</span>` : ''}
+        <span class="meta-chip">${locked ? 'Full Access' : mod.outline ? 'Outline' : `${total} lesson${total !== 1 ? 's' : ''}`}</span>
+        ${!locked && !mod.outline && total > 0 ? `<span class="meta-chip">${done}/${total} done</span>` : ''}
       </div>
-      ${!mod.outline && total > 0 ? `
+      ${!locked && !mod.outline && total > 0 ? `
       <div class="module-progress-bar">
         <div class="module-progress-fill" style="width:${pct}%"></div>
       </div>` : ''}
@@ -310,10 +520,14 @@ function buildModuleCard(mod) {
 
 // ─── Lesson Navigation ────────────────────────────────────────────────────────
 function navigateToLesson(moduleId, lessonId) {
-  const mod = COURSE_DATA.modules.find(m => m.id === moduleId);
-  if (!mod || !mod.lessons) return;
-  const lesson = mod.lessons.find(l => l.id === lessonId);
-  if (!lesson) return;
+  if (isModuleLocked(moduleId)) {
+    const mod = COURSE_DATA.modules.find(m => m.id === moduleId);
+    if (mod) { showUpgradeMessage(mod); return; }
+  }
+
+  const mod    = COURSE_DATA.modules.find(m => m.id === moduleId);
+  const lesson = mod?.lessons?.find(l => l.id === lessonId);
+  if (!mod || !lesson) return;
 
   state.currentModuleId = moduleId;
   state.currentLessonId = lessonId;
@@ -348,18 +562,17 @@ function navigateToOutline(moduleId) {
 // ─── Lesson Rendering ─────────────────────────────────────────────────────────
 function renderLesson(mod, lesson) {
   const allLessons = mod.lessons;
-  const idx = allLessons.findIndex(l => l.id === lesson.id);
-  const prev = allLessons[idx - 1] || null;
-  const next = allLessons[idx + 1] || null;
+  const idx    = allLessons.findIndex(l => l.id === lesson.id);
+  const prev   = allLessons[idx - 1] || null;
+  const next   = allLessons[idx + 1] || null;
   const modIdx = COURSE_DATA.modules.findIndex(m => m.id === mod.id);
   const prevMod = COURSE_DATA.modules[modIdx - 1] || null;
   const nextMod = COURSE_DATA.modules[modIdx + 1] || null;
-  const isDone = state.completed.has(lesson.id);
+  const isDone  = state.completed.has(lesson.id);
 
   const el = document.getElementById('content-lesson');
   el.innerHTML = `
     <div class="lesson-wrapper anim-fadein">
-
       <div class="lesson-header">
         <div class="breadcrumb">
           <span>${mod.icon} Module ${mod.id}: ${mod.title}</span>
@@ -367,20 +580,15 @@ function renderLesson(mod, lesson) {
           <span class="current">${lesson.title}</span>
         </div>
         <div class="lesson-header-actions">
-          <span class="lesson-meta-chip">⏱ ${lesson.duration}</span>
           <button class="btn-complete-lesson ${isDone ? 'done' : ''}" id="mark-complete-btn">
             ${isDone ? '✓ Completed' : '○ Mark Complete'}
           </button>
         </div>
       </div>
-
       <div class="lesson-title">${lesson.title}</div>
+      <div class="lesson-content">${lesson.content}</div>
 
-      <div class="lesson-content">
-        ${lesson.content}
-      </div>
-
-      ${lesson.codeExamples && lesson.codeExamples.length ? `
+      ${lesson.codeExamples?.length ? `
       <div class="code-examples-section">
         <h2 class="section-heading">📝 Code Examples</h2>
         ${lesson.codeExamples.map(ex => `
@@ -392,8 +600,7 @@ function renderLesson(mod, lesson) {
           ${ex.description ? `<p class="code-example-desc">${ex.description}</p>` : ''}
           <div id="${ex.id}"></div>
           <div class="code-output" id="out-${ex.id}"></div>
-        </div>
-        `).join('')}
+        </div>`).join('')}
       </div>` : ''}
 
       ${lesson.playground ? `
@@ -410,7 +617,7 @@ function renderLesson(mod, lesson) {
         <div class="playground-output" id="pg-out-${lesson.id}"></div>
       </div>` : ''}
 
-      ${lesson.exercises && lesson.exercises.length ? `
+      ${lesson.exercises?.length ? `
       <div class="exercises-section">
         <h2 class="section-heading">💪 Exercises</h2>
         ${lesson.exercises.map((ex, i) => `
@@ -419,7 +626,6 @@ function renderLesson(mod, lesson) {
             <div class="exercise-title-row">
               <span class="exercise-num">${i + 1}</span>
               <span class="exercise-title">${ex.title}</span>
-              <span class="diff-badge ${ex.difficulty}">${ex.difficulty}</span>
             </div>
             <span class="exercise-expand-icon">›</span>
           </div>
@@ -432,23 +638,18 @@ function renderLesson(mod, lesson) {
             </div>
             <div class="code-output" id="out-${ex.id}"></div>
           </div>
-        </div>
-        `).join('')}
+        </div>`).join('')}
       </div>` : ''}
 
-      ${lesson.interviewQuestions && lesson.interviewQuestions.length ? `
+      ${lesson.interviewQuestions?.length ? `
       <div class="interview-section">
         <h2 class="section-heading">🎯 Interview Questions</h2>
         <div class="iq-list">
           ${lesson.interviewQuestions.map(iq => `
           <div class="iq-item">
-            <div class="iq-question">
-              <span>${iq.q}</span>
-              <span class="iq-chevron">›</span>
-            </div>
-            <div class="iq-answer">${iq.a}</div>
-          </div>
-          `).join('')}
+            <div class="iq-question"><span>${iq.question}</span><span class="iq-chevron">›</span></div>
+            <div class="iq-answer">${iq.answer}</div>
+          </div>`).join('')}
         </div>
       </div>` : ''}
 
@@ -466,51 +667,51 @@ function renderLesson(mod, lesson) {
 function buildPrevNavBtn(prevLesson, prevMod, currentMod) {
   if (prevLesson) {
     return `<button class="lesson-nav-btn prev" data-mod="${currentMod.id}" data-lesson="${prevLesson.id}">
-      <span>‹</span>
-      <span class="lesson-nav-label">Previous<span class="lesson-nav-title">${prevLesson.title}</span></span>
+      <span>‹</span><span class="lesson-nav-label">Previous<span class="lesson-nav-title">${prevLesson.title}</span></span>
     </button>`;
   }
   if (prevMod) {
     if (prevMod.outline) {
       return `<button class="lesson-nav-btn prev" data-outline="${prevMod.id}">
-        <span>‹</span>
-        <span class="lesson-nav-label">Previous<span class="lesson-nav-title">${prevMod.title}</span></span>
+        <span>‹</span><span class="lesson-nav-label">Previous<span class="lesson-nav-title">${prevMod.title}</span></span>
       </button>`;
     }
-    const last = prevMod.lessons ? prevMod.lessons[prevMod.lessons.length - 1] : null;
+    const last = prevMod.lessons?.[prevMod.lessons.length - 1];
     if (last) return `<button class="lesson-nav-btn prev" data-mod="${prevMod.id}" data-lesson="${last.id}">
-      <span>‹</span>
-      <span class="lesson-nav-label">Previous<span class="lesson-nav-title">${last.title}</span></span>
+      <span>‹</span><span class="lesson-nav-label">Previous<span class="lesson-nav-title">${last.title}</span></span>
     </button>`;
   }
   return '<div></div>';
 }
 
 function buildNextNavBtn(nextLesson, nextMod, currentMod) {
+  // If next module is locked for trial users, don't show nav into it
+  const nextModLocked = nextMod && isModuleLocked(nextMod.id);
   if (nextLesson) {
     return `<button class="lesson-nav-btn next" data-mod="${currentMod.id}" data-lesson="${nextLesson.id}">
-      <span class="lesson-nav-label">Next<span class="lesson-nav-title">${nextLesson.title}</span></span>
-      <span>›</span>
+      <span class="lesson-nav-label">Next<span class="lesson-nav-title">${nextLesson.title}</span></span><span>›</span>
     </button>`;
   }
-  if (nextMod) {
+  if (nextMod && !nextModLocked) {
     if (nextMod.outline) {
       return `<button class="lesson-nav-btn next" data-outline="${nextMod.id}">
-        <span class="lesson-nav-label">Next<span class="lesson-nav-title">${nextMod.title}</span></span>
-        <span>›</span>
+        <span class="lesson-nav-label">Next<span class="lesson-nav-title">${nextMod.title}</span></span><span>›</span>
       </button>`;
     }
-    const first = nextMod.lessons ? nextMod.lessons[0] : null;
+    const first = nextMod.lessons?.[0];
     if (first) return `<button class="lesson-nav-btn next" data-mod="${nextMod.id}" data-lesson="${first.id}">
-      <span class="lesson-nav-label">Next<span class="lesson-nav-title">${first.title}</span></span>
-      <span>›</span>
+      <span class="lesson-nav-label">Next<span class="lesson-nav-title">${first.title}</span></span><span>›</span>
+    </button>`;
+  }
+  if (nextMod && nextModLocked) {
+    return `<button class="lesson-nav-btn next upgrade-nav" data-mod="${nextMod.id}">
+      <span class="lesson-nav-label">🔒 Upgrade<span class="lesson-nav-title">${nextMod.title}</span></span><span>›</span>
     </button>`;
   }
   return '<div></div>';
 }
 
 function bindLessonEvents(mod, lesson) {
-  // Mark complete
   document.getElementById('mark-complete-btn')?.addEventListener('click', function () {
     if (state.completed.has(lesson.id)) {
       state.completed.delete(lesson.id);
@@ -525,24 +726,18 @@ function bindLessonEvents(mod, lesson) {
     refreshSidebarLesson(lesson.id);
   });
 
-  // Run buttons (code examples + exercises)
   document.querySelectorAll('.run-example-btn, .btn-run').forEach(btn => {
     btn.addEventListener('click', () => runCode(btn.dataset.editor, getOutputEl(btn.dataset.editor)));
   });
 
-  // Playground reset
   document.getElementById(`pg-reset-${lesson.id}`)?.addEventListener('click', () => {
     state.editors[`pg-${lesson.id}`]?.setValue(lesson.playground.starterCode || '');
   });
 
-  // Exercise accordion
   document.querySelectorAll('.exercise-header').forEach(hdr => {
-    hdr.addEventListener('click', () => {
-      hdr.closest('.exercise-card').classList.toggle('open');
-    });
+    hdr.addEventListener('click', () => hdr.closest('.exercise-card').classList.toggle('open'));
   });
 
-  // Solution buttons
   document.querySelectorAll('.btn-show-solution').forEach(btn => {
     btn.addEventListener('click', () => {
       const ex = lesson.exercises.find(e => e.id === btn.dataset.exId);
@@ -550,7 +745,6 @@ function bindLessonEvents(mod, lesson) {
     });
   });
 
-  // Interview Q accordion
   document.querySelectorAll('.iq-question').forEach(qEl => {
     qEl.addEventListener('click', () => {
       const item = qEl.closest('.iq-item');
@@ -560,7 +754,6 @@ function bindLessonEvents(mod, lesson) {
     });
   });
 
-  // Lesson nav
   document.querySelectorAll('.lesson-nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.dataset.outline) { navigateToOutline(parseInt(btn.dataset.outline)); return; }
@@ -584,15 +777,10 @@ function initEditor(id, code, readOnly) {
   if (!el) return null;
   const cm = CodeMirror(el, {
     value: code || '',
-    mode: 'python',
-    theme: cmTheme(),
-    lineNumbers: true,
-    indentUnit: 4,
-    tabSize: 4,
-    indentWithTabs: false,
-    autoCloseBrackets: true,
-    matchBrackets: true,
-    keyMap: 'sublime',
+    mode: 'python', theme: cmTheme(),
+    lineNumbers: true, indentUnit: 4, tabSize: 4,
+    indentWithTabs: false, autoCloseBrackets: true,
+    matchBrackets: true, keyMap: 'sublime',
     readOnly: readOnly || false,
     extraKeys: {
       'Ctrl-Enter': () => runCode(id, getOutputEl(id)),
@@ -605,14 +793,10 @@ function initEditor(id, code, readOnly) {
 
 function initLessonEditors(lesson) {
   (lesson.codeExamples || []).forEach(ex => initEditor(ex.id, ex.code, false));
-
   if (lesson.playground) {
-    initEditor(`pg-${lesson.id}`, lesson.playground.starterCode || '# Write your code here\n', false);
+    initEditor(`pg-${lesson.id}`, lesson.playground.initialCode || lesson.playground.starterCode || '# Write your code here\n', false);
   }
-
-  (lesson.exercises || []).forEach(ex => {
-    initEditor(ex.id, ex.starterCode || '# Your code here\n', false);
-  });
+  (lesson.exercises || []).forEach(ex => initEditor(ex.id, ex.starterCode || '# Your code here\n', false));
 }
 
 // ─── Code Execution ───────────────────────────────────────────────────────────
@@ -632,8 +816,7 @@ async function runCode(editorId, outEl) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code }),
     });
-    const data = await resp.json();
-    renderOutput(outEl, data);
+    renderOutput(outEl, await resp.json());
   } catch (e) {
     outEl.innerHTML = `<span class="out-stderr">Network error: ${esc(e.message)}</span>`;
   }
@@ -653,28 +836,20 @@ function esc(s) {
 
 // ─── Solution Modal ───────────────────────────────────────────────────────────
 function showSolution(ex) {
-  const modal = document.getElementById('solution-modal');
+  const modal   = document.getElementById('solution-modal');
   const codeArea = document.getElementById('solution-code-area');
   const explArea = document.getElementById('solution-explanation');
-
   codeArea.innerHTML = '';
   explArea.innerHTML = '';
   modal.classList.remove('hidden');
-
   setTimeout(() => {
     const cm = CodeMirror(codeArea, {
-      value: ex.solution || '',
-      mode: 'python',
-      theme: cmTheme(),
-      lineNumbers: true,
-      readOnly: true,
-      indentUnit: 4,
-      tabSize: 4,
+      value: ex.solution || '', mode: 'python', theme: cmTheme(),
+      lineNumbers: true, readOnly: true, indentUnit: 4, tabSize: 4,
     });
     state.editors['__solution__'] = cm;
     cm.refresh();
   }, 40);
-
   if (ex.solutionExplanation) {
     explArea.innerHTML = `<strong>Explanation:</strong> ${ex.solutionExplanation}`;
   }
@@ -682,14 +857,13 @@ function showSolution(ex) {
 
 // ─── Outline Rendering ────────────────────────────────────────────────────────
 function renderOutline(mod) {
-  const modIdx = COURSE_DATA.modules.findIndex(m => m.id === mod.id);
+  const modIdx  = COURSE_DATA.modules.findIndex(m => m.id === mod.id);
   const prevMod = COURSE_DATA.modules[modIdx - 1] || null;
   const nextMod = COURSE_DATA.modules[modIdx + 1] || null;
+  const el      = document.getElementById('content-lesson');
 
-  const el = document.getElementById('content-lesson');
   el.innerHTML = `
     <div class="lesson-wrapper anim-fadein">
-
       <div class="lesson-header">
         <div class="breadcrumb">
           <span>${mod.icon} Module ${mod.id}</span>
@@ -700,7 +874,6 @@ function renderOutline(mod) {
           <span class="lesson-meta-chip outline-pill">Outline</span>
         </div>
       </div>
-
       <div class="lesson-title">${mod.icon} ${mod.title}</div>
       <p class="outline-description">${mod.description || ''}</p>
 
@@ -708,7 +881,7 @@ function renderOutline(mod) {
         <span class="callout-icon">ℹ️</span>
         <div class="callout-body">
           <strong>Coming Soon</strong>
-          <p>Full interactive lessons for this module are in development. The outline below covers all key topics.</p>
+          <p>Full interactive lessons for this module are in development.</p>
         </div>
       </div>
 
@@ -718,36 +891,15 @@ function renderOutline(mod) {
         ${mod.topics.map(topic => `
         <div class="outline-topic-card">
           <h3>${topic.title}</h3>
-          <ul>
-            ${(topic.subtopics || []).map(s => `<li>${s}</li>`).join('')}
-          </ul>
-        </div>
-        `).join('')}
+          <ul>${(topic.subtopics||[]).map(s=>`<li>${s}</li>`).join('')}</ul>
+        </div>`).join('')}
       </div>` : ''}
 
-      ${mod.keyExamples && mod.keyExamples.length ? `
-      <div class="outline-examples-section">
-        <h2 class="section-heading">💡 Key Examples</h2>
-        ${mod.keyExamples.map((ex, i) => `
-        <div class="code-example">
-          <div class="code-example-header">
-            <span class="code-example-title">${ex.title}</span>
-            <button class="run-example-btn" data-editor="oe-${mod.id}-${i}">▶ Run</button>
-          </div>
-          <div id="oe-${mod.id}-${i}"></div>
-          <div class="code-output" id="out-oe-${mod.id}-${i}"></div>
-        </div>
-        `).join('')}
-      </div>` : ''}
-
-      ${mod.interviewFocus && mod.interviewFocus.length ? `
+      ${mod.interviewFocus?.length ? `
       <div class="interview-section">
         <h2 class="section-heading">🎯 Interview Focus</h2>
         <div class="interview-tip">
-          <div class="interview-tip-label">Topics commonly asked in interviews</div>
-          <ul>
-            ${mod.interviewFocus.map(q => `<li>${q}</li>`).join('')}
-          </ul>
+          <ul>${mod.interviewFocus.map(q=>`<li>${q}</li>`).join('')}</ul>
         </div>
       </div>` : ''}
 
@@ -758,20 +910,13 @@ function renderOutline(mod) {
     </div>
   `;
 
-  // Init key example editors
-  (mod.keyExamples || []).forEach((ex, i) => {
-    initEditor(`oe-${mod.id}-${i}`, ex.code, false);
-  });
-
-  // Bind run buttons
+  (mod.keyExamples || []).forEach((ex, i) => initEditor(`oe-${mod.id}-${i}`, ex.code, false));
   document.querySelectorAll('.run-example-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const eid = btn.dataset.editor;
       runCode(eid, document.getElementById('out-' + eid));
     });
   });
-
-  // Bind nav
   document.querySelectorAll('.lesson-nav-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.dataset.outline) { navigateToOutline(parseInt(btn.dataset.outline)); return; }
@@ -784,31 +929,32 @@ function buildOutlinePrevBtn(prevMod) {
   if (!prevMod) return '<div></div>';
   if (prevMod.outline) {
     return `<button class="lesson-nav-btn prev" data-outline="${prevMod.id}">
-      <span>‹</span>
-      <span class="lesson-nav-label">Previous<span class="lesson-nav-title">${prevMod.title}</span></span>
+      <span>‹</span><span class="lesson-nav-label">Previous<span class="lesson-nav-title">${prevMod.title}</span></span>
     </button>`;
   }
-  const last = prevMod.lessons ? prevMod.lessons[prevMod.lessons.length - 1] : null;
+  const last = prevMod.lessons?.[prevMod.lessons.length - 1];
   if (!last) return '<div></div>';
   return `<button class="lesson-nav-btn prev" data-mod="${prevMod.id}" data-lesson="${last.id}">
-    <span>‹</span>
-    <span class="lesson-nav-label">Previous<span class="lesson-nav-title">${last.title}</span></span>
+    <span>‹</span><span class="lesson-nav-label">Previous<span class="lesson-nav-title">${last.title}</span></span>
   </button>`;
 }
 
 function buildOutlineNextBtn(nextMod) {
   if (!nextMod) return '<div></div>';
-  if (nextMod.outline) {
-    return `<button class="lesson-nav-btn next" data-outline="${nextMod.id}">
-      <span class="lesson-nav-label">Next<span class="lesson-nav-title">${nextMod.title}</span></span>
-      <span>›</span>
+  if (isModuleLocked(nextMod.id)) {
+    return `<button class="lesson-nav-btn next upgrade-nav" data-mod="${nextMod.id}">
+      <span class="lesson-nav-label">🔒 Upgrade<span class="lesson-nav-title">${nextMod.title}</span></span><span>›</span>
     </button>`;
   }
-  const first = nextMod.lessons ? nextMod.lessons[0] : null;
+  if (nextMod.outline) {
+    return `<button class="lesson-nav-btn next" data-outline="${nextMod.id}">
+      <span class="lesson-nav-label">Next<span class="lesson-nav-title">${nextMod.title}</span></span><span>›</span>
+    </button>`;
+  }
+  const first = nextMod.lessons?.[0];
   if (!first) return '<div></div>';
   return `<button class="lesson-nav-btn next" data-mod="${nextMod.id}" data-lesson="${first.id}">
-    <span class="lesson-nav-label">Next<span class="lesson-nav-title">${first.title}</span></span>
-    <span>›</span>
+    <span class="lesson-nav-label">Next<span class="lesson-nav-title">${first.title}</span></span><span>›</span>
   </button>`;
 }
 
