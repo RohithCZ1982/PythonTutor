@@ -647,8 +647,8 @@ function renderLesson(mod, lesson) {
         <div class="iq-list">
           ${lesson.interviewQuestions.map(iq => `
           <div class="iq-item">
-            <div class="iq-question"><span>${iq.question}</span><span class="iq-chevron">›</span></div>
-            <div class="iq-answer">${iq.answer}</div>
+            <div class="iq-question"><span>${iq.question || iq.q}</span><span class="iq-chevron">›</span></div>
+            <div class="iq-answer">${iq.answer || iq.a}</div>
           </div>`).join('')}
         </div>
       </div>` : ''}
