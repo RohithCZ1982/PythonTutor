@@ -27,6 +27,15 @@ import base64 as _b64
 app = Flask(__name__)
 CORS(app)
 
+# Ensure all JS/CSS static files are served with UTF-8 charset so browsers
+# (especially iOS Safari) decode emoji and Unicode correctly.
+@app.after_request
+def set_utf8_charset(response):
+    ct = response.content_type
+    if ('javascript' in ct or 'css' in ct) and 'charset' not in ct:
+        response.content_type = ct.split(';')[0] + '; charset=utf-8'
+    return response
+
 SECRET_KEY   = os.environ.get('SECRET_KEY', 'pytm-dev-secret-change-in-production')
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
 

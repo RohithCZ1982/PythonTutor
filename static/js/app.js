@@ -232,6 +232,9 @@ function bindGlobal() {
 
   document.getElementById('module-search')?.addEventListener('input', onSearch);
 
+  // Close sidebar when tapping the overlay on mobile
+  document.getElementById('sidebar-overlay')?.addEventListener('click', closeSidebar);
+
   document.querySelectorAll('[data-close]').forEach(btn => {
     btn.addEventListener('click', () => {
       document.getElementById(btn.dataset.close)?.classList.add('hidden');
@@ -252,12 +255,21 @@ function enterApp() {
 // ─── Sidebar toggle ───────────────────────────────────────────────────────────
 function toggleSidebar() {
   state.sidebarOpen = !state.sidebarOpen;
-  const sidebar = document.getElementById('sidebar');
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('sidebar-overlay');
   if (window.innerWidth <= 768) {
     sidebar.classList.toggle('mobile-open', state.sidebarOpen);
+    overlay?.classList.toggle('visible', state.sidebarOpen);
   } else {
     sidebar.classList.toggle('collapsed', !state.sidebarOpen);
   }
+}
+
+function closeSidebar() {
+  if (!state.sidebarOpen) return;
+  state.sidebarOpen = false;
+  document.getElementById('sidebar')?.classList.remove('mobile-open');
+  document.getElementById('sidebar-overlay')?.classList.remove('visible');
 }
 
 // ─── Progress bar ─────────────────────────────────────────────────────────────
@@ -540,6 +552,7 @@ function navigateToLesson(moduleId, lessonId) {
   renderLesson(mod, lesson);
   highlightSidebarLesson(moduleId, lessonId);
   document.getElementById('main').scrollTop = 0;
+  if (window.innerWidth <= 768) closeSidebar();
 }
 
 function navigateToOutline(moduleId) {

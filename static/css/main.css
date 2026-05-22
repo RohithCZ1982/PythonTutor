@@ -979,8 +979,22 @@ img { max-width: 100%; }
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════════════════════ */
+/* ── Mobile sidebar overlay ── */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: var(--topbar-h);
+  background: rgba(0,0,0,.55);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+#sidebar-overlay.visible { display: block; }
+
 @media (max-width: 768px) {
   :root { --sidebar-w: 260px; }
+
   #sidebar {
     position: fixed;
     top: var(--topbar-h); left: 0; bottom: 0;
@@ -990,7 +1004,24 @@ img { max-width: 100%; }
     width: var(--sidebar-w) !important;
   }
   #sidebar.mobile-open { transform: translateX(0); }
+
+  /* Topbar: hide user chip + trial chip text on small screens */
+  .user-chip { display: none; }
+  .trial-chip {
+    font-size: 11px;
+    padding: 3px 7px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Compress topbar center progress */
+  .topbar-center { max-width: 120px; }
+  .progress-label { display: none; }
+
   .lesson-nav-btn { max-width: 100%; }
+  .lesson-nav-row { flex-direction: column; gap: .5rem; }
 }
 
 @media (min-width: 1280px) {
