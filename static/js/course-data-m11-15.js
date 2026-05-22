@@ -1,8 +1,8 @@
 'use strict';
 const MODULES_11_15 = [
   {
-    id: 11, title: "Iterators & Generators", icon: "ðŸ”„", color: "#00d4ff",
-    difficulty: "intermediate", duration: "3â€“4 hours",
+    id: 11, title: "Iterators & Generators", icon: "🔄", color: "#00d4ff",
+    difficulty: "intermediate", duration: "3-4 hours",
     description: "One of the most interview-relevant topics: iterators, generators, yield, send(), and memory-efficient data pipelines.",
     lessons: [
       {
@@ -11,7 +11,7 @@ const MODULES_11_15 = [
 <h2>Iterables vs Iterators</h2>
 <p>These two terms are often confused but they're distinct:</p>
 <ul>
-  <li><strong>Iterable</strong>: any object that implements <code>__iter__()</code> â€” returns an iterator. Examples: list, str, dict, range.</li>
+  <li><strong>Iterable</strong>: any object that implements <code>__iter__()</code> -- returns an iterator. Examples: list, str, dict, range.</li>
   <li><strong>Iterator</strong>: an object with both <code>__iter__()</code> and <code>__next__()</code>. It maintains state and produces the next value on each <code>next()</code> call. When exhausted, raises <code>StopIteration</code>.</li>
 </ul>
 
@@ -51,11 +51,11 @@ for n in Countdown(5):
 it = iter(lst)          # get iterator
 print(next(it))         # 10
 print(next(it))         # 20
-print(next(it, "end"))  # 30  â€” default avoids StopIteration
+print(next(it, "end"))  # 30  -- default avoids StopIteration
 print(next(it, "end"))  # "end"</code></pre>
 
 <div class="callout tip">
-  <span class="callout-icon">ðŸ’¡</span>
+  <span class="callout-icon">💡</span>
   <div class="callout-body"><strong>Iterators are single-use</strong><p>Once exhausted, an iterator cannot be reset. An iterable (like a list) can produce a fresh iterator each time <code>iter()</code> is called. This is why you can loop over a list twice but not a file object.</p></div>
 </div>
 `,
@@ -94,25 +94,25 @@ for n in r:
     print(n, end=" ")`
           },
           {
-            id: "ce-11-1-2", title: "Iterator vs Iterable â€” The Key Distinction",
+            id: "ce-11-1-2", title: "Iterator vs Iterable -- The Key Distinction",
             code: `# An iterable returns a FRESH iterator each time
 lst = [1, 2, 3]
 it1 = iter(lst)
 it2 = iter(lst)   # independent fresh iterator
 print(next(it1))  # 1
 print(next(it1))  # 2
-print(next(it2))  # 1 â€” it2 is independent!
+print(next(it2))  # 1 -- it2 is independent!
 
 # An iterator returns itself
 it3 = iter(it1)
-print(it3 is it1)  # True â€” same object!
-print(next(it3))   # 3 â€” continues from where it1 left off
+print(it3 is it1)  # True -- same object!
+print(next(it3))   # 3 -- continues from where it1 left off
 
 # Practical: iterating a file object is destructive
 import io
 f = io.StringIO("a\\nb\\nc")
 lines_1st_pass = list(f)   # ["a\\n","b\\n","c"]
-lines_2nd_pass = list(f)   # [] â€” exhausted!
+lines_2nd_pass = list(f)   # [] -- exhausted!
 print("First:", lines_1st_pass)
 print("Second:", lines_2nd_pass)`
           }
@@ -206,16 +206,16 @@ print(list(c))  # [1, 2, 3, 4, 5]`,
           }
         ],
         interviewQuestions: [
-          { q: "What is the difference between an iterable and an iterator?", a: "An iterable has __iter__() that returns an iterator. An iterator has both __iter__() and __next__(). Lists, dicts, strings are iterables but not iterators â€” they return fresh iterators via iter(). Generators are iterators. Key difference: iterables can be iterated multiple times; iterators are single-use (once exhausted, they stay exhausted)." },
-          { q: "What is StopIteration and when is it raised?", a: "StopIteration is raised by __next__() when the iterator has no more items. Python's for loop automatically catches StopIteration to end the loop â€” you never see it unless you call next() manually. In generators, a return statement (or falling off the end) implicitly raises StopIteration with the return value stored in the exception's value attribute." }
+          { q: "What is the difference between an iterable and an iterator?", a: "An iterable has __iter__() that returns an iterator. An iterator has both __iter__() and __next__(). Lists, dicts, strings are iterables but not iterators -- they return fresh iterators via iter(). Generators are iterators. Key difference: iterables can be iterated multiple times; iterators are single-use (once exhausted, they stay exhausted)." },
+          { q: "What is StopIteration and when is it raised?", a: "StopIteration is raised by __next__() when the iterator has no more items. Python's for loop automatically catches StopIteration to end the loop -- you never see it unless you call next() manually. In generators, a return statement (or falling off the end) implicitly raises StopIteration with the return value stored in the exception's value attribute." }
         ]
       },
 
       {
         id: "lesson-11-2", title: "Generators & yield", duration: "35 min",
         content: `
-<h2>Generators â€” Lazy Evaluation</h2>
-<p>A <strong>generator function</strong> contains one or more <code>yield</code> statements. When called, it returns a generator object without executing the body. The body runs lazily â€” only when <code>next()</code> is called.</p>
+<h2>Generators -- Lazy Evaluation</h2>
+<p>A <strong>generator function</strong> contains one or more <code>yield</code> statements. When called, it returns a generator object without executing the body. The body runs lazily -- only when <code>next()</code> is called.</p>
 
 <h3>Generator Function Mechanics</h3>
 <pre><code>def countdown(n):
@@ -256,7 +256,7 @@ print([next(gen) for _ in range(5)])  # [0, 1, 2, 3, 4]
 from itertools import islice
 first_100 = list(islice(integers(), 100))</code></pre>
 
-<h3>yield from â€” Delegate to Sub-Generator</h3>
+<h3>yield from -- Delegate to Sub-Generator</h3>
 <pre><code>def flatten(nested):
     for item in nested:
         if isinstance(item, list):
@@ -269,7 +269,7 @@ print(list(flatten(data)))  # [1, 2, 3, 4, 5, 6]</code></pre>
 `,
         codeExamples: [
           {
-            id: "ce-11-2-1", title: "Generator Pipeline â€” Memory-Efficient ETL",
+            id: "ce-11-2-1", title: "Generator Pipeline -- Memory-Efficient ETL",
             code: `import sys
 
 def read_numbers(n):
@@ -291,13 +291,13 @@ def take(n, iterable):
         if i >= n: break
         yield item
 
-# Build pipeline â€” nothing runs yet!
+# Build pipeline -- nothing runs yet!
 source   = read_numbers(1_000_000)
 evens    = filter_even(source)
 squared  = square(evens)
 result   = take(5, squared)
 
-# Now run it â€” processes one element at a time
+# Now run it -- processes one element at a time
 print("First 5 even squares:", list(result))
 
 # Compare memory: list vs generator
@@ -306,7 +306,7 @@ big_gen  = take(5, square(filter_even(read_numbers(1_000_000))))
 print("Same result:", big_list == list(big_gen))`
           },
           {
-            id: "ce-11-2-2", title: "yield from â€” Recursive Flattening",
+            id: "ce-11-2-2", title: "yield from -- Recursive Flattening",
             code: `def flatten(items):
     for item in items:
         if hasattr(item, '__iter__') and not isinstance(item, (str, bytes)):
@@ -328,7 +328,7 @@ def gen():
     print("Subgen returned:", result)
     yield 3
 
-print(list(gen()))  # [1, 2, 3]  â€” and prints "Subgen returned: sub done"`
+print(list(gen()))  # [1, 2, 3]  -- and prints "Subgen returned: sub done"`
           }
         ],
         playground: {
@@ -403,7 +403,7 @@ print(avgs)  # [10.0, 15.0, 20.0, 25.0, 30.0]`,
           }
         ],
         interviewQuestions: [
-          { q: "What does the yield keyword do?", a: "yield suspends the generator function and returns a value to the caller. The function's local state (local variables, instruction pointer) is preserved. The next call to next() resumes execution from right after the yield statement. Unlike return, yield can be called multiple times â€” once per item in the sequence." },
+          { q: "What does the yield keyword do?", a: "yield suspends the generator function and returns a value to the caller. The function's local state (local variables, instruction pointer) is preserved. The next call to next() resumes execution from right after the yield statement. Unlike return, yield can be called multiple times -- once per item in the sequence." },
           { q: "How are generators more memory-efficient than lists?", a: "A list materialises all values in memory at once. A generator produces values one at a time on demand, storing only the current execution frame (~100-200 bytes). For 1 million items, a list uses ~8 MB while a generator uses ~112 bytes. This is critical for processing large files, database cursors, or infinite sequences." },
           { q: "What is yield from and when would you use it?", a: "yield from iterable is shorthand for 'for item in iterable: yield item', but it also passes send() and throw() calls to the sub-generator, and captures the sub-generator's return value. Use it for: recursive generators (tree traversal, flatten), composing generators without boilerplate for-loops, and coroutine delegation." }
         ]
@@ -434,7 +434,7 @@ csv_data = "name,active\\nAlice,True\\nBob,False\\nCarol,True"
 pipeline = extract_name(filter_active(read_rows(csv_data)))
 print(list(pipeline))  # ['ALICE', 'CAROL']</code></pre>
 
-<h3>Generator .send() â€” Two-Way Communication</h3>
+<h3>Generator .send() -- Two-Way Communication</h3>
 <pre><code>def accumulator():
     total = 0
     while True:
@@ -464,11 +464,11 @@ print(result)      # 35</code></pre>
 g = gen()
 print(next(g))          # 1
 print(g.throw(ValueError, "oops"))  # "Got error: oops", returns -1
-g.close()               # "Cleanup!" â€” triggers GeneratorExit inside</code></pre>
+g.close()               # "Cleanup!" -- triggers GeneratorExit inside</code></pre>
 
 <div class="callout tip">
-  <span class="callout-icon">ðŸ’¡</span>
-  <div class="callout-body"><strong>Interview favourite</strong><p>The classic interview question is "implement a data pipeline". Generators are the perfect answer: lazy, memory-efficient, composable. Know how to chain <code>filter â†’ transform â†’ aggregate</code> with generators.</p></div>
+  <span class="callout-icon">💡</span>
+  <div class="callout-body"><strong>Interview favourite</strong><p>The classic interview question is "implement a data pipeline". Generators are the perfect answer: lazy, memory-efficient, composable. Know how to chain <code>filter -> transform -> aggregate</code> with generators.</p></div>
 </div>
 `,
         codeExamples: [
@@ -505,7 +505,7 @@ def extract_messages(records):
     for r in records:
         yield f"[{r['time']}] {r['msg']}"
 
-# Pipeline: parse â†’ filter errors â†’ extract messages
+# Pipeline: parse -> filter errors -> extract messages
 errors = extract_messages(
     filter_level(
         parse_log_lines(log_data),
@@ -521,7 +521,7 @@ for msg in errors:
         playground: {
           title: "Pipeline Playground",
           description: "Build a complete data processing pipeline using generators.",
-          starterCode: `# Data processing pipeline: parse â†’ clean â†’ transform â†’ aggregate
+          starterCode: `# Data processing pipeline: parse -> clean -> transform -> aggregate
 
 def generate_records(n):
     """Source: generates n student records."""
@@ -598,16 +598,16 @@ def batched(iterable, size):
           }
         ],
         interviewQuestions: [
-          { q: "How would you process a multi-gigabyte log file efficiently in Python?", a: "Use a generator pipeline: def read_lines(path): with open(path) as f: for line in f: yield line. Then chain filter/transform generators. Each stage processes one line at a time â€” memory usage stays constant regardless of file size. This is the standard answer for 'large file processing' interview questions." },
-          { q: "What happens when you call next() on an exhausted generator?", a: "It raises StopIteration. This is normal â€” it's how Python's for loop knows to stop. If you want a default value instead of an exception, use next(gen, default). Once a generator is exhausted it stays exhausted â€” there's no rewind. Create a new generator object if you need to iterate again." }
+          { q: "How would you process a multi-gigabyte log file efficiently in Python?", a: "Use a generator pipeline: def read_lines(path): with open(path) as f: for line in f: yield line. Then chain filter/transform generators. Each stage processes one line at a time -- memory usage stays constant regardless of file size. This is the standard answer for 'large file processing' interview questions." },
+          { q: "What happens when you call next() on an exhausted generator?", a: "It raises StopIteration. This is normal -- it's how Python's for loop knows to stop. If you want a default value instead of an exception, use next(gen, default). Once a generator is exhausted it stays exhausted -- there's no rewind. Create a new generator object if you need to iterate again." }
         ]
       }
     ]
   },
 
   {
-    id: 12, title: "Decorators & Advanced Context Managers", icon: "ðŸŽ¨", color: "#9d8fff",
-    difficulty: "advanced", duration: "3â€“4 hours",
+    id: 12, title: "Decorators & Advanced Context Managers", icon: "🎨", color: "#9d8fff",
+    difficulty: "advanced", duration: "3-4 hours",
     description: "Write, stack, and parameterize decorators. Build context managers. Understand @property deeply.",
     lessons: [
       {
@@ -642,10 +642,10 @@ def add(a, b):
     return a + b
 
 print(add(3, 4))   # "Before add", 7, "After add"
-print(add.__name__)  # "add" â€” preserved by @wraps</code></pre>
+print(add.__name__)  # "add" -- preserved by @wraps</code></pre>
 
 <div class="callout warn">
-  <span class="callout-icon">âš ï¸</span>
+  <span class="callout-icon">âš </span>
   <div class="callout-body"><strong>Always use @functools.wraps</strong><p>Without <code>@wraps(func)</code>, the wrapper function steals the wrapped function's identity. <code>add.__name__</code> would return <code>"wrapper"</code>, breaking debugging, documentation, and tools like pytest.</p></div>
 </div>
 
@@ -663,7 +663,7 @@ def timer(func):
     return wrapper
 
 def validate_positive(*arg_names):
-    """Decorator factory â€” validate that named args are positive."""
+    """Decorator factory -- validate that named args are positive."""
     def decorator(func):
         import inspect
         @functools.wraps(func)
@@ -704,7 +704,7 @@ def log_calls(func):
         return result
     return wrapper
 
-# Stacking decorators â€” applied bottom-up
+# Stacking decorators -- applied bottom-up
 @timer
 @log_calls
 def power(base, exp):
@@ -851,7 +851,7 @@ def memoize(max_size=None):
         interviewQuestions: [
           { q: "How do decorators work under the hood?", a: "@my_decorator above def f() is exactly f = my_decorator(f). The decorator receives the original function, wraps it in a closure (the wrapper), and returns the wrapper. The wrapper has access to the original function via the closure, calls it, and can add behaviour before/after." },
           { q: "Why is @functools.wraps important?", a: "Without @wraps(func), the wrapper function has __name__='wrapper', __doc__=None, etc. This breaks: debugging (tracebacks show 'wrapper' not the real name), documentation tools, pytest's test discovery, and inspect.signature(). @wraps copies the original function's metadata onto the wrapper and sets __wrapped__ to the original." },
-          { q: "What is the order of decorator application?", a: "Decorators are applied bottom-up. @a @b @c def f() is equivalent to a(b(c(f))). When f() is called, the order is: a's wrapper â†’ b's wrapper â†’ c's wrapper â†’ original f â†’ back up. Remember: the decorator nearest to the function definition is applied first (innermost)." }
+          { q: "What is the order of decorator application?", a: "Decorators are applied bottom-up. @a @b @c def f() is equivalent to a(b(c(f))). When f() is called, the order is: a's wrapper -> b's wrapper -> c's wrapper -> original f -> back up. Remember: the decorator nearest to the function definition is applied first (innermost)." }
         ]
       },
 
@@ -871,11 +871,11 @@ def memoize(max_size=None):
         return wrapper
     return decorator
 
-@repeat(times=3)     # repeat(3) is called first â†’ returns decorator
-def greet(name):     # decorator(greet) â†’ returns wrapper
+@repeat(times=3)     # repeat(3) is called first -> returns decorator
+def greet(name):     # decorator(greet) -> returns wrapper
     print(f"Hi {name}!")
 
-greet("Alice")   # "Hi Alice!" Ã— 3</code></pre>
+greet("Alice")   # "Hi Alice!" x 3</code></pre>
 
 <h3>Class-Based Decorators</h3>
 <p>Using a class with <code>__call__</code> makes stateful decorators cleaner:</p>
@@ -967,7 +967,7 @@ import time
 def cache_with_ttl(seconds):
     """Cache results but expire them after 'seconds'."""
     def decorator(func):
-        cache = {}  # key â†’ (value, expiry_time)
+        cache = {}  # key -> (value, expiry_time)
 
         @functools.wraps(func)
         def wrapper(*args):
@@ -998,7 +998,7 @@ print(slow_square(4))    # computed
 print(slow_square(4))    # cached
 print(slow_square(9))    # computed
 time.sleep(2.1)          # wait for TTL to expire
-print(slow_square(4))    # expired â†’ recomputed`
+print(slow_square(4))    # expired -> recomputed`
         },
         exercises: [
           {
@@ -1044,7 +1044,7 @@ def debug(enabled=True):
             return result
         return wrapper
     return decorator`,
-            solutionExplanation: "When disabled, we return the original function unchanged â€” zero overhead. When enabled, the wrapper prints the call signature and return value. Returning the original function (not a wrapper) when disabled means there's truly no performance cost."
+            solutionExplanation: "When disabled, we return the original function unchanged -- zero overhead. When enabled, the wrapper prints the call signature and return value. Returning the original function (not a wrapper) when disabled means there's truly no performance cost."
           }
         ],
         interviewQuestions: [
@@ -1058,7 +1058,7 @@ def debug(enabled=True):
         content: `
 <h2>Advanced Context Manager Patterns</h2>
 
-<h3>contextlib.suppress â€” Silence Expected Errors</h3>
+<h3>contextlib.suppress -- Silence Expected Errors</h3>
 <pre><code>from contextlib import suppress
 import os
 
@@ -1072,7 +1072,7 @@ except FileNotFoundError:
 with suppress(FileNotFoundError):
     os.remove("maybe_exists.txt")</code></pre>
 
-<h3>contextlib.ExitStack â€” Dynamic Context Managers</h3>
+<h3>contextlib.ExitStack -- Dynamic Context Managers</h3>
 <pre><code>from contextlib import ExitStack
 
 file_paths = ["a.txt", "b.txt", "c.txt"]
@@ -1223,17 +1223,17 @@ def assert_raises(exc_type):
     """Passes if the body raises exc_type, fails otherwise."""
     pass
 
-# Should pass â€” ValueError is raised
+# Should pass -- ValueError is raised
 with assert_raises(ValueError):
     int("not a number")
 print("Test 1 passed!")
 
-# Should pass â€” ZeroDivisionError is raised
+# Should pass -- ZeroDivisionError is raised
 with assert_raises(ZeroDivisionError):
     1 / 0
 print("Test 2 passed!")
 
-# Should fail â€” no exception is raised
+# Should fail -- no exception is raised
 try:
     with assert_raises(ValueError):
         x = 1 + 1
@@ -1247,18 +1247,18 @@ def assert_raises(exc_type):
     try:
         yield
     except exc_type:
-        pass  # expected â€” test passes
+        pass  # expected -- test passes
     except Exception as e:
         raise AssertionError(
             f"Expected {exc_type.__name__}, got {type(e).__name__}: {e}"
         ) from e
     else:
         raise AssertionError(f"Expected {exc_type.__name__} but no exception was raised")`,
-            solutionExplanation: "Three outcomes: (1) the expected exception is raised â€” we catch and suppress it (test passes). (2) A different exception is raised â€” we convert it to AssertionError. (3) No exception â€” the else clause raises AssertionError. This is essentially how pytest.raises() works."
+            solutionExplanation: "Three outcomes: (1) the expected exception is raised -- we catch and suppress it (test passes). (2) A different exception is raised -- we convert it to AssertionError. (3) No exception -- the else clause raises AssertionError. This is essentially how pytest.raises() works."
           }
         ],
         interviewQuestions: [
-          { q: "What are three useful contextlib utilities and what do they do?", a: "suppress(exc) â€” silently ignore specified exceptions. redirect_stdout(buf) â€” capture print output. ExitStack â€” manage a dynamic number of context managers safely. Also: nullcontext (placeholder), asynccontextmanager (async version of contextmanager), closing (calls .close() on exit)." },
+          { q: "What are three useful contextlib utilities and what do they do?", a: "suppress(exc) -- silently ignore specified exceptions. redirect_stdout(buf) -- capture print output. ExitStack -- manage a dynamic number of context managers safely. Also: nullcontext (placeholder), asynccontextmanager (async version of contextmanager), closing (calls .close() on exit)." },
           { q: "Can you nest context managers? What's the cleanest syntax?", a: "Yes. Python 3.10+ supports parenthesised form: 'with (open(a) as f, open(b) as g): ...'. Earlier Python: 'with open(a) as f, open(b) as g:'. For a dynamic number, use ExitStack. All managers are exited in reverse order on exit, and each is always exited even if earlier ones fail." }
         ]
       }
@@ -1268,7 +1268,7 @@ def assert_raises(exc_type):
   {
     id: 13,
     title: "Python Internals",
-    description: "Understand how Python works under the hood â€” memory model, GIL, bytecode, and performance profiling.",
+    description: "Understand how Python works under the hood -- memory model, GIL, bytecode, and performance profiling.",
     lessons: [
       {
         id: "lesson-13-1",
@@ -1284,7 +1284,7 @@ def assert_raises(exc_type):
 <p>CPython pre-allocates integers <code>-5</code> to <code>256</code> and interns many short strings, so <code>a is b</code> may be <code>True</code> even when you didn't expect it.</p>
 
 <h3>sys.getrefcount()</h3>
-<p><code>sys.getrefcount(obj)</code> returns the reference count â€” always at least 1 because the call itself holds a reference.</p>
+<p><code>sys.getrefcount(obj)</code> returns the reference count -- always at least 1 because the call itself holds a reference.</p>
 
 <h3>Cyclic garbage collection</h3>
 <p>Reference counting can't free cycles (<code>a.ref = b; b.ref = a</code>). CPython's <em>cyclic garbage collector</em> periodically finds and collects these.</p>
@@ -1317,7 +1317,7 @@ print("257 is 257:", a is b)   # may be False in some contexts
 nums = [1, 2, 3]
 print("id:", id(nums))
 nums.append(4)
-print("same id after append:", id(nums))  # same â€” list mutated in place
+print("same id after append:", id(nums))  # same -- list mutated in place
 `
           },
           {
@@ -1335,7 +1335,7 @@ weak = weakref.ref(n)
 
 print("alive?", weak() is not None)   # True
 del n
-print("alive?", weak() is not None)   # False â€” collected
+print("alive?", weak() is not None)   # False -- collected
 
 # WeakValueDictionary for caches
 cache = weakref.WeakValueDictionary()
@@ -1373,7 +1373,7 @@ class Cycle:
 
 a = Cycle(); b = Cycle()
 a.other = b; b.other = a
-print("Cycle created â€” refcounts both >= 2")
+print("Cycle created -- refcounts both >= 2")
 
 # Experiment 3: weak ref cache
 import weakref
@@ -1422,13 +1422,13 @@ trace_refs("hello")`
 interning_report()`,
             solution: `def interning_report():
     a, b = 100, 100
-    print(f"100 is 100: {a is b}")   # True â€” cached
+    print(f"100 is 100: {a is b}")   # True -- cached
 
     a, b = 300, 300
     print(f"300 is 300: {a is b}")   # True in same expression (CPython optimization)
 
     a = "abc"; b = "abc"
-    print(f"'abc' is 'abc': {a is b}")  # usually True â€” interned
+    print(f"'abc' is 'abc': {a is b}")  # usually True -- interned
 
 interning_report()`
           }
@@ -1457,7 +1457,7 @@ interning_report()`
 
 <h3>When threads help vs. hurt</h3>
 <ul>
-  <li><strong>I/O-bound tasks</strong>: threads shine â€” the GIL is released during blocking I/O (file reads, network calls).</li>
+  <li><strong>I/O-bound tasks</strong>: threads shine -- the GIL is released during blocking I/O (file reads, network calls).</li>
   <li><strong>CPU-bound tasks</strong>: threads compete for the GIL and may actually slow down due to context-switch overhead. Use <code>multiprocessing</code> instead.</li>
 </ul>
 
@@ -1500,7 +1500,7 @@ print(f"10 tasks in {elapsed:.2f}s  (serial would be ~1.0s)")
 import time
 
 def cpu_task(n):
-    """Sum squares â€” CPU bound."""
+    """Sum squares -- CPU bound."""
     return sum(i * i for i in range(n))
 
 numbers = [500_000] * 8
@@ -1615,13 +1615,13 @@ print("done")`
         title: "Bytecode & Performance Profiling",
         content: `
 <h2>Python Bytecode & the dis Module</h2>
-<p>CPython compiles source to <strong>bytecode</strong> â€” a stack-based instruction set executed by the CPython virtual machine. You can inspect it with <code>dis.dis()</code>.</p>
+<p>CPython compiles source to <strong>bytecode</strong> -- a stack-based instruction set executed by the CPython virtual machine. You can inspect it with <code>dis.dis()</code>.</p>
 
 <h3>dis module</h3>
 <ul>
-  <li><code>dis.dis(fn)</code> â€” prints bytecode instructions</li>
-  <li><code>dis.code_info(fn)</code> â€” prints code object summary</li>
-  <li><code>fn.__code__.co_varnames</code> â€” local variable names</li>
+  <li><code>dis.dis(fn)</code> -- prints bytecode instructions</li>
+  <li><code>dis.code_info(fn)</code> -- prints code object summary</li>
+  <li><code>fn.__code__.co_varnames</code> -- local variable names</li>
 </ul>
 
 <h3>timeit</h3>
@@ -1639,7 +1639,7 @@ print("done")`
   <li>Local variables accessed faster than globals (fewer LOAD opcodes)</li>
   <li>Join strings with <code>''.join()</code> not <code>+=</code> in a loop</li>
   <li>Use sets/dicts for O(1) lookup instead of lists</li>
-  <li>Avoid repeated attribute lookups â€” cache <code>method = obj.method</code></li>
+  <li>Avoid repeated attribute lookups -- cache <code>method = obj.method</code></li>
 </ul>
         `,
         codeExamples: [
@@ -1761,7 +1761,7 @@ print(f"speedup: {t1/t2:.1f}x")`
           },
           {
             question: "Why is string concatenation in a loop slow?",
-            answer: "Strings are immutable; each += creates a new string object and copies both parts. That's O(nÂ²) total work for n concatenations. ''.join(parts) builds the final string in one pass â€” O(n)."
+            answer: "Strings are immutable; each += creates a new string object and copies both parts. That's O(n^2) total work for n concatenations. ''.join(parts) builds the final string in one pass -- O(n)."
           },
           {
             question: "What information does dis.dis() give you?",
@@ -1799,7 +1799,7 @@ print(f"speedup: {t1/t2:.1f}x")`
 <p>Double-ended queue with O(1) appends/pops on both ends. Ideal for queues and sliding windows.</p>
 
 <h3>ChainMap</h3>
-<p>Combines multiple dicts into a single view. Lookups search maps in order â€” perfect for layered configs.</p>
+<p>Combines multiple dicts into a single view. Lookups search maps in order -- perfect for layered configs.</p>
         `,
         codeExamples: [
           {
@@ -1825,20 +1825,20 @@ print("char freq:", char_freq)
             title: "defaultdict, namedtuple, deque",
             code: `from collections import defaultdict, namedtuple, deque
 
-# defaultdict â€” grouping
+# defaultdict -- grouping
 words = ["apple", "ant", "banana", "bear", "cherry"]
 by_letter = defaultdict(list)
 for w in words:
     by_letter[w[0]].append(w)
 print(dict(by_letter))
 
-# namedtuple â€” lightweight record
+# namedtuple -- lightweight record
 Point = namedtuple("Point", ["x", "y"])
 p = Point(3, 4)
 print(f"Point: x={p.x}, y={p.y}, dist={p.x**2+p.y**2:.1f}")
 print("as dict:", p._asdict())
 
-# deque â€” sliding window max
+# deque -- sliding window max
 def sliding_window_max(nums, k):
     dq = deque()   # stores indices
     result = []
@@ -1981,24 +1981,24 @@ print(lru.get(2))`
 <ul>
   <li><code>datetime.date</code>, <code>datetime.time</code>, <code>datetime.datetime</code>, <code>datetime.timedelta</code></li>
   <li><code>datetime.now()</code> vs <code>datetime.utcnow()</code> vs <code>datetime.now(timezone.utc)</code> (prefer timezone-aware)</li>
-  <li><code>strptime(s, fmt)</code> â€” parse; <code>strftime(fmt)</code> â€” format</li>
+  <li><code>strptime(s, fmt)</code> -- parse; <code>strftime(fmt)</code> -- format</li>
   <li><code>timedelta</code> arithmetic: add/subtract days, hours, seconds</li>
 </ul>
 
-<h3>re â€” regular expressions</h3>
+<h3>re -- regular expressions</h3>
 <ul>
-  <li><code>re.match</code> â€” matches at start; <code>re.search</code> â€” anywhere; <code>re.findall</code> â€” all matches</li>
-  <li><code>re.compile(pattern)</code> â€” precompile for performance</li>
+  <li><code>re.match</code> -- matches at start; <code>re.search</code> -- anywhere; <code>re.findall</code> -- all matches</li>
+  <li><code>re.compile(pattern)</code> -- precompile for performance</li>
   <li>Groups: <code>(pattern)</code>; named groups <code>(?P&lt;name&gt;pattern)</code></li>
   <li>Flags: <code>re.IGNORECASE</code>, <code>re.MULTILINE</code>, <code>re.DOTALL</code></li>
-  <li><code>re.sub(pattern, repl, string)</code> â€” replacement; repl can be a function</li>
+  <li><code>re.sub(pattern, repl, string)</code> -- replacement; repl can be a function</li>
 </ul>
 
 <h3>json module</h3>
 <ul>
-  <li><code>json.dumps(obj, indent=2, default=fn)</code> â€” serialize</li>
-  <li><code>json.loads(s)</code> â€” deserialize</li>
-  <li><code>json.dump/load</code> â€” file variants</li>
+  <li><code>json.dumps(obj, indent=2, default=fn)</code> -- serialize</li>
+  <li><code>json.loads(s)</code> -- deserialize</li>
+  <li><code>json.dump/load</code> -- file variants</li>
   <li>Custom types: implement <code>default(obj)</code> in a <code>JSONEncoder</code> subclass</li>
 </ul>
         `,
@@ -2156,7 +2156,7 @@ for entry in parse_logs(LOGS):
           },
           {
             question: "How do you handle non-serializable types with json.dumps?",
-            answer: "Either pass a default= callable that converts unknown types, or subclass json.JSONEncoder and override the default() method. Common cases: datetime â†’ isoformat(), Decimal â†’ float/str, set â†’ list."
+            answer: "Either pass a default= callable that converts unknown types, or subclass json.JSONEncoder and override the default() method. Common cases: datetime -> isoformat(), Decimal -> float/str, set -> list."
           },
           {
             question: "What is the best practice for working with timezones in Python?",
@@ -2170,12 +2170,12 @@ for entry in parse_logs(LOGS):
         content: `
 <h2>os, pathlib, sys & argparse</h2>
 
-<h3>pathlib â€” modern path handling</h3>
+<h3>pathlib -- modern path handling</h3>
 <p><code>Path</code> objects are the modern way to work with filesystem paths. Operator <code>/</code> joins paths. Methods: <code>.read_text()</code>, <code>.write_text()</code>, <code>.glob()</code>, <code>.rglob()</code>, <code>.stat()</code>, <code>.exists()</code>, <code>.mkdir(parents=True, exist_ok=True)</code>.</p>
 
 <h3>os module</h3>
 <ul>
-  <li><code>os.environ</code> â€” environment variables dict</li>
+  <li><code>os.environ</code> -- environment variables dict</li>
   <li><code>os.getcwd()</code>, <code>os.listdir()</code>, <code>os.walk()</code></li>
   <li><code>os.path.join/exists/isfile/isdir/getsize</code> (prefer pathlib)</li>
   <li><code>os.makedirs(path, exist_ok=True)</code></li>
@@ -2183,10 +2183,10 @@ for entry in parse_logs(LOGS):
 
 <h3>sys module</h3>
 <ul>
-  <li><code>sys.argv</code> â€” command-line arguments list</li>
-  <li><code>sys.exit(code)</code> â€” exit with status code</li>
-  <li><code>sys.path</code> â€” module search path</li>
-  <li><code>sys.stdin/stdout/stderr</code> â€” standard streams</li>
+  <li><code>sys.argv</code> -- command-line arguments list</li>
+  <li><code>sys.exit(code)</code> -- exit with status code</li>
+  <li><code>sys.path</code> -- module search path</li>
+  <li><code>sys.stdin/stdout/stderr</code> -- standard streams</li>
   <li><code>sys.version</code>, <code>sys.platform</code></li>
 </ul>
 
@@ -2348,7 +2348,7 @@ print(config)`
 <p><strong>pytest</strong> is the industry-standard Python testing framework. Tests are discovered automatically from files named <code>test_*.py</code> or <code>*_test.py</code> and functions starting with <code>test_</code>.</p>
 
 <h3>Writing tests</h3>
-<p>Use plain <code>assert</code> statements â€” pytest rewrites them to show rich failure messages.</p>
+<p>Use plain <code>assert</code> statements -- pytest rewrites them to show rich failure messages.</p>
 
 <h3>Test organisation</h3>
 <ul>
@@ -2359,11 +2359,11 @@ print(config)`
 
 <h3>Running pytest</h3>
 <ul>
-  <li><code>pytest</code> â€” run all tests</li>
-  <li><code>pytest -v</code> â€” verbose</li>
-  <li><code>pytest -k "name"</code> â€” filter by name</li>
-  <li><code>pytest -x</code> â€” stop on first failure</li>
-  <li><code>pytest --tb=short</code> â€” concise tracebacks</li>
+  <li><code>pytest</code> -- run all tests</li>
+  <li><code>pytest -v</code> -- verbose</li>
+  <li><code>pytest -k "name"</code> -- filter by name</li>
+  <li><code>pytest -x</code> -- stop on first failure</li>
+  <li><code>pytest --tb=short</code> -- concise tracebacks</li>
 </ul>
 
 <h3>pytest.raises</h3>
@@ -2415,7 +2415,7 @@ test_divide_normal()
 print("All assertions passed!")
 try:
     test_divide_by_zero()
-    print("pytest.raises test needs pytest â€” would pass with pytest")
+    print("pytest.raises test needs pytest -- would pass with pytest")
 except Exception:
     print("Expected: needs pytest runner for raises context")
 `
@@ -2615,14 +2615,14 @@ def db():
 
 <h3>Fixture scopes</h3>
 <ul>
-  <li><code>scope="function"</code> (default) â€” fresh per test</li>
-  <li><code>scope="class"</code> â€” shared within a test class</li>
-  <li><code>scope="module"</code> â€” shared within a module</li>
-  <li><code>scope="session"</code> â€” shared for the entire test run</li>
+  <li><code>scope="function"</code> (default) -- fresh per test</li>
+  <li><code>scope="class"</code> -- shared within a test class</li>
+  <li><code>scope="module"</code> -- shared within a module</li>
+  <li><code>scope="session"</code> -- shared for the entire test run</li>
 </ul>
 
 <h3>conftest.py</h3>
-<p>Place shared fixtures in <code>conftest.py</code> â€” pytest discovers them automatically without importing.</p>
+<p>Place shared fixtures in <code>conftest.py</code> -- pytest discovers them automatically without importing.</p>
 
 <h3>@pytest.mark.parametrize</h3>
 <p>Run the same test with multiple input/output pairs:</p>
@@ -2671,7 +2671,7 @@ print("Fixture tests passed!")
 `
           },
           {
-            title: "parametrize â€” data-driven tests",
+            title: "parametrize -- data-driven tests",
             code: `import pytest
 
 def is_palindrome(s):
@@ -2701,12 +2701,12 @@ email_cases = [
 for s, expected in palindrome_cases:
     result = is_palindrome(s)
     assert result == expected, f"palindrome({s!r}) = {result}, expected {expected}"
-    print(f"  is_palindrome({s!r}) = {result} âœ“")
+    print(f"  is_palindrome({s!r}) = {result} [ok]")
 
 for email, expected in email_cases:
     result = is_valid_email(email)
     assert result == expected, f"email({email!r}) = {result}, expected {expected}"
-    print(f"  is_valid_email({email!r}) = {result} âœ“")
+    print(f"  is_valid_email({email!r}) = {result} [ok]")
 `
           }
         ],
@@ -2795,26 +2795,26 @@ for pwd, expected in cases:
 <h2>Mocking with unittest.mock & Coverage</h2>
 
 <h3>Why mock?</h3>
-<p>Unit tests should be isolated â€” no real network calls, database writes, or slow external services. Mocking replaces dependencies with controlled fakes.</p>
+<p>Unit tests should be isolated -- no real network calls, database writes, or slow external services. Mocking replaces dependencies with controlled fakes.</p>
 
 <h3>unittest.mock</h3>
 <ul>
-  <li><code>Mock()</code> â€” a generic mock object; any attribute access returns another Mock</li>
-  <li><code>MagicMock()</code> â€” like Mock but with magic method support</li>
-  <li><code>patch(target)</code> â€” temporarily replaces an object in a module</li>
-  <li><code>patch.object(obj, attr)</code> â€” patches an attribute on an existing object</li>
+  <li><code>Mock()</code> -- a generic mock object; any attribute access returns another Mock</li>
+  <li><code>MagicMock()</code> -- like Mock but with magic method support</li>
+  <li><code>patch(target)</code> -- temporarily replaces an object in a module</li>
+  <li><code>patch.object(obj, attr)</code> -- patches an attribute on an existing object</li>
 </ul>
 
 <h3>Key attributes</h3>
 <ul>
   <li><code>mock.called</code>, <code>mock.call_count</code></li>
   <li><code>mock.assert_called_once_with(*args)</code></li>
-  <li><code>mock.return_value = x</code> â€” what calling the mock returns</li>
-  <li><code>mock.side_effect = exc</code> â€” raise exception when called</li>
+  <li><code>mock.return_value = x</code> -- what calling the mock returns</li>
+  <li><code>mock.side_effect = exc</code> -- raise exception when called</li>
 </ul>
 
 <h3>Coverage</h3>
-<p>Run <code>pytest --cov=mypackage --cov-report=html</code> (requires pytest-cov). Aim for >80% meaningful coverage â€” 100% coverage doesn't mean bug-free.</p>
+<p>Run <code>pytest --cov=mypackage --cov-report=html</code> (requires pytest-cov). Aim for >80% meaningful coverage -- 100% coverage doesn't mean bug-free.</p>
         `,
         codeExamples: [
           {
@@ -2831,7 +2831,7 @@ print("Call args:", mock_fn.call_args)
 mock_fn.assert_called_once_with("hello", key="val")
 print("Assertion passed!")
 
-# Side effects â€” simulate exceptions
+# Side effects -- simulate exceptions
 error_mock = Mock(side_effect=ConnectionError("timeout"))
 try:
     error_mock()

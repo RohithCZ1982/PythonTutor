@@ -10,13 +10,13 @@ const MODULES_16_17 = [
         title: "Arrays, Strings & Two Pointers",
         content: `
 <h2>Arrays, Strings & Two Pointers</h2>
-<p>Array and string problems are the most common interview category. Two-pointer technique reduces O(nÂ²) brute-force to O(n).</p>
+<p>Array and string problems are the most common interview category. Two-pointer technique reduces O(n^2) brute-force to O(n).</p>
 
 <h3>Two-pointer patterns</h3>
 <ul>
-  <li><strong>Opposite ends</strong>: left starts at 0, right at n-1 â€” used for sorted array pair problems, palindrome checks.</li>
+  <li><strong>Opposite ends</strong>: left starts at 0, right at n-1 -- used for sorted array pair problems, palindrome checks.</li>
   <li><strong>Slow/fast</strong>: detect cycles, find midpoint, remove duplicates.</li>
-  <li><strong>Sliding window</strong>: maintain a window of elements that satisfies a condition â€” O(n) for substring/subarray problems.</li>
+  <li><strong>Sliding window</strong>: maintain a window of elements that satisfies a condition -- O(n) for substring/subarray problems.</li>
 </ul>
 
 <h3>Key techniques</h3>
@@ -78,7 +78,7 @@ print(three_sum([-1, 0, 1, 2, -1, -4]))  # [[-1,-1,2],[-1,0,1]]
 `
           },
           {
-            title: "Sliding window â€” longest substring without repeats",
+            title: "Sliding window -- longest substring without repeats",
             code: `def length_of_longest_substring(s):
     """O(n) sliding window."""
     char_index = {}
@@ -187,7 +187,7 @@ print(is_palindrome(" "))`
         interviewQuestions: [
           {
             question: "Explain the sliding window technique.",
-            answer: "Maintain a window [left, right] that satisfies some condition. Expand right on each step; shrink from left when the condition is violated. Because left and right each move at most n steps total, the algorithm is O(n) instead of O(nÂ²) brute force."
+            answer: "Maintain a window [left, right] that satisfies some condition. Expand right on each step; shrink from left when the condition is violated. Because left and right each move at most n steps total, the algorithm is O(n) instead of O(n^2) brute force."
           },
           {
             question: "When do you use a hash map in array problems?",
@@ -211,8 +211,8 @@ print(is_palindrome(" "))`
 
 <h3>Graph representations</h3>
 <ul>
-  <li>Adjacency list: <code>dict[node] = [neighbours]</code> â€” sparse graphs</li>
-  <li>Adjacency matrix: <code>grid[i][j] = weight</code> â€” dense graphs, O(1) edge lookup</li>
+  <li>Adjacency list: <code>dict[node] = [neighbours]</code> -- sparse graphs</li>
+  <li>Adjacency matrix: <code>grid[i][j] = weight</code> -- dense graphs, O(1) edge lookup</li>
 </ul>
 
 <h3>DFS patterns</h3>
@@ -223,7 +223,7 @@ print(is_palindrome(" "))`
         `,
         codeExamples: [
           {
-            title: "Binary tree â€” traversals and common problems",
+            title: "Binary tree -- traversals and common problems",
             code: `from collections import deque
 
 class TreeNode:
@@ -283,7 +283,7 @@ print("Level order:", level_order(tree))
 `
           },
           {
-            title: "Graph BFS/DFS â€” number of islands",
+            title: "Graph BFS/DFS -- number of islands",
             code: `def num_islands(grid):
     """Count connected groups of '1's. DFS O(m*n)."""
     if not grid: return 0
@@ -422,8 +422,8 @@ print("Invalid BST:", is_valid_bst(invalid))`
 
 <h3>DP problem recognition</h3>
 <ul>
-  <li>"Count the number of waysâ€¦"</li>
-  <li>"Find the minimum/maximumâ€¦"</li>
+  <li>"Count the number of ways..."</li>
+  <li>"Find the minimum/maximum..."</li>
   <li>"Can you achieve X?" (boolean DP)</li>
   <li>Optimal substructure: solution to problem contains solutions to subproblems</li>
   <li>Overlapping subproblems: same subproblems computed repeatedly in brute force</li>
@@ -437,7 +437,7 @@ print("Invalid BST:", is_valid_bst(invalid))`
             title: "Classic 1D DP problems",
             code: `import functools
 
-# 1. Climb stairs â€” ways to reach step n using 1 or 2 steps
+# 1. Climb stairs -- ways to reach step n using 1 or 2 steps
 def climb_stairs(n):
     if n <= 2: return n
     dp = [0] * (n + 1)
@@ -446,7 +446,7 @@ def climb_stairs(n):
         dp[i] = dp[i-1] + dp[i-2]
     return dp[n]
 
-# 2. House robber â€” max loot without adjacent houses
+# 2. House robber -- max loot without adjacent houses
 def rob(nums):
     if not nums: return 0
     prev2 = prev1 = 0
@@ -454,7 +454,7 @@ def rob(nums):
         prev2, prev1 = prev1, max(prev1, prev2 + n)
     return prev1
 
-# 3. Coin change â€” fewest coins to make amount
+# 3. Coin change -- fewest coins to make amount
 def coin_change(coins, amount):
     dp = [float('inf')] * (amount + 1)
     dp[0] = 0
@@ -472,9 +472,9 @@ print("Coins [2] -> 3:", coin_change([2], 3))   # -1
 `
           },
           {
-            title: "2D DP â€” Longest Common Subsequence",
+            title: "2D DP -- Longest Common Subsequence",
             code: `def lcs(s1, s2):
-    """Longest Common Subsequence â€” O(m*n)."""
+    """Longest Common Subsequence -- O(m*n)."""
     m, n = len(s1), len(s2)
     dp = [[0] * (n+1) for _ in range(m+1)]
     for i in range(1, m+1):
@@ -486,7 +486,7 @@ print("Coins [2] -> 3:", coin_change([2], 3))   # -1
     return dp[m][n]
 
 def edit_distance(s1, s2):
-    """Levenshtein distance â€” min insert/delete/replace."""
+    """Levenshtein distance -- min insert/delete/replace."""
     m, n = len(s1), len(s2)
     dp = [[0]*(n+1) for _ in range(m+1)]
     for i in range(m+1): dp[i][0] = i
@@ -541,7 +541,7 @@ print(f"Cache: {info.hits} hits, {info.misses} misses")
         exercises: [
           {
             title: "Longest increasing subsequence",
-            description: "Implement `lis(nums)` returning the length of the longest strictly increasing subsequence. O(nÂ²) DP is fine.",
+            description: "Implement `lis(nums)` returning the length of the longest strictly increasing subsequence. O(n^2) DP is fine.",
             starterCode: `def lis(nums):
     # dp[i] = length of LIS ending at index i
     # TODO: fill dp, return max
@@ -571,7 +571,7 @@ print(lis([7, 7, 7]))`
           },
           {
             question: "What is the difference between top-down and bottom-up DP?",
-            answer: "Top-down (memoization) is recursive with a cache â€” natural to write but has call-stack overhead. Bottom-up (tabulation) iterates from base cases â€” often faster and avoids stack overflow. Both have the same asymptotic complexity."
+            answer: "Top-down (memoization) is recursive with a cache -- natural to write but has call-stack overhead. Bottom-up (tabulation) iterates from base cases -- often faster and avoids stack overflow. Both have the same asymptotic complexity."
           }
         ]
       },
@@ -583,15 +583,15 @@ print(lis([7, 7, 7]))`
 
 <h3>Python sorting</h3>
 <ul>
-  <li><code>list.sort(key=fn, reverse=True)</code> â€” in-place, Timsort O(n log n)</li>
-  <li><code>sorted(iterable, key=fn)</code> â€” returns new list</li>
+  <li><code>list.sort(key=fn, reverse=True)</code> -- in-place, Timsort O(n log n)</li>
+  <li><code>sorted(iterable, key=fn)</code> -- returns new list</li>
   <li>Custom key: <code>key=lambda x: (x[1], x[0])</code> for multi-field sort</li>
   <li>Stable: equal elements keep original order</li>
 </ul>
 
-<h3>heapq â€” min-heap</h3>
+<h3>heapq -- min-heap</h3>
 <ul>
-  <li><code>heapq.heappush(h, item)</code>, <code>heapq.heappop(h)</code> â€” O(log n)</li>
+  <li><code>heapq.heappush(h, item)</code>, <code>heapq.heappop(h)</code> -- O(log n)</li>
   <li><code>heapq.nlargest(k, iterable)</code>, <code>heapq.nsmallest(k, iterable)</code></li>
   <li>Max-heap: negate values (<code>heappush(h, -val)</code>)</li>
   <li>K-th largest: maintain min-heap of size k</li>
@@ -607,11 +607,11 @@ while lo <= hi:
         `,
         codeExamples: [
           {
-            title: "Heap patterns â€” K largest elements",
+            title: "Heap patterns -- K largest elements",
             code: `import heapq
 
 def k_largest(nums, k):
-    """Min-heap of size k â€” O(n log k)."""
+    """Min-heap of size k -- O(n log k)."""
     heap = []
     for n in nums:
         heapq.heappush(heap, n)
@@ -653,7 +653,7 @@ print("Merged:", merge_k_sorted([[1,4,7],[2,5,8],[3,6,9]]))
             code: `import bisect
 
 def search(nums, target):
-    """Standard binary search â€” O(log n)."""
+    """Standard binary search -- O(log n)."""
     lo, hi = 0, len(nums) - 1
     while lo <= hi:
         mid = (lo + hi) // 2
@@ -663,7 +663,7 @@ def search(nums, target):
     return -1
 
 def min_eating_speed(piles, h):
-    """Koko eating bananas â€” binary search on answer space."""
+    """Koko eating bananas -- binary search on answer space."""
     import math
     lo, hi = 1, max(piles)
     while lo < hi:
@@ -777,7 +777,7 @@ for n in [1, 2, 3, 4, 5]:
           },
           {
             question: "When do you use binary search on the 'answer space'?",
-            answer: "When the answer has a monotonic property â€” if speed X works, so does any speed > X. Binary search between lo (minimum possible answer) and hi (maximum possible answer), checking feasibility at mid each step. Classic examples: minimum eating speed, capacity to ship packages, split array largest sum."
+            answer: "When the answer has a monotonic property -- if speed X works, so does any speed > X. Binary search between lo (minimum possible answer) and hi (maximum possible answer), checking feasibility at mid each step. Classic examples: minimum eating speed, capacity to ship packages, split array largest sum."
           }
         ]
       }
@@ -797,26 +797,26 @@ for n in [1, 2, 3, 4, 5]:
 <h3>Recommended project layout</h3>
 <pre>
 my_project/
-â”œâ”€â”€ src/
-â”‚   â””â”€â”€ my_package/
-â”‚       â”œâ”€â”€ __init__.py
-â”‚       â”œâ”€â”€ core.py
-â”‚       â””â”€â”€ utils.py
-â”œâ”€â”€ tests/
-â”‚   â”œâ”€â”€ conftest.py
-â”‚   â””â”€â”€ test_core.py
-â”œâ”€â”€ pyproject.toml   (or setup.cfg)
-â”œâ”€â”€ requirements.txt
-â””â”€â”€ README.md
++-- src/
+|   `-- my_package/
+|       +-- __init__.py
+|       +-- core.py
+|       `-- utils.py
++-- tests/
+|   +-- conftest.py
+|   `-- test_core.py
++-- pyproject.toml   (or setup.cfg)
++-- requirements.txt
+`-- README.md
 </pre>
 
 <h3>Virtual environments</h3>
 <ul>
-  <li><code>python -m venv .venv</code> â€” create</li>
+  <li><code>python -m venv .venv</code> -- create</li>
   <li><code>source .venv/bin/activate</code> (Unix) / <code>.venv\\Scripts\\activate</code> (Windows)</li>
-  <li><code>pip install -r requirements.txt</code> â€” install deps</li>
-  <li><code>pip freeze > requirements.txt</code> â€” capture deps</li>
-  <li><strong>Never</strong> commit <code>.venv/</code> â€” add to <code>.gitignore</code></li>
+  <li><code>pip install -r requirements.txt</code> -- install deps</li>
+  <li><code>pip freeze > requirements.txt</code> -- capture deps</li>
+  <li><strong>Never</strong> commit <code>.venv/</code> -- add to <code>.gitignore</code></li>
 </ul>
 
 <h3>pyproject.toml (modern packaging)</h3>
@@ -917,9 +917,9 @@ def validate_number(x):
 print("Package structure:")
 print("src/")
 print("  calculator/")
-print("    __init__.py  â€” exports public API")
-print("    core.py      â€” arithmetic operations")
-print("    validators.py â€” input validation")
+print("    __init__.py  -- exports public API")
+print("    core.py      -- arithmetic operations")
+print("    validators.py -- input validation")
 print()
 print("Users import as:")
 print("  from calculator import add, divide")
@@ -932,14 +932,14 @@ print("  import calculator; calculator.add(1, 2)")
           initialCode: `# Understanding requirements.txt vs requirements-dev.txt
 
 requirements = """
-# requirements.txt â€” production dependencies
+# requirements.txt -- production dependencies
 requests==2.31.0
 pydantic==2.5.0
 python-dotenv==1.0.0
 """
 
 requirements_dev = """
-# requirements-dev.txt â€” development dependencies
+# requirements-dev.txt -- development dependencies
 -r requirements.txt
 pytest==7.4.3
 pytest-cov==4.1.0
@@ -998,7 +998,7 @@ def triangle_area(base, height):
     pass
 
 def _internal_helper():
-    """Private â€” should NOT be in __all__."""
+    """Private -- should NOT be in __all__."""
     pass
 
 __all__ = []  # TODO: list public functions
@@ -1031,7 +1031,7 @@ print(triangle_area(3, 8))`
         interviewQuestions: [
           {
             question: "Why use virtual environments?",
-            answer: "Virtual environments isolate project dependencies â€” each project gets its own Python and packages. This prevents version conflicts between projects and keeps the system Python clean. It also makes requirements.txt reproducible: only project-specific packages are listed."
+            answer: "Virtual environments isolate project dependencies -- each project gets its own Python and packages. This prevents version conflicts between projects and keeps the system Python clean. It also makes requirements.txt reproducible: only project-specific packages are listed."
           },
           {
             question: "What is the difference between requirements.txt and pyproject.toml?",
@@ -1054,7 +1054,7 @@ print(triangle_area(3, 8))`
   <li><code>INFO</code> (20): confirmation things work as expected</li>
   <li><code>WARNING</code> (30): unexpected but handled</li>
   <li><code>ERROR</code> (40): something failed</li>
-  <li><code>CRITICAL</code> (50): severe â€” may terminate</li>
+  <li><code>CRITICAL</code> (50): severe -- may terminate</li>
 </ul>
 
 <h3>Structured logging</h3>
@@ -1288,7 +1288,7 @@ prices: list[float] = []</code></pre>
 <p><code>TypedDict</code> for typed dicts; <code>@dataclass</code> for typed data classes with auto-generated <code>__init__</code>, <code>__repr__</code>, <code>__eq__</code>.</p>
 
 <h3>Protocol</h3>
-<p>Structural subtyping â€” any class implementing the required methods satisfies the protocol without explicit inheritance (duck typing + type safety).</p>
+<p>Structural subtyping -- any class implementing the required methods satisfies the protocol without explicit inheritance (duck typing + type safety).</p>
         `,
         codeExamples: [
           {
@@ -1363,7 +1363,7 @@ class Rectangle:
 
 def render_all(shapes: list[Drawable]) -> None:
     for shape in shapes:
-        print(f"{shape.draw()} â€” area={shape.area():.2f}")
+        print(f"{shape.draw()} -- area={shape.area():.2f}")
 
 shapes = [Circle(3), Rectangle(4, 5), Circle(1.5)]
 render_all(shapes)
@@ -1378,7 +1378,7 @@ print("Circle is Drawable:", isinstance(Circle(1), Drawable))
           initialCode: `from typing import TypedDict
 from dataclasses import dataclass
 
-# TypedDict â€” typed dict (mutable, no methods)
+# TypedDict -- typed dict (mutable, no methods)
 class Config(TypedDict):
     host: str
     port: int
@@ -1387,7 +1387,7 @@ class Config(TypedDict):
 cfg: Config = {"host": "localhost", "port": 8080, "debug": False}
 print("Config:", cfg)
 
-# Dataclass â€” typed object (methods, validation possible)
+# Dataclass -- typed object (methods, validation possible)
 @dataclass(frozen=True)  # immutable
 class Point:
     x: float
@@ -1411,7 +1411,7 @@ class Vector:
 
 v1 = Vector(1, 2)
 v2 = Vector(1, 2)
-print("v1 == v2:", v1 == v2)  # True â€” dataclass auto-generates __eq__
+print("v1 == v2:", v1 == v2)  # True -- dataclass auto-generates __eq__
 `
         },
         exercises: [
@@ -1430,7 +1430,7 @@ class Stack(Generic[T]):
         pass  # TODO
 
     def pop(self) -> T:
-        pass  # TODO â€” raise IndexError if empty
+        pass  # TODO -- raise IndexError if empty
 
     def peek(self) -> T:
         pass  # TODO
@@ -1476,7 +1476,7 @@ print(int_stack.peek())  # 1`
         interviewQuestions: [
           {
             question: "What is the difference between Optional[X] and X | None?",
-            answer: "They are semantically identical â€” both mean 'X or None'. Optional[X] is the older syntax from typing module (Python 3.5+); X | None uses the union operator (Python 3.10+). The newer syntax is more readable. mypy and pyright understand both."
+            answer: "They are semantically identical -- both mean 'X or None'. Optional[X] is the older syntax from typing module (Python 3.5+); X | None uses the union operator (Python 3.10+). The newer syntax is more readable. mypy and pyright understand both."
           },
           {
             question: "What is structural subtyping (Protocol) vs nominal subtyping?",

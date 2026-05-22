@@ -1,16 +1,16 @@
 'use strict';
 const MODULES_6_10 = [
   {
-    id: 6, title: "Object-Oriented Programming", icon: "ðŸ›ï¸", color: "#9d8fff",
-    difficulty: "intermediate", duration: "5â€“6 hours",
+    id: 6, title: "Object-Oriented Programming", icon: "🏛", color: "#9d8fff",
+    difficulty: "intermediate", duration: "5-6 hours",
     description: "Deep understanding of classes, objects, inheritance, MRO, dunder methods, and dataclasses.",
     lessons: [
-      // â”€â”€ 6.1 Classes & Objects â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- 6.1 Classes & Objects ----------------------------------------------
       {
         id: "lesson-6-1", title: "Classes & Objects", duration: "40 min",
         content: `
 <h2>Classes and Objects</h2>
-<p>A <strong>class</strong> is a blueprint; an <strong>object</strong> is a concrete instance of that blueprint. Everything in Python is an object â€” including integers, functions, and modules.</p>
+<p>A <strong>class</strong> is a blueprint; an <strong>object</strong> is a concrete instance of that blueprint. Everything in Python is an object -- including integers, functions, and modules.</p>
 
 <h3>Anatomy of a Class</h3>
 <pre><code>class BankAccount:
@@ -38,11 +38,11 @@ const MODULES_6_10 = [
 <pre><code>acc1 = BankAccount("Alice", 1000)
 acc2 = BankAccount("Bob",   500)
 
-# Instance attribute â€” belongs to one object
+# Instance attribute -- belongs to one object
 acc1.balance   # 1000
 acc2.balance   # 500
 
-# Class attribute â€” shared
+# Class attribute -- shared
 BankAccount.interest_rate  # 0.05
 acc1.interest_rate         # 0.05 (looks up via class if not on instance)
 
@@ -52,13 +52,13 @@ acc1.interest_rate = 0.07          # shadows for acc1 only</code></pre>
 
 <h3>__repr__ vs __str__</h3>
 <ul>
-  <li><code>__repr__</code> â€” unambiguous, for developers; shown in the REPL and <code>repr()</code></li>
-  <li><code>__str__</code> â€” human-friendly; used by <code>print()</code> and <code>str()</code></li>
+  <li><code>__repr__</code> -- unambiguous, for developers; shown in the REPL and <code>repr()</code></li>
+  <li><code>__str__</code> -- human-friendly; used by <code>print()</code> and <code>str()</code></li>
   <li>If only <code>__repr__</code> is defined, Python uses it for both</li>
 </ul>
 
 <div class="callout tip">
-  <span class="callout-icon">ðŸ’¡</span>
+  <span class="callout-icon">💡</span>
   <div class="callout-body"><strong>Always define __repr__</strong><p>A good <code>__repr__</code> should ideally be valid Python code that recreates the object: <code>ClassName(arg1, arg2)</code>. This makes debugging much easier.</p></div>
 </div>
 `,
@@ -90,7 +90,7 @@ acc1.interest_rate = 0.07          # shadows for acc1 only</code></pre>
         self._history.append(f"-{amount:.2f}")
 
     def statement(self):
-        print(f"Account #{self.id} â€” {self.owner}")
+        print(f"Account #{self.id} -- {self.owner}")
         for tx in self._history:
             print(f"  {tx}")
         print(f"  Balance: {self.balance:.2f}")
@@ -190,13 +190,13 @@ print(s.is_empty())  # False`,
           }
         ],
         interviewQuestions: [
-          { q: "What is the difference between __init__ and __new__?", a: "__new__ creates the object (allocates memory); __init__ initialises it. __new__ returns the new instance; __init__ receives it as self and sets attributes. You rarely need to override __new__ â€” it's mainly used for singleton patterns or immutable types like tuple subclasses." },
-          { q: "What is self? Is it a keyword?", a: "self is NOT a keyword â€” it's just a convention for the first parameter of instance methods. Python automatically passes the instance as the first argument when you call obj.method(). You could name it anything (e.g., 'this'), but self is the universal convention." },
+          { q: "What is the difference between __init__ and __new__?", a: "__new__ creates the object (allocates memory); __init__ initialises it. __new__ returns the new instance; __init__ receives it as self and sets attributes. You rarely need to override __new__ -- it's mainly used for singleton patterns or immutable types like tuple subclasses." },
+          { q: "What is self? Is it a keyword?", a: "self is NOT a keyword -- it's just a convention for the first parameter of instance methods. Python automatically passes the instance as the first argument when you call obj.method(). You could name it anything (e.g., 'this'), but self is the universal convention." },
           { q: "What is the difference between a class attribute and an instance attribute?", a: "Class attributes are shared across all instances and are defined at the class level. Instance attributes are specific to each object and set in __init__ via self.attr = value. When reading an attribute, Python checks instance first, then class. When writing, it always creates an instance attribute unless you explicitly write to the class." }
         ]
       },
 
-      // â”€â”€ 6.2 Inheritance & MRO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- 6.2 Inheritance & MRO ---------------------------------------------
       {
         id: "lesson-6-2", title: "Inheritance, super() & MRO", duration: "40 min",
         content: `
@@ -226,7 +226,7 @@ animals = [Dog("Rex"), Cat("Whiskers"), Dog("Buddy")]
 for a in animals:
     print(a.speak())</code></pre>
 
-<h3>super() â€” The Right Way to Call Parent</h3>
+<h3>super() -- The Right Way to Call Parent</h3>
 <pre><code>class SavingsAccount(BankAccount):
     BONUS_RATE = 0.01
 
@@ -240,8 +240,8 @@ for a in animals:
         self.interest_earned += interest</code></pre>
 
 <div class="callout warn">
-  <span class="callout-icon">âš ï¸</span>
-  <div class="callout-body"><strong>Always use super() â€” never hardcode the parent name</strong><p>Writing <code>ParentClass.__init__(self, ...)</code> breaks with multiple inheritance and is fragile to refactoring. <code>super()</code> uses the MRO to find the right next class.</p></div>
+  <span class="callout-icon">âš </span>
+  <div class="callout-body"><strong>Always use super() -- never hardcode the parent name</strong><p>Writing <code>ParentClass.__init__(self, ...)</code> breaks with multiple inheritance and is fragile to refactoring. <code>super()</code> uses the MRO to find the right next class.</p></div>
 </div>
 
 <h3>Method Resolution Order (MRO)</h3>
@@ -255,14 +255,14 @@ print(D.__mro__)
 # (<class 'D'>, <class 'B'>, <class 'C'>, <class 'A'>, <class 'object'>)</code></pre>
 
 <h3>isinstance() and issubclass()</h3>
-<pre><code>isinstance(dog, Animal)   # True â€” checks type or any parent
+<pre><code>isinstance(dog, Animal)   # True -- checks type or any parent
 isinstance(dog, Cat)      # False
 issubclass(Dog, Animal)   # True
 issubclass(Dog, Cat)      # False</code></pre>
 
 <div class="callout tip">
-  <span class="callout-icon">ðŸ’¡</span>
-  <div class="callout-body"><strong>Prefer isinstance() over type()</strong><p><code>type(obj) == Dog</code> breaks with subclasses. <code>isinstance(obj, Dog)</code> returns True for any subclass of Dog â€” correct polymorphic behaviour.</p></div>
+  <span class="callout-icon">💡</span>
+  <div class="callout-body"><strong>Prefer isinstance() over type()</strong><p><code>type(obj) == Dog</code> breaks with subclasses. <code>isinstance(obj, Dog)</code> returns True for any subclass of Dog -- correct polymorphic behaviour.</p></div>
 </div>
 `,
         codeExamples: [
@@ -432,21 +432,21 @@ class CSVSerializer(Serializable):
         return ",".join(str(x) for x in data)
     def deserialize(self, text):
         return [int(x) for x in text.split(",")]`,
-            solutionExplanation: "Abstract base classes enforce a contract â€” any subclass that doesn't implement all @abstractmethod methods will raise TypeError on instantiation. This is Python's way of doing interfaces."
+            solutionExplanation: "Abstract base classes enforce a contract -- any subclass that doesn't implement all @abstractmethod methods will raise TypeError on instantiation. This is Python's way of doing interfaces."
           }
         ],
         interviewQuestions: [
           { q: "Explain Python's MRO and why it matters.", a: "MRO (Method Resolution Order) determines which class's method Python calls when there's inheritance. Python uses C3 linearization: it searches left-to-right in the inheritance chain while respecting the constraint that no class appears before its subclasses. It matters most with multiple inheritance (diamond problem). super() always follows the MRO." },
-          { q: "What does super() actually do?", a: "super() returns a proxy object that delegates method calls to the next class in the MRO. In single inheritance, super() finds the parent class. In multiple inheritance, it follows the full MRO â€” this is why super() works correctly even in diamond inheritance, as long as all classes use super()." },
+          { q: "What does super() actually do?", a: "super() returns a proxy object that delegates method calls to the next class in the MRO. In single inheritance, super() finds the parent class. In multiple inheritance, it follows the full MRO -- this is why super() works correctly even in diamond inheritance, as long as all classes use super()." },
           { q: "What's the difference between composition and inheritance?", a: "Inheritance models 'is-a' (a Dog IS an Animal). Composition models 'has-a' (a Car HAS an Engine). Composition is often preferred (Liskov Substitution violations are common with deep inheritance). Use inheritance when the relationship is truly hierarchical; use composition when building complex objects from simpler ones." }
         ]
       },
 
-      // â”€â”€ 6.3 Dunder Methods â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- 6.3 Dunder Methods ------------------------------------------------
       {
         id: "lesson-6-3", title: "Dunder (Magic) Methods", duration: "35 min",
         content: `
-<h2>Dunder Methods â€” Making Objects Pythonic</h2>
+<h2>Dunder Methods -- Making Objects Pythonic</h2>
 <p><strong>Dunder methods</strong> (double-underscore: <code>__name__</code>) let your classes integrate with Python's built-in syntax and functions. They're called implicitly by the interpreter.</p>
 
 <h3>Essential Dunder Methods</h3>
@@ -537,7 +537,7 @@ print(v1.dot(v2))      # 32
 print(v1.magnitude())  # sqrt(14) â‰ˆ 3.74`
           },
           {
-            id: "ce-6-3-2", title: "__call__ â€” Callable Objects",
+            id: "ce-6-3-2", title: "__call__ -- Callable Objects",
             code: `class Multiplier:
     """A callable object that multiplies by a fixed factor."""
     def __init__(self, factor):
@@ -547,7 +547,7 @@ print(v1.magnitude())  # sqrt(14) â‰ˆ 3.74`
         return x * self.factor
 
     def __repr__(self):
-        return f"Multiplier(Ã—{self.factor})"
+        return f"Multiplier(x{self.factor})"
 
 double = Multiplier(2)
 triple = Multiplier(3)
@@ -613,7 +613,7 @@ B = Matrix([[5,6],[7,8]])
 
 print("A + B:")
 print(A + B)
-print("\\nA Ã— B:")
+print("\\nA x B:")
 print(A * B)`
         },
         exercises: [
@@ -663,19 +663,19 @@ print((p + q)(2))             # 13 + 4 = 17`,
         ],
         interviewQuestions: [
           { q: "What are dunder methods and why are they useful?", a: "Dunder (double-underscore) methods integrate your objects with Python's syntax. __len__ makes len() work, __add__ makes + work, __iter__ makes for-loops work, etc. They allow custom objects to behave like built-ins, following the principle that 'explicit is better than implicit'." },
-          { q: "Explain __enter__ and __exit__ for context managers.", a: "__enter__ is called at the start of the 'with' block and its return value is bound to the 'as' variable. __exit__(exc_type, exc_val, tb) is called on exit â€” even if an exception occurred. If __exit__ returns True, the exception is suppressed. Common use: resource cleanup (files, DB connections, locks)." },
+          { q: "Explain __enter__ and __exit__ for context managers.", a: "__enter__ is called at the start of the 'with' block and its return value is bound to the 'as' variable. __exit__(exc_type, exc_val, tb) is called on exit -- even if an exception occurred. If __exit__ returns True, the exception is suppressed. Common use: resource cleanup (files, DB connections, locks)." },
           { q: "What is __slots__ and when would you use it?", a: "__slots__ restricts instance attributes to a fixed set, replacing the per-instance __dict__ with a fixed-size array. This saves memory (up to 40-50%) and slightly speeds up attribute access. Use it for classes that create millions of instances (e.g., game entities, data records). Downside: can't add attributes dynamically; complicates pickling and multiple inheritance." }
         ]
       },
 
-      // â”€â”€ 6.4 Properties & Class Methods â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- 6.4 Properties & Class Methods ------------------------------------
       {
         id: "lesson-6-4", title: "@property, @staticmethod & @classmethod", duration: "30 min",
         content: `
 <h2>Descriptors and Method Types</h2>
 <p>Python provides three method decorators that change how methods bind to instances and classes.</p>
 
-<h3>@property â€” Managed Attributes</h3>
+<h3>@property -- Managed Attributes</h3>
 <p>Replace public attributes with getter/setter/deleter pairs without changing the calling syntax:</p>
 <pre><code>class Temperature:
     def __init__(self, celsius=0):
@@ -696,7 +696,7 @@ print((p + q)(2))             # 13 + 4 = 17`,
         return self._celsius * 9/5 + 32
 
 t = Temperature(25)
-print(t.celsius)     # 25  â€” calls getter
+print(t.celsius)     # 25  -- calls getter
 t.celsius = 100      # calls setter
 print(t.fahrenheit)  # 212.0</code></pre>
 
@@ -734,8 +734,8 @@ d = Date.from_string("2024-03-15")
 print(d)          # 2024-03-15</code></pre>
 
 <div class="callout tip">
-  <span class="callout-icon">ðŸ’¡</span>
-  <div class="callout-body"><strong>Rule of thumb</strong><p>If a method uses <code>self</code> â†’ instance method. If it only uses <code>cls</code> â†’ classmethod. If it uses neither â†’ staticmethod. Prefer classmethod over staticmethod when there might be subclasses.</p></div>
+  <span class="callout-icon">💡</span>
+  <div class="callout-body"><strong>Rule of thumb</strong><p>If a method uses <code>self</code> -> instance method. If it only uses <code>cls</code> -> classmethod. If it uses neither -> staticmethod. Prefer classmethod over staticmethod when there might be subclasses.</p></div>
 </div>
 `,
         codeExamples: [
@@ -889,20 +889,20 @@ except ValueError as e:
         if self._grade >= 70: return 'C'
         if self._grade >= 60: return 'D'
         return 'F'`,
-            solutionExplanation: "Properties are set with self.name = value in __init__, which already invokes the setter â€” this is the correct pattern. Private storage uses _name/_grade. The letter_grade property is computed and has no setter."
+            solutionExplanation: "Properties are set with self.name = value in __init__, which already invokes the setter -- this is the correct pattern. Private storage uses _name/_grade. The letter_grade property is computed and has no setter."
           }
         ],
         interviewQuestions: [
-          { q: "What is the difference between @staticmethod and @classmethod?", a: "@staticmethod gets no implicit first argument â€” it's just a regular function in the class namespace. @classmethod gets cls as the first argument, which is the class itself (not an instance). Use @classmethod for alternative constructors or factory methods that work correctly with subclasses via cls(). Use @staticmethod for utilities that don't need class or instance data." },
+          { q: "What is the difference between @staticmethod and @classmethod?", a: "@staticmethod gets no implicit first argument -- it's just a regular function in the class namespace. @classmethod gets cls as the first argument, which is the class itself (not an instance). Use @classmethod for alternative constructors or factory methods that work correctly with subclasses via cls(). Use @staticmethod for utilities that don't need class or instance data." },
           { q: "Why use @property instead of just exposing the attribute directly?", a: "@property lets you start with a simple public attribute (e.g., self.radius) and later add validation, computed values, or caching without changing the API. Users of your class don't need to update their code. This follows the Uniform Access Principle." }
         ]
       },
 
-      // â”€â”€ 6.5 Dataclasses â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      // -- 6.5 Dataclasses ---------------------------------------------------
       {
-        id: "lesson-6-5", title: "Dataclasses â€” Modern Python Records", duration: "30 min",
+        id: "lesson-6-5", title: "Dataclasses -- Modern Python Records", duration: "30 min",
         content: `
-<h2>dataclasses â€” Reduce Boilerplate</h2>
+<h2>dataclasses -- Reduce Boilerplate</h2>
 <p>The <code>@dataclass</code> decorator (Python 3.7+) automatically generates <code>__init__</code>, <code>__repr__</code>, and <code>__eq__</code> from class-level field annotations.</p>
 
 <h3>Basic Usage</h3>
@@ -930,8 +930,8 @@ class Student:
         self._id = random.randint(1000, 9999)</code></pre>
 
 <div class="callout warn">
-  <span class="callout-icon">âš ï¸</span>
-  <div class="callout-body"><strong>Never use mutable defaults directly</strong><p><code>grades: list = []</code> raises an error in dataclasses (for good reason â€” it would be shared across instances). Always use <code>field(default_factory=list)</code>.</p></div>
+  <span class="callout-icon">âš </span>
+  <div class="callout-body"><strong>Never use mutable defaults directly</strong><p><code>grades: list = []</code> raises an error in dataclasses (for good reason -- it would be shared across instances). Always use <code>field(default_factory=list)</code>.</p></div>
 </div>
 
 <h3>Frozen Dataclasses</h3>
@@ -941,8 +941,8 @@ class ImmutablePoint:
     y: float
 
 p = ImmutablePoint(1.0, 2.0)
-# p.x = 5.0  â†’ FrozenInstanceError!
-# Frozen dataclasses are hashable â†’ can be dict keys or set elements</code></pre>
+# p.x = 5.0  -> FrozenInstanceError!
+# Frozen dataclasses are hashable -> can be dict keys or set elements</code></pre>
 
 <h3>order=True for Comparison</h3>
 <pre><code>@dataclass(order=True)
@@ -1025,7 +1025,7 @@ cities = [london, newyork, tokyo, sydney]
 for i, a in enumerate(cities):
     for b in cities[i+1:]:
         d = a.distance_to(b)
-        print(f"{a.name} â†’ {b.name}: {d:,.0f} km")`
+        print(f"{a.name} -> {b.name}: {d:,.0f} km")`
         },
         exercises: [
           {
@@ -1074,15 +1074,15 @@ class InventoryItem:
         ],
         interviewQuestions: [
           { q: "When would you use a dataclass vs a namedtuple vs a regular class?", a: "namedtuple: immutable record, needs tuple compatibility (indexing, unpacking), or memory is critical. dataclass: mutable record with type hints, needs __post_init__ logic or methods, or you want frozen= for immutability with hash. Regular class: complex behaviour, many methods, deep inheritance hierarchy, or fine-grained control over __init__." },
-          { q: "What does frozen=True do to a dataclass?", a: "It makes instances immutable â€” attempts to set attributes raise FrozenInstanceError. It also makes the dataclass hashable (generates __hash__), so frozen instances can be used as dict keys or set elements. Under the hood, it replaces __setattr__ and __delattr__ with versions that raise the error." }
+          { q: "What does frozen=True do to a dataclass?", a: "It makes instances immutable -- attempts to set attributes raise FrozenInstanceError. It also makes the dataclass hashable (generates __hash__), so frozen instances can be used as dict keys or set elements. Under the hood, it replaces __setattr__ and __delattr__ with versions that raise the error." }
         ]
       }
     ]  // end lessons for module 6
   },
 
   {
-    id: 7, title: "Functional Programming in Python", icon: "Î»", color: "#00c48c",
-    difficulty: "intermediate", duration: "3â€“4 hours",
+    id: 7, title: "Functional Programming in Python", icon: "lambda", color: "#00c48c",
+    difficulty: "intermediate", duration: "3-4 hours",
     description: "Pure functions, immutability, higher-order functions, itertools, functools, and functional design patterns.",
     lessons: [
       {
@@ -1104,7 +1104,7 @@ def apply(func, value):
 print(apply(abs, -5))    # 5
 print(apply(str, 42))    # '42'
 
-# map, filter, sorted â€” built-in HOFs
+# map, filter, sorted -- built-in HOFs
 nums = [1, -2, 3, -4, 5]
 positives = list(filter(lambda x: x > 0, nums))
 doubled   = list(map(lambda x: x * 2, nums))
@@ -1112,7 +1112,7 @@ print(positives)  # [1, 3, 5]
 print(doubled)    # [2, -4, 6, -8, 10]</code></pre>
 
 <h3>Lambda Functions</h3>
-<p>A lambda is a small anonymous function. Use it for short, throwaway functions â€” never for complex logic.</p>
+<p>A lambda is a small anonymous function. Use it for short, throwaway functions -- never for complex logic.</p>
 <pre><code>square = lambda x: x ** 2
 add    = lambda x, y: x + y
 
@@ -1135,7 +1135,7 @@ def compose(*funcs):
     """Apply funcs right-to-left: compose(f, g)(x) == f(g(x))"""
     return reduce(lambda f, g: lambda x: f(g(x)), funcs)
 
-# Pipeline: strip â†’ lowercase â†’ split
+# Pipeline: strip -> lowercase -> split
 process = compose(str.split, str.lower, str.strip)
 result  = process("  Hello World  ")
 print(result)  # ['hello', 'world']</code></pre>
@@ -1147,15 +1147,15 @@ print(result)  # ['hello', 'world']</code></pre>
 
 nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-# map â€” transform each element
+# map -- transform each element
 squares = list(map(lambda x: x**2, nums))
 print("Squares:", squares)
 
-# filter â€” keep elements that match predicate
+# filter -- keep elements that match predicate
 evens = list(filter(lambda x: x % 2 == 0, nums))
 print("Evens:", evens)
 
-# reduce â€” fold a sequence into a single value
+# reduce -- fold a sequence into a single value
 total   = reduce(lambda a, b: a + b, nums)
 product = reduce(lambda a, b: a * b, nums)
 print("Sum:", total)
@@ -1238,7 +1238,7 @@ print(f"\\nTotal inventory value: \${total:,.2f}")`
         exercises: [
           {
             id: "exe-7-1-1", title: "Compose a Text Processing Pipeline", difficulty: "easy",
-            description: "Write a pipeline function that chains transformations on text. Apply: strip â†’ lowercase â†’ remove punctuation â†’ split into words â†’ remove stop words.",
+            description: "Write a pipeline function that chains transformations on text. Apply: strip -> lowercase -> remove punctuation -> split into words -> remove stop words.",
             starterCode: `import string
 
 STOP_WORDS = {"the", "a", "an", "is", "it", "in", "on", "of", "and", "or"}
@@ -1281,15 +1281,15 @@ print(process(text))`,
           }
         ],
         interviewQuestions: [
-          { q: "What is a pure function?", a: "A pure function always returns the same output for the same inputs (deterministic) and has no side effects (doesn't modify external state, I/O, globals). Pure functions are easy to test, parallelise, and reason about. Python doesn't enforce purity â€” it's a programming discipline." },
+          { q: "What is a pure function?", a: "A pure function always returns the same output for the same inputs (deterministic) and has no side effects (doesn't modify external state, I/O, globals). Pure functions are easy to test, parallelise, and reason about. Python doesn't enforce purity -- it's a programming discipline." },
           { q: "When should you use list comprehensions vs map/filter?", a: "List comprehensions are almost always preferred in Python for readability and performance. Use map/filter when: (1) applying an already-named function (map(str, nums) is clean), (2) working with very large iterables where laziness matters (map/filter are lazy, not list comprehensions), or (3) in a chain where you want to avoid materialising intermediate lists." }
         ]
       },
 
       {
-        id: "lesson-7-2", title: "itertools â€” The Secret Weapon", duration: "30 min",
+        id: "lesson-7-2", title: "itertools -- The Secret Weapon", duration: "30 min",
         content: `
-<h2>itertools â€” Combinatorial Power</h2>
+<h2>itertools -- Combinatorial Power</h2>
 <p>The <code>itertools</code> module provides fast, memory-efficient tools for working with iterators. Knowing these shortcuts can dramatically simplify your code.</p>
 
 <h3>Infinite Iterators</h3>
@@ -1328,12 +1328,12 @@ for letter, group in groupby(data, key=lambda x: x[0]):
             id: "ce-7-2-1", title: "itertools Showcase",
             code: `import itertools
 
-# chain â€” flatten nested structures
+# chain -- flatten nested structures
 nested = [[1,2,3],[4,5],[6,7,8,9]]
 flat = list(itertools.chain.from_iterable(nested))
 print("Flattened:", flat)
 
-# groupby â€” group sorted data
+# groupby -- group sorted data
 records = [
     ("Alice", "Engineering"), ("Bob", "Marketing"),
     ("Carol", "Engineering"), ("Dave", "HR"),
@@ -1351,7 +1351,7 @@ for a, b in itertools.combinations(items, 2):
     print(f"  {a} vs {b}")`
           },
           {
-            id: "ce-7-2-2", title: "accumulate â€” Running Totals & Extremes",
+            id: "ce-7-2-2", title: "accumulate -- Running Totals & Extremes",
             code: `import itertools
 import operator
 
@@ -1440,21 +1440,21 @@ print(f"Total tests: {len(tests)}")
 print("First 3 tests:")
 for t in tests[:3]:
     print(" ", t)`,
-            solutionExplanation: "itertools.product computes the Cartesian product â€” every combination of one item from each iterable. 3 browsers Ã— 3 OS Ã— 2 resolutions = 18 total test cases."
+            solutionExplanation: "itertools.product computes the Cartesian product -- every combination of one item from each iterable. 3 browsers x 3 OS x 2 resolutions = 18 total test cases."
           }
         ],
         interviewQuestions: [
-          { q: "What does itertools.groupby require about its input?", a: "The input MUST be sorted by the grouping key first. groupby only groups consecutive elements with the same key â€” it doesn't collect all matching elements from the entire sequence. Forgetting to sort is the most common groupby bug." },
+          { q: "What does itertools.groupby require about its input?", a: "The input MUST be sorted by the grouping key first. groupby only groups consecutive elements with the same key -- it doesn't collect all matching elements from the entire sequence. Forgetting to sort is the most common groupby bug." },
           { q: "How is itertools.chain.from_iterable different from itertools.chain?", a: "chain(*iterables) takes multiple iterables as separate arguments. chain.from_iterable(iterable_of_iterables) takes a single iterable that yields iterables. Use from_iterable when your iterable of iterables is itself computed lazily or when you have many sublists (avoids unpacking a huge list with *)." }
         ]
       },
 
       {
-        id: "lesson-7-3", title: "functools â€” Memoisation & Partial Application", duration: "25 min",
+        id: "lesson-7-3", title: "functools -- Memoisation & Partial Application", duration: "25 min",
         content: `
-<h2>functools â€” Tools for Higher-Order Functions</h2>
+<h2>functools -- Tools for Higher-Order Functions</h2>
 
-<h3>lru_cache â€” Memoisation in One Line</h3>
+<h3>lru_cache -- Memoisation in One Line</h3>
 <pre><code>from functools import lru_cache
 
 @lru_cache(maxsize=None)  # None = unlimited cache
@@ -1467,7 +1467,7 @@ print(fib.cache_info()) # CacheInfo(hits=98, misses=101, ...)</code></pre>
 
 <p>Python 3.9+ added <code>@cache</code> as a shorthand for <code>@lru_cache(maxsize=None)</code>.</p>
 
-<h3>partial â€” Pre-fill Arguments</h3>
+<h3>partial -- Pre-fill Arguments</h3>
 <pre><code>from functools import partial
 
 def power(base, exp):
@@ -1483,7 +1483,7 @@ print(cube(3))    # 27
 results = list(map(partial(power, exp=2), range(1, 6)))
 print(results)  # [1, 4, 9, 16, 25]</code></pre>
 
-<h3>reduce â€” Fold a Sequence</h3>
+<h3>reduce -- Fold a Sequence</h3>
 <pre><code>from functools import reduce
 
 nums = [1, 2, 3, 4, 5]
@@ -1491,7 +1491,7 @@ total   = reduce(lambda a, b: a + b, nums)         # 15
 product = reduce(lambda a, b: a * b, nums, 1)      # 120 (1 as initial value)
 maximum = reduce(lambda a, b: a if a > b else b, nums)  # 5</code></pre>
 
-<h3>total_ordering â€” Complete Comparison Protocol</h3>
+<h3>total_ordering -- Complete Comparison Protocol</h3>
 <pre><code>from functools import total_ordering
 
 @total_ordering
@@ -1626,8 +1626,8 @@ print("Cache after clear + recall:", fib.cache_info())`,
   },
 
   {
-    id: 8, title: "Modules, Packages & Virtual Environments", icon: "ðŸ“¦", color: "#ffb300",
-    difficulty: "beginner", duration: "2â€“3 hours",
+    id: 8, title: "Modules, Packages & Virtual Environments", icon: "📦", color: "#ffb300",
+    difficulty: "beginner", duration: "2-3 hours",
     description: "How Python's import system works, how to structure packages, and professional virtual environment management.",
     lessons: [
       {
@@ -1636,9 +1636,9 @@ print("Cache after clear + recall:", fib.cache_info())`,
 <h2>How Python Finds Modules</h2>
 <p>When you write <code>import foo</code>, Python searches for <code>foo</code> in this order:</p>
 <ol>
-  <li><strong>sys.modules</strong> â€” already-imported modules (cached)</li>
-  <li><strong>Built-in modules</strong> â€” compiled into the interpreter (e.g., <code>sys</code>, <code>os</code>)</li>
-  <li><strong>sys.path</strong> â€” list of directories (script dir, PYTHONPATH, site-packages)</li>
+  <li><strong>sys.modules</strong> -- already-imported modules (cached)</li>
+  <li><strong>Built-in modules</strong> -- compiled into the interpreter (e.g., <code>sys</code>, <code>os</code>)</li>
+  <li><strong>sys.path</strong> -- list of directories (script dir, PYTHONPATH, site-packages)</li>
 </ol>
 
 <h3>Import Forms</h3>
@@ -1652,18 +1652,18 @@ from ..utils import helper     # up one level, then utils</code></pre>
 
 <h3>Package Structure</h3>
 <pre><code>myproject/
-â”œâ”€â”€ mypackage/
-â”‚   â”œâ”€â”€ __init__.py      # makes it a package; can be empty
-â”‚   â”œâ”€â”€ core.py          # mypackage.core
-â”‚   â”œâ”€â”€ utils.py         # mypackage.utils
-â”‚   â””â”€â”€ sub/
-â”‚       â”œâ”€â”€ __init__.py
-â”‚       â””â”€â”€ parser.py    # mypackage.sub.parser
-â”œâ”€â”€ tests/
-â”‚   â””â”€â”€ test_core.py
-â””â”€â”€ pyproject.toml</code></pre>
++-- mypackage/
+|   +-- __init__.py      # makes it a package; can be empty
+|   +-- core.py          # mypackage.core
+|   +-- utils.py         # mypackage.utils
+|   `-- sub/
+|       +-- __init__.py
+|       `-- parser.py    # mypackage.sub.parser
++-- tests/
+|   `-- test_core.py
+`-- pyproject.toml</code></pre>
 
-<h3>__init__.py â€” Controlling Your Package's API</h3>
+<h3>__init__.py -- Controlling Your Package's API</h3>
 <pre><code># mypackage/__init__.py
 from .core import MyClass        # expose at top level
 from .utils import helper_func
@@ -1681,7 +1681,7 @@ print(sys.path)        # where Python looks for modules
 print(sys.modules)     # all currently imported modules</code></pre>
 
 <div class="callout tip">
-  <span class="callout-icon">ðŸ’¡</span>
+  <span class="callout-icon">💡</span>
   <div class="callout-body"><strong>if __name__ == '__main__'</strong><p>This guard is True only when the file is run directly (not imported). Always wrap your top-level script code in this block to make modules importable without side effects.</p></div>
 </div>
 `,
@@ -1791,7 +1791,7 @@ def inspect_module(name):
 
 for name in ["os", "json", "math"]:
     info = inspect_module(name)
-    print(f"{info['name']:6}: {info['public_attrs']} attrs â€” {info['doc'][:60]}")`,
+    print(f"{info['name']:6}: {info['public_attrs']} attrs -- {info['doc'][:60]}")`,
             solutionExplanation: "importlib.import_module(name) is the programmatic equivalent of 'import name'. We use getattr for __file__ because built-in modules don't have a file. The first line of __doc__ gives a quick summary."
           }
         ],
@@ -1808,7 +1808,7 @@ for name in ["os", "json", "math"]:
 <h2>Standard Library Highlights</h2>
 <p>Python's "batteries included" standard library means you rarely need third-party packages for common tasks. Here are the most interview-relevant modules.</p>
 
-<h3>pathlib â€” Modern File System Navigation</h3>
+<h3>pathlib -- Modern File System Navigation</h3>
 <pre><code>from pathlib import Path
 
 p = Path("/home/user/project")
@@ -1826,7 +1826,7 @@ src.stat().st_size  # file size in bytes
 for f in p.rglob("*.py"):
     print(f.relative_to(p))</code></pre>
 
-<h3>datetime â€” Date and Time</h3>
+<h3>datetime -- Date and Time</h3>
 <pre><code>from datetime import datetime, timedelta, date
 
 now   = datetime.now()
@@ -1844,7 +1844,7 @@ deadline = now + timedelta(hours=48)
 diff = datetime(2025, 1, 1) - now     # timedelta object
 print(f"{diff.days} days until 2025")</code></pre>
 
-<h3>re â€” Regular Expressions</h3>
+<h3>re -- Regular Expressions</h3>
 <pre><code>import re
 
 # Find all email addresses
@@ -1857,7 +1857,7 @@ m = re.search(pattern, "Date: 2024-03-15")
 if m:
     print(m.group("year"), m.group("month"))</code></pre>
 
-<h3>collections â€” Data Structure Extras</h3>
+<h3>collections -- Data Structure Extras</h3>
 <pre><code>from collections import Counter, defaultdict, deque, OrderedDict, namedtuple
 
 Counter("aabbbcc")           # Counter({'b':3,'a':2,'c':2})
@@ -1903,7 +1903,7 @@ for d in dates:
     print(f"  {d.strftime('%A, %B %d %Y')}")`
           },
           {
-            id: "ce-8-2-2", title: "re â€” Practical Patterns",
+            id: "ce-8-2-2", title: "re -- Practical Patterns",
             code: `import re
 
 # Extract structured data from log line
@@ -1924,7 +1924,7 @@ emails = [
 EMAIL_RE = re.compile(r'^[\\w.+-]+@[\\w-]+\\.[\\w.]+$')
 for e in emails:
     valid = bool(EMAIL_RE.match(e))
-    print(f"  {e:25} {'âœ“ valid' if valid else 'âœ— invalid'}")`
+    print(f"  {e:25} {'[ok] valid' if valid else '[x] invalid'}")`
           }
         ],
         playground: {
@@ -2039,7 +2039,7 @@ flask>=3.0.0          # minimum version
 requests==2.31.0      # exact version (pin)
 pandas~=2.0           # compatible release (~= 2.0.x)</code></pre>
 
-<h3>pyproject.toml â€” Modern Packaging</h3>
+<h3>pyproject.toml -- Modern Packaging</h3>
 <pre><code>[tool.poetry.dependencies]
 python = "^3.11"
 flask = "^3.0"
@@ -2064,7 +2064,7 @@ db = os.environ["DATABASE_URL"]
 debug = os.getenv("DEBUG", "false").lower() == "true"</code></pre>
 
 <div class="callout warn">
-  <span class="callout-icon">âš ï¸</span>
+  <span class="callout-icon">âš </span>
   <div class="callout-body"><strong>Never commit secrets</strong><p>Add <code>.env</code> to <code>.gitignore</code>. Use <code>.env.example</code> with placeholder values to document which variables are needed.</p></div>
 </div>
 `,
@@ -2090,7 +2090,7 @@ print("MY_VAR:", os.environ["MY_VAR"])
 if "MY_VAR" in os.environ:
     print("Variable is set")
 
-# Config pattern â€” read with defaults
+# Config pattern -- read with defaults
 def get_config():
     return {
         "host": os.getenv("DB_HOST", "localhost"),
@@ -2160,13 +2160,13 @@ class Config:
         self.secret_key = os.getenv("SECRET_KEY", "dev-secret")
 
     def _bool(self, key, default):
-        pass  # "true"/"1"/"yes" â†’ True, else False
+        pass  # "true"/"1"/"yes" -> True, else False
 
     def _int(self, key, default):
         pass  # parse int or return default
 
     def _list(self, key, default):
-        pass  # comma-separated string â†’ list
+        pass  # comma-separated string -> list
 
 cfg = Config()
 print(f"debug={cfg.debug}, port={cfg.port}, workers={cfg.workers}")
@@ -2205,19 +2205,19 @@ print(f"hosts={cfg.allowed_hosts}")`,
         ],
         interviewQuestions: [
           { q: "Why should you never install packages globally?", a: "Global installations affect all Python projects on the machine. If project A needs django==3.2 and project B needs django==4.2, they conflict. Virtual environments give each project its own isolated site-packages, preventing version conflicts. They also make projects reproducible (pin exact versions in requirements.txt)." },
-          { q: "What is the difference between requirements.txt and pyproject.toml?", a: "requirements.txt is the traditional format â€” a flat list of packages with version specifiers, often pip freeze output with exact pinned versions. pyproject.toml (PEP 518/621) is the modern standard â€” specifies build system, dependencies with version ranges (for libraries), and dev dependencies separately. pyproject.toml is preferred for new projects; requirements.txt is still common for applications." }
+          { q: "What is the difference between requirements.txt and pyproject.toml?", a: "requirements.txt is the traditional format -- a flat list of packages with version specifiers, often pip freeze output with exact pinned versions. pyproject.toml (PEP 518/621) is the modern standard -- specifies build system, dependencies with version ranges (for libraries), and dev dependencies separately. pyproject.toml is preferred for new projects; requirements.txt is still common for applications." }
         ]
       }
     ]  // end lessons for module 8
   },
 
   {
-    id: 9, title: "File Handling & Context Managers", icon: "ðŸ“", color: "#7c6af7",
-    difficulty: "intermediate", duration: "2â€“3 hours",
+    id: 9, title: "File Handling & Context Managers", icon: "📁", color: "#7c6af7",
+    difficulty: "intermediate", duration: "2-3 hours",
     description: "Reading and writing files, CSV and JSON, and implementing custom context managers with __enter__/__exit__.",
     lessons: [
       {
-        id: "lesson-9-1", title: "File I/O â€” Reading & Writing Files", duration: "30 min",
+        id: "lesson-9-1", title: "File I/O -- Reading & Writing Files", duration: "30 min",
         content: `
 <h2>File I/O in Python</h2>
 <p>Always use the <code>with</code> statement for files. It guarantees the file is closed even if an exception occurs.</p>
@@ -2270,7 +2270,7 @@ exists = p.exists()</code></pre>
 `,
         codeExamples: [
           {
-            id: "ce-9-1-1", title: "Word Count â€” Memory-Efficient Processing",
+            id: "ce-9-1-1", title: "Word Count -- Memory-Efficient Processing",
             code: `from collections import Counter
 import io
 
@@ -2377,15 +2377,15 @@ print(file_stats(sample))`,
           }
         ],
         interviewQuestions: [
-          { q: "Why should you always use 'with open()' instead of open() + close()?", a: "The 'with' statement (context manager) guarantees the file is closed even if an exception occurs inside the block. Without it, if an exception is raised before f.close(), the file handle leaks â€” potentially causing data corruption (write buffers not flushed) or hitting OS file descriptor limits. Always use 'with'." },
-          { q: "What is the difference between read() and readline() and iterating the file?", a: "read() loads the ENTIRE file into memory â€” dangerous for large files. readline() reads one line at a time. Iterating the file object (for line in f) is the most memory-efficient: it reads the file lazily in buffered chunks, processing one line at a time without loading the whole file into memory." }
+          { q: "Why should you always use 'with open()' instead of open() + close()?", a: "The 'with' statement (context manager) guarantees the file is closed even if an exception occurs inside the block. Without it, if an exception is raised before f.close(), the file handle leaks -- potentially causing data corruption (write buffers not flushed) or hitting OS file descriptor limits. Always use 'with'." },
+          { q: "What is the difference between read() and readline() and iterating the file?", a: "read() loads the ENTIRE file into memory -- dangerous for large files. readline() reads one line at a time. Iterating the file object (for line in f) is the most memory-efficient: it reads the file lazily in buffered chunks, processing one line at a time without loading the whole file into memory." }
         ]
       },
 
       {
-        id: "lesson-9-2", title: "CSV & JSON â€” Structured Data Formats", duration: "30 min",
+        id: "lesson-9-2", title: "CSV & JSON -- Structured Data Formats", duration: "30 min",
         content: `
-<h2>CSV â€” Comma-Separated Values</h2>
+<h2>CSV -- Comma-Separated Values</h2>
 <pre><code>import csv
 
 # Writing CSV
@@ -2404,20 +2404,20 @@ with open("data.csv", newline="", encoding="utf-8") as f:
     for row in reader:
         print(row)              # list of strings
 
-# DictReader â€” rows as dicts (much more convenient)
+# DictReader -- rows as dicts (much more convenient)
 with open("data.csv", newline="", encoding="utf-8") as f:
     for row in csv.DictReader(f):
         print(row["name"], row["age"])</code></pre>
 
-<h2>JSON â€” JavaScript Object Notation</h2>
+<h2>JSON -- JavaScript Object Notation</h2>
 <pre><code>import json
 
-# Python â†’ JSON string
+# Python -> JSON string
 data = {"name": "Alice", "scores": [90, 85], "active": True}
 text = json.dumps(data)                  # compact
 text = json.dumps(data, indent=2)        # pretty-printed
 
-# JSON string â†’ Python
+# JSON string -> Python
 obj = json.loads('{"x": 1, "y": 2}')
 
 # File I/O
@@ -2439,7 +2439,7 @@ with open("data.json") as f:
 </table>
 
 <div class="callout tip">
-  <span class="callout-icon">ðŸ’¡</span>
+  <span class="callout-icon">💡</span>
   <div class="callout-body"><strong>Custom JSON serialization</strong><p>If your object isn't JSON-serializable (e.g., datetime), use <code>default=str</code> for a quick fix, or write a custom encoder by subclassing <code>json.JSONEncoder</code>.</p></div>
 </div>
 `,
@@ -2582,7 +2582,7 @@ print(json.dumps(result, indent=2))`,
       },
 
       {
-        id: "lesson-9-3", title: "Context Managers â€” The 'with' Protocol", duration: "30 min",
+        id: "lesson-9-3", title: "Context Managers -- The 'with' Protocol", duration: "30 min",
         content: `
 <h2>Context Managers</h2>
 <p>A context manager wraps a block of code with setup and teardown logic. The <code>with</code> statement guarantees cleanup even if an exception occurs.</p>
@@ -2605,7 +2605,7 @@ with ManagedResource() as r:
     print("Inside block")
     # even if error here, __exit__ always runs</code></pre>
 
-<h3>@contextmanager â€” The Easy Way</h3>
+<h3>@contextmanager -- The Easy Way</h3>
 <pre><code>from contextlib import contextmanager
 
 @contextmanager
@@ -2634,13 +2634,13 @@ def process(debug=False):
     with ctx:
         do_work()
 
-# ExitStack â€” dynamic number of context managers
+# ExitStack -- dynamic number of context managers
 with ExitStack() as stack:
     files = [stack.enter_context(open(f)) for f in file_list]</code></pre>
 `,
         codeExamples: [
           {
-            id: "ce-9-3-1", title: "Custom Context Manager â€” Database Transaction",
+            id: "ce-9-3-1", title: "Custom Context Manager -- Database Transaction",
             code: `from contextlib import contextmanager
 
 # Simulated database connection
@@ -2735,7 +2735,7 @@ def retry(max_attempts=3, delay=0.1, exceptions=(Exception,)):
     for attempt in range(1, max_attempts + 1):
         try:
             yield attempt   # expose attempt number
-            break           # success â€” exit loop
+            break           # success -- exit loop
         except exceptions as e:
             if attempt == max_attempts:
                 print(f"All {max_attempts} attempts failed: {e}")
@@ -2799,16 +2799,16 @@ def temp_file(suffix=".tmp", content=None):
           }
         ],
         interviewQuestions: [
-          { q: "How does the 'with' statement work internally?", a: "Python calls __enter__() at the start of the 'with' block and binds its return value to the 'as' variable. At the end â€” or if an exception occurs â€” Python calls __exit__(exc_type, exc_val, traceback). If __exit__ returns True, the exception is suppressed; if False (or None), it propagates. The @contextmanager decorator implements this protocol using a generator." },
-          { q: "What does the __exit__ method's return value mean?", a: "Returning True from __exit__ suppresses the exception â€” the code after the 'with' block continues as if nothing happened. Returning False (or None, or any falsy value) lets the exception propagate normally. Use True suppression only for specific, expected exceptions; never suppress all exceptions blindly." }
+          { q: "How does the 'with' statement work internally?", a: "Python calls __enter__() at the start of the 'with' block and binds its return value to the 'as' variable. At the end -- or if an exception occurs -- Python calls __exit__(exc_type, exc_val, traceback). If __exit__ returns True, the exception is suppressed; if False (or None), it propagates. The @contextmanager decorator implements this protocol using a generator." },
+          { q: "What does the __exit__ method's return value mean?", a: "Returning True from __exit__ suppresses the exception -- the code after the 'with' block continues as if nothing happened. Returning False (or None, or any falsy value) lets the exception propagate normally. Use True suppression only for specific, expected exceptions; never suppress all exceptions blindly." }
         ]
       }
     ]  // end lessons for module 9
   },
 
   {
-    id: 10, title: "Exception Handling & Logging", icon: "ðŸ›¡ï¸", color: "#ff5757",
-    difficulty: "intermediate", duration: "2â€“3 hours",
+    id: 10, title: "Exception Handling & Logging", icon: "🛡", color: "#ff5757",
+    difficulty: "intermediate", duration: "2-3 hours",
     description: "Production-grade error handling, custom exceptions, and structured logging.",
     lessons: [
       {
@@ -2830,24 +2830,24 @@ else:
     # Runs ONLY if no exception occurred
     print(f"Success: {result}")
 finally:
-    # ALWAYS runs â€” cleanup here
+    # ALWAYS runs -- cleanup here
     close_connection()</code></pre>
 
 <h3>Exception Hierarchy</h3>
 <pre><code>BaseException
-â”œâ”€â”€ SystemExit           # sys.exit()
-â”œâ”€â”€ KeyboardInterrupt    # Ctrl+C
-â”œâ”€â”€ GeneratorExit
-â””â”€â”€ Exception            # Base for "normal" exceptions
-    â”œâ”€â”€ ValueError       # wrong value type/range
-    â”œâ”€â”€ TypeError        # wrong type
-    â”œâ”€â”€ KeyError         # missing dict key
-    â”œâ”€â”€ IndexError       # list index out of range
-    â”œâ”€â”€ AttributeError   # missing attribute
-    â”œâ”€â”€ FileNotFoundError
-    â”œâ”€â”€ ZeroDivisionError
-    â”œâ”€â”€ StopIteration
-    â””â”€â”€ ... (many more)</code></pre>
++-- SystemExit           # sys.exit()
++-- KeyboardInterrupt    # Ctrl+C
++-- GeneratorExit
+`-- Exception            # Base for "normal" exceptions
+    +-- ValueError       # wrong value type/range
+    +-- TypeError        # wrong type
+    +-- KeyError         # missing dict key
+    +-- IndexError       # list index out of range
+    +-- AttributeError   # missing attribute
+    +-- FileNotFoundError
+    +-- ZeroDivisionError
+    +-- StopIteration
+    `-- ... (many more)</code></pre>
 
 <h3>raise and raise from</h3>
 <pre><code># Re-raise the current exception
@@ -2857,28 +2857,28 @@ except Exception:
     log_error()
     raise                         # re-raises same exception
 
-# Raise a different exception â€” chaining
+# Raise a different exception -- chaining
 try:
     value = int(user_input)
 except ValueError as e:
     raise ValueError(f"Invalid input: {user_input!r}") from e
-    # "raise X from Y" sets __cause__ â€” the original exception is preserved</code></pre>
+    # "raise X from Y" sets __cause__ -- the original exception is preserved</code></pre>
 
 <div class="callout warn">
-  <span class="callout-icon">âš ï¸</span>
+  <span class="callout-icon">âš </span>
   <div class="callout-body"><strong>Never use bare except!</strong><p><code>except:</code> catches EVERYTHING including <code>SystemExit</code> and <code>KeyboardInterrupt</code>. Always name at least <code>except Exception</code>. Better: catch only the specific exceptions you can handle.</p></div>
 </div>
 
 <h3>else in try blocks</h3>
 <p>The <code>else</code> clause runs only if the <code>try</code> block completed without raising an exception. It's cleaner than putting success-path code in the <code>try</code> block (which would catch unintended exceptions):</p>
-<pre><code># Without else â€” bad: success_path might raise unintended exceptions
+<pre><code># Without else -- bad: success_path might raise unintended exceptions
 try:
     data = fetch_data()
     process(data)          # if this raises, it's caught above!
 except NetworkError:
     handle_error()
 
-# With else â€” good:
+# With else -- good:
 try:
     data = fetch_data()
 except NetworkError:
@@ -2944,7 +2944,7 @@ def process_safely(succeed=True):
         print(f"  ERROR: {e}")
         return None
     else:
-        # Runs ONLY on success â€” not caught by above except
+        # Runs ONLY on success -- not caught by above except
         result = sum(data["data"])
         print(f"  Processed: sum = {result}")
         return result
@@ -3080,7 +3080,7 @@ except ConnectionError:
         interviewQuestions: [
           { q: "Why should you always catch specific exceptions?", a: "Catching broad exceptions (bare 'except' or 'except Exception') hides bugs. You might accidentally suppress a ValueError that indicates a logic error, or catch a MemoryError you can't recover from. Catch only the exceptions you know how to handle. If you must use a catch-all, log the exception and re-raise it." },
           { q: "What is the difference between 'raise X from Y' and 'raise X from None'?", a: "'raise X from Y' sets X.__cause__ = Y and displays a chained traceback ('The above exception was the direct cause...'). It's used when translating low-level errors to high-level ones while preserving the original cause. 'raise X from None' explicitly hides the original exception (__suppress_context__ = True), giving a clean traceback without the low-level noise." },
-          { q: "When does the 'else' clause of a try block run?", a: "The else clause runs only if the try block completed without any exception. It's NOT the same as putting code at the end of the try block â€” code in the try block would be caught by the except clauses, but code in the else block would not. Use else for code that should only run on success and shouldn't be considered part of the 'risky' section." }
+          { q: "When does the 'else' clause of a try block run?", a: "The else clause runs only if the try block completed without any exception. It's NOT the same as putting code at the end of the try block -- code in the try block would be caught by the except clauses, but code in the else block would not. Use else for code that should only run on success and shouldn't be considered part of the 'risky' section." }
         ]
       },
 
@@ -3136,7 +3136,7 @@ except ValidationError as e:
     print(e.value)    # 200</code></pre>
 
 <h3>Exception Groups (Python 3.11+)</h3>
-<pre><code># Python 3.11+ â€” collect multiple errors before raising
+<pre><code># Python 3.11+ -- collect multiple errors before raising
 errors = []
 for item in items:
     try:
@@ -3324,16 +3324,16 @@ print(r2.is_ok(), r2.unwrap_or("undefined"))`,
           }
         ],
         interviewQuestions: [
-          { q: "How do you design a custom exception hierarchy?", a: "Start with a base exception class for your application (AppError). Create specific subclasses for different error categories (ValidationError, DatabaseError, NetworkError). Add relevant attributes to exceptions (field name for ValidationError, status code for HTTPError). This lets callers choose how specific their exception handling is â€” catch AppError to catch everything, or NotFoundError for one specific case." },
-          { q: "What information should a custom exception contain?", a: "A good exception should have: a clear message that explains what went wrong and where, relevant context attributes (the value that was invalid, the field name, the resource ID), a chain to the original exception if it was re-raised from another (use 'raise X from Y'). Avoid putting mutable state in exceptions â€” they might be logged or re-raised later." }
+          { q: "How do you design a custom exception hierarchy?", a: "Start with a base exception class for your application (AppError). Create specific subclasses for different error categories (ValidationError, DatabaseError, NetworkError). Add relevant attributes to exceptions (field name for ValidationError, status code for HTTPError). This lets callers choose how specific their exception handling is -- catch AppError to catch everything, or NotFoundError for one specific case." },
+          { q: "What information should a custom exception contain?", a: "A good exception should have: a clear message that explains what went wrong and where, relevant context attributes (the value that was invalid, the field name, the resource ID), a chain to the original exception if it was re-raised from another (use 'raise X from Y'). Avoid putting mutable state in exceptions -- they might be logged or re-raised later." }
         ]
       },
 
       {
-        id: "lesson-10-3", title: "Logging â€” Production-Grade Observability", duration: "30 min",
+        id: "lesson-10-3", title: "Logging -- Production-Grade Observability", duration: "30 min",
         content: `
 <h2>Why Logging > print()</h2>
-<p>Print statements are for scripts. Production applications need structured logging with levels, timestamps, handlers (file, console, cloud), and filtering â€” all of which the <code>logging</code> module provides.</p>
+<p>Print statements are for scripts. Production applications need structured logging with levels, timestamps, handlers (file, console, cloud), and filtering -- all of which the <code>logging</code> module provides.</p>
 
 <h3>Log Levels (in order of severity)</h3>
 <pre><code>import logging
@@ -3365,7 +3365,7 @@ logger.info("Application started")</code></pre>
 root    = logging.getLogger()           # root logger
 parent  = logging.getLogger("myapp")
 child   = logging.getLogger("myapp.db")  # inherits from "myapp"
-# child â†’ parent â†’ root (messages propagate up)</code></pre>
+# child -> parent -> root (messages propagate up)</code></pre>
 
 <h3>Structured Logging with extra</h3>
 <pre><code>logger.info("User logged in", extra={"user_id": 42, "ip": "1.2.3.4"})
@@ -3374,7 +3374,7 @@ child   = logging.getLogger("myapp.db")  # inherits from "myapp"
 # Produces: {"timestamp": "...", "level": "INFO", "user_id": 42, ...}</code></pre>
 
 <div class="callout warn">
-  <span class="callout-icon">âš ï¸</span>
+  <span class="callout-icon">âš </span>
   <div class="callout-body"><strong>Never log sensitive data</strong><p>Do NOT log passwords, tokens, credit card numbers, SSNs, or PII. Log user IDs, not user data. Mask secrets in log messages: <code>"token: ***"</code> not the actual token value.</p></div>
 </div>
 `,
@@ -3552,8 +3552,8 @@ except ZeroDivisionError:
           }
         ],
         interviewQuestions: [
-          { q: "Why use logging.getLogger(__name__) instead of a hardcoded name?", a: "Using __name__ gives each module its own logger named after the module (e.g., 'myapp.db', 'myapp.api'). This lets you configure logging granularly â€” suppress DEBUG from 'myapp.db' while keeping it for 'myapp.api'. It also makes logs traceable to their source without extra effort." },
-          { q: "What is the difference between logging.warning() and logger.warning()?", a: "logging.warning() uses the root logger. logger.warning() uses a specific named logger. The root logger is convenient for scripts; named loggers are better for libraries and production code because they're configurable by the calling application. Libraries should NEVER configure handlers â€” that's the application's responsibility." },
+          { q: "Why use logging.getLogger(__name__) instead of a hardcoded name?", a: "Using __name__ gives each module its own logger named after the module (e.g., 'myapp.db', 'myapp.api'). This lets you configure logging granularly -- suppress DEBUG from 'myapp.db' while keeping it for 'myapp.api'. It also makes logs traceable to their source without extra effort." },
+          { q: "What is the difference between logging.warning() and logger.warning()?", a: "logging.warning() uses the root logger. logger.warning() uses a specific named logger. The root logger is convenient for scripts; named loggers are better for libraries and production code because they're configurable by the calling application. Libraries should NEVER configure handlers -- that's the application's responsibility." },
           { q: "What are the logging levels and when should you use each?", a: "DEBUG: detailed diagnostic info, only in dev (step by step trace). INFO: normal events (server started, user logged in, job completed). WARNING: unexpected but the app can continue (disk space low, deprecated API used). ERROR: something failed but the app keeps running (request failed, DB timeout). CRITICAL: the app may crash or data may be corrupted (OOM, disk full)." }
         ]
       }
