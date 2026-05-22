@@ -1,0 +1,3531 @@
+'use strict';
+
+const COURSE_DATA = {
+  title: "Python Mastery for Job-Ready Engineers",
+  modules: [
+
+  // ══════════════════════════════════════════════════════════════
+  // MODULE 1 — Python Fundamentals & Setup
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 1,
+    title: "Python Fundamentals & Setup",
+    icon: "🐍",
+    color: "#7c6af7",
+    difficulty: "beginner",
+    duration: "2–3 hours",
+    description: "Start your Python journey: understand what Python is, set up your tools, and write your first real programs.",
+    objectives: [
+      "Understand what Python is and why it dominates the job market",
+      "Explain the difference between compiled and interpreted languages",
+      "Set up a professional Python development environment",
+      "Write, run, and debug basic Python programs",
+      "Use variables, print output, accept input, and apply arithmetic"
+    ],
+    lessons: [
+      // ── Lesson 1.1 ──────────────────────────────────────────
+      {
+        id: "1.1",
+        title: "What is Python & Why Learn It?",
+        duration: "20 min",
+        content: `
+<p>Imagine explaining a recipe to someone. In Python you write it almost exactly like you'd speak English. In C++ you first need to declare every variable's type, allocate memory, manage pointers, and write 50 boilerplate lines before the oven is even warm.</p>
+
+<p><strong>Python trades raw execution speed for developer speed</strong> — and for 90% of real-world engineering jobs, that trade is absolutely worth it. Google, Netflix, NASA, Instagram, Spotify, and thousands of startups rely on Python every day.</p>
+
+<h2>A Quick History</h2>
+<p>Python was created by <strong>Guido van Rossum</strong> starting in 1989. The name comes from the British comedy show <em>Monty Python's Flying Circus</em> — not the snake. Guido wanted it to feel fun and approachable.</p>
+<p>We use <strong>Python 3 exclusively</strong> today. Python 2 reached end-of-life in January 2020. If you encounter Python 2 in legacy codebases, don't write new code in it.</p>
+
+<h2>How Python Actually Works</h2>
+<p>People say Python is "interpreted," but that's incomplete. Here is what really happens when you run <code>python script.py</code>:</p>
+<ol>
+  <li><strong>Compilation to bytecode:</strong> CPython compiles your source into platform-independent bytecode — stored in <code>__pycache__/*.pyc</code> files.</li>
+  <li><strong>Interpretation:</strong> The Python Virtual Machine (PVM) reads and executes that bytecode instruction by instruction.</li>
+</ol>
+<p>Correct answer for interviews: <strong>"Python compiles to bytecode first, then the PVM interprets it — so it is both compiled and interpreted."</strong></p>
+
+<div class="callout info">
+  <span class="callout-icon">ℹ️</span>
+  <div class="callout-body">
+    <strong>What is CPython?</strong>
+    <p>CPython is the reference implementation, written in C. It is what you install from python.org. Alternatives: PyPy (JIT compiler, 5–10× faster for loops), Jython (runs on the JVM), MicroPython (microcontrollers).</p>
+  </div>
+</div>
+
+<h2>Python's Philosophy</h2>
+<p>Run <code>import this</code> and you'll see 19 design principles called the Zen of Python. The ones that matter most for your career:</p>
+<ul>
+  <li><em>Readability counts</em> — code is read 10× more than it is written.</li>
+  <li><em>Explicit is better than implicit</em> — do not hide behavior in magic.</li>
+  <li><em>Simple is better than complex</em> — resist the urge to over-engineer.</li>
+  <li><em>There should be one obvious way to do it</em> — reduces decision fatigue on teams.</li>
+</ul>
+
+<div class="callout tip">
+  <span class="callout-icon">💡</span>
+  <div class="callout-body">
+    <strong>Career Tip</strong>
+    <p>Senior engineers value readable code above almost everything else. Python's culture of clean, explicit code will make you a better engineer in any language you learn later.</p>
+  </div>
+</div>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Frequently Asked · Google, Amazon, Infosys, TCS, Wipro</div>
+  <p>"Is Python interpreted or compiled?" — Most candidates say just "interpreted." Stand out by saying: <strong>"Python compiles source code to bytecode, then the Python Virtual Machine interprets that bytecode. So it is both."</strong></p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-1-1-1",
+            title: "The Zen of Python",
+            description: "Run this to see Python's 19 guiding principles. These ideals shape the entire ecosystem.",
+            code: `import this
+
+# The most important ones for daily engineering work:
+# 1. Readability counts
+# 2. Explicit is better than implicit
+# 3. Simple is better than complex
+# 4. Errors should never pass silently`
+          },
+          {
+            id: "ce-1-1-2",
+            title: "Python's Power in Few Lines",
+            description: "What would take 30+ lines in Java takes 5 in Python. This is why companies love Python for prototyping and production alike.",
+            code: `# Count word frequencies — real-world NLP task in 3 lines
+from collections import Counter
+
+text = "the quick brown fox jumps over the lazy dog the fox"
+word_freq = Counter(text.split())
+
+print("Word frequencies:", dict(word_freq))
+print("Top 3 words:", word_freq.most_common(3))
+print("Unique words:", len(word_freq))`
+          },
+          {
+            id: "ce-1-1-3",
+            title: "Python Version Check",
+            description: "Always verify you are on Python 3. Python 2 is dead — never use it for new projects.",
+            code: `import sys
+
+print("Python version:", sys.version)
+print("Version info:", sys.version_info)
+print("Is Python 3?", sys.version_info.major == 3)
+
+# Python 2 vs 3 key differences (for reference):
+# Python 2: print "hello"       → Python 3: print("hello")
+# Python 2: 5 / 2 == 2         → Python 3: 5 / 2 == 2.5
+# Python 2: range() = list      → Python 3: range() = lazy iterator
+# Python 2: strings = bytes     → Python 3: strings = unicode`
+          }
+        ],
+        playground: {
+          title: "🎮 Try It Yourself",
+          description: "Modify this code and press Run. Explore Python's conciseness compared to other languages.",
+          starterCode: `# Welcome to Python! Change values and press Run.
+
+# Python reads almost like English
+skills = ["Python", "Data Analysis", "Web Dev", "Automation", "ML"]
+
+print("Python is used for:")
+for skill in skills:
+    print(f"  ✓ {skill}")
+
+# Powerful one-liners
+numbers = [15, 3, 9, 7, 21, 4, 18, 12]
+print(f"\\nNumbers: {numbers}")
+print(f"Sorted:   {sorted(numbers)}")
+print(f"Average:  {sum(numbers) / len(numbers):.2f}")
+print(f"Max: {max(numbers)}, Min: {min(numbers)}")`
+        },
+        exercises: [
+          {
+            id: "exe-1-1-1",
+            title: "Your Python Introduction",
+            difficulty: "easy",
+            description: "Print a 4-line introduction about yourself using <code>print()</code>. Include: your name, your engineering field, one programming language you know, and your career goal.",
+            starterCode: `# Print your introduction (4 lines)
+# Line 1: Your name
+# Line 2: Your engineering field
+# Line 3: A language you know
+# Line 4: Your career goal
+
+# Your code here:
+`,
+            solution: `print("Name: Alex Kumar")
+print("Field: Computer Science Engineering")
+print("Language: Learning Python right now!")
+print("Goal: Backend Software Engineer at a top tech company")`,
+            solutionExplanation: "print() outputs text to the console. Each call adds a new line by default. Strings can be wrapped in single or double quotes — both work in Python."
+          },
+          {
+            id: "exe-1-1-2",
+            title: "Star Pattern",
+            difficulty: "easy",
+            description: "Print a right-angled triangle of stars with 5 rows. Row 1 has 1 star, row 2 has 2 stars, etc. Use a loop.",
+            starterCode: `# Print this pattern:
+# *
+# **
+# ***
+# ****
+# *****
+
+for row in range(1, 6):
+    # Hint: use the * operator on a string
+    pass  # replace this line
+`,
+            solution: `for row in range(1, 6):
+    print("*" * row)`,
+            solutionExplanation: "The string repetition operator `*` repeats a string. `'*' * 3` gives `'***'`. range(1, 6) generates 1, 2, 3, 4, 5 — exactly the number of stars per row."
+          },
+          {
+            id: "exe-1-1-3",
+            title: "Python Facts Quiz",
+            difficulty: "medium",
+            description: "Store 3 Python facts in variables (strings), then print them numbered. Use f-strings for formatting. Bonus: also print the total character count of all facts combined.",
+            starterCode: `# Store 3 Python facts and print them numbered
+fact1 = "Python was created by Guido van Rossum in 1989"
+fact2 = ""  # Add your second fact
+fact3 = ""  # Add your third fact
+
+facts = [fact1, fact2, fact3]
+
+# Print numbered and find total characters
+`,
+            solution: `fact1 = "Python was created by Guido van Rossum in 1989"
+fact2 = "Python is named after Monty Python, not the snake"
+fact3 = "Python compiles to bytecode before interpretation"
+
+facts = [fact1, fact2, fact3]
+
+for i, fact in enumerate(facts, 1):
+    print(f"{i}. {fact}")
+
+total_chars = sum(len(f) for f in facts)
+print(f"\\nTotal characters across all facts: {total_chars}")`,
+            solutionExplanation: "enumerate(facts, 1) gives (index, value) pairs starting from 1. f-strings (f'...') let you embed expressions directly in strings using {}. sum() with a generator expression efficiently totals the lengths."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "Is Python an interpreted or compiled language?",
+            a: "Python is both. CPython (the standard implementation) first compiles source code to bytecode — a lower-level, platform-independent representation stored in .pyc files. Then the Python Virtual Machine (PVM) interprets that bytecode. So the accurate answer is: 'Python compiles to bytecode and interprets it at runtime.' This is also why subsequent runs are faster — the bytecode is cached."
+          },
+          {
+            q: "What is CPython? How does it differ from Python?",
+            a: "Python is the language specification. CPython is the standard implementation of that specification, written in C. When people say 'Python', they usually mean CPython. Other implementations include PyPy (uses JIT compilation and can be 5–10× faster for CPU-bound loops), Jython (runs on the JVM, good for Java integration), IronPython (runs on .NET), and MicroPython (for microcontrollers). For most jobs you'll use CPython."
+          },
+          {
+            q: "What are the key differences between Python 2 and Python 3?",
+            a: "Key differences: (1) print is a statement in Python 2 but a function in Python 3. (2) Integer division: 5/2 = 2 in Python 2, 2.5 in Python 3. (3) All strings are Unicode in Python 3. (4) range() returns a list in Python 2, a lazy iterator in Python 3. (5) Python 2 reached end-of-life in January 2020 — never use it for new code."
+          }
+        ]
+      },
+
+      // ── Lesson 1.2 ──────────────────────────────────────────
+      {
+        id: "1.2",
+        title: "Setting Up Your Python Environment",
+        duration: "15 min",
+        content: `
+<h2>Installing Python</h2>
+<p>Download Python 3 from <strong>python.org</strong> — always pick the latest stable 3.x release. During installation on Windows, check <strong>"Add Python to PATH"</strong> (critical — easy to miss).</p>
+<p>Verify your installation by opening a terminal and running:</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">python --version   # or python3 --version on Mac/Linux</pre>
+
+<h2>The Python REPL</h2>
+<p>REPL stands for <strong>Read-Eval-Print Loop</strong>. It's an interactive shell where you type one Python expression and see the result instantly. Start it by typing <code>python</code> in your terminal. You'll see <code>>>></code> — that's your prompt.</p>
+<p>The REPL is perfect for quick experiments, testing ideas, and exploring objects. Senior engineers use it constantly to prototype logic before writing it into files.</p>
+
+<div class="callout tip">
+  <span class="callout-icon">💡</span>
+  <div class="callout-body">
+    <strong>Pro Tip: IPython & Jupyter</strong>
+    <p>Install <code>ipython</code> (pip install ipython) for a supercharged REPL with tab completion, history, and magic commands. For data science work, use Jupyter Notebook. But always know the standard REPL too — it's available everywhere.</p>
+  </div>
+</div>
+
+<h2>Recommended IDE: VS Code</h2>
+<p>VS Code is the industry standard for Python development. After installing it, add the <strong>Python extension by Microsoft</strong> (Ctrl+Shift+X, search "Python"). This gives you:</p>
+<ul>
+  <li>IntelliSense (smart autocomplete)</li>
+  <li>Inline error checking</li>
+  <li>Integrated debugger</li>
+  <li>Jupyter notebook support</li>
+  <li>Virtual environment management</li>
+</ul>
+
+<h2>Virtual Environments — Always Use Them</h2>
+<p>A virtual environment is an isolated Python installation for your project. This prevents package conflicts between projects. This is a professional practice — all real-world Python projects use them.</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">python -m venv venv          # create
+source venv/bin/activate      # activate (Mac/Linux)
+venv\\Scripts\\activate         # activate (Windows)
+pip install requests          # install packages INTO this env
+deactivate                    # exit the environment</pre>
+
+<div class="callout warn">
+  <span class="callout-icon">⚠️</span>
+  <div class="callout-body">
+    <strong>Common Mistake</strong>
+    <p>Many beginners install packages globally with <code>pip install</code> without activating a virtual environment first. This causes version conflicts across projects and makes your code hard to share. Always activate a venv first.</p>
+  </div>
+</div>
+
+<h2>pip — Python's Package Manager</h2>
+<p><code>pip</code> is how you install third-party libraries. The Python ecosystem has 500,000+ packages on PyPI (the Python Package Index).</p>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Asked in DevOps & Backend interviews</div>
+  <p>Know the difference between <code>pip install</code>, virtual environments, and <code>requirements.txt</code>. Be able to explain why you'd use a venv. Companies check if you follow professional practices, not just if you can write code.</p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-1-2-1",
+            title: "sys Module — Environment Info",
+            description: "Check your Python setup programmatically. Useful for debugging environment issues.",
+            code: `import sys
+import os
+
+print("Python version:", sys.version)
+print("Python executable:", sys.executable)
+print("Platform:", sys.platform)
+print("Module search paths (first 3):")
+for path in sys.path[:3]:
+    print(f"  {path}")`
+          },
+          {
+            id: "ce-1-2-2",
+            title: "pip — Package Management Commands",
+            description: "These commands run in your terminal, not in Python. Understanding pip is essential for professional development.",
+            code: `# These are TERMINAL commands (not Python code).
+# Run them in your shell after activating your virtual environment.
+
+# Check pip version
+# pip --version
+
+# Install a package
+# pip install requests
+
+# Install specific version
+# pip install requests==2.31.0
+
+# Install from requirements file (standard in all projects)
+# pip install -r requirements.txt
+
+# Save current packages to requirements file
+# pip freeze > requirements.txt
+
+# List installed packages
+# pip list
+
+# Uninstall
+# pip uninstall requests
+
+# In Python, verify an install worked:
+try:
+    import json        # built-in, always available
+    print("json module:", json.__version__ if hasattr(json, '__version__') else "built-in")
+    print("Import successful!")
+except ImportError as e:
+    print(f"Import failed: {e}")`
+          }
+        ],
+        playground: {
+          title: "🎮 Explore Your Environment",
+          description: "Run this to see details about your Python environment. Understanding your environment is the first step to debugging real-world issues.",
+          starterCode: `import sys
+import os
+
+# ── Environment Info ──────────────────────────
+print("=" * 45)
+print("  Python Environment Information")
+print("=" * 45)
+print(f"Version:    {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
+print(f"Platform:   {sys.platform}")
+
+# ── Built-in modules (always available, no install needed) ──
+import math, random, datetime, collections, itertools
+builtins = ["math", "random", "datetime", "collections", "itertools"]
+print(f"\\nBuilt-in modules available: {len(builtins)}")
+for m in builtins:
+    print(f"  ✓ {m}")
+
+# ── Quick math demo ───────────────────────────
+print(f"\\nMath demo:")
+print(f"  pi = {math.pi:.5f}")
+print(f"  e  = {math.e:.5f}")
+print(f"  Random number 1–100: {random.randint(1, 100)}")`
+        },
+        exercises: [
+          {
+            id: "exe-1-2-1",
+            title: "Module Explorer",
+            difficulty: "easy",
+            description: "Import the <code>math</code> module and print: (1) the value of pi to 10 decimal places, (2) the square root of 144, (3) 2 raised to the power 10 using <code>math.pow()</code>.",
+            starterCode: `import math
+
+# Print pi to 10 decimal places
+# Hint: use f"{math.pi:.10f}"
+
+# Print square root of 144
+
+# Print 2^10 using math.pow()
+`,
+            solution: `import math
+
+print(f"Pi to 10 decimal places: {math.pi:.10f}")
+print(f"Square root of 144: {math.sqrt(144)}")
+print(f"2 raised to power 10: {math.pow(2, 10)}")`,
+            solutionExplanation: "The format spec :.10f means 'float with 10 decimal places'. math.sqrt() computes square roots. math.pow(x, y) raises x to the power y (returns a float; use ** operator for integers)."
+          },
+          {
+            id: "exe-1-2-2",
+            title: "Random Number Generator",
+            difficulty: "easy",
+            description: "Use the <code>random</code> module to simulate rolling two six-sided dice 5 times. Print each roll as 'Roll N: die1 + die2 = total'.",
+            starterCode: `import random
+
+# Roll two dice 5 times
+for roll in range(1, 6):
+    die1 = random.randint(1, 6)
+    die2 = # your code here
+    total = # your code here
+    print(f"Roll {roll}: {die1} + {die2} = {total}")
+`,
+            solution: `import random
+
+for roll in range(1, 6):
+    die1 = random.randint(1, 6)
+    die2 = random.randint(1, 6)
+    total = die1 + die2
+    print(f"Roll {roll}: {die1} + {die2} = {total}")`,
+            solutionExplanation: "random.randint(a, b) returns a random integer N such that a <= N <= b (both endpoints inclusive). This is different from random.randrange(a, b) which excludes b."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "What is a Python virtual environment and why should you use one?",
+            a: "A virtual environment is an isolated Python installation with its own packages. You use one so that packages installed for Project A don't conflict with packages for Project B. For example, Project A might need requests==2.28 while Project B needs requests==2.31. Without a venv, installing one overwrites the other. Commands: python -m venv venv to create, then activate it. Every professional Python project should have one."
+          },
+          {
+            q: "What is the difference between pip install and pip install -r requirements.txt?",
+            a: "pip install package installs a single package. pip install -r requirements.txt installs all packages listed in the requirements file at once. The requirements.txt file is generated with pip freeze > requirements.txt and lists all packages with exact versions. This is how you share your project's dependencies so others can reproduce your exact environment."
+          },
+          {
+            q: "What is the REPL and when would you use it?",
+            a: "REPL stands for Read-Eval-Print Loop — an interactive Python shell started with the python command. It immediately executes each line you type and prints the result. Senior engineers use it to quickly test a function's behavior, explore an unfamiliar library's API, experiment with regular expressions, or prototype algorithm logic before writing it into source files. IPython and Jupyter Notebook are enhanced REPLs used in data science."
+          }
+        ]
+      },
+
+      // ── Lesson 1.3 ──────────────────────────────────────────
+      {
+        id: "1.3",
+        title: "Your First Python Programs",
+        duration: "30 min",
+        content: `
+<h2>Variables — Labels, Not Boxes</h2>
+<p>In Python, a variable is a <strong>name that points to an object in memory</strong>. Think of it as a sticky label on a box, not the box itself. You can move the label to a different box at any time.</p>
+
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">age = 25          # 'age' points to the integer object 25
+name = "Alice"    # 'name' points to the string object "Alice"
+age = 26          # 'age' now points to 26 — the old 25 object is unchanged</pre>
+
+<p>Python is <strong>dynamically typed</strong> — you do not declare types. Python infers the type at runtime. The same variable name can hold different types at different times (though that's usually bad style).</p>
+
+<h2>Python's Naming Rules</h2>
+<ul>
+  <li>Use <code>snake_case</code> for variables and functions: <code>user_name</code>, <code>total_price</code></li>
+  <li>Use <code>UPPER_SNAKE_CASE</code> for constants: <code>MAX_RETRIES = 3</code></li>
+  <li>Names can contain letters, digits, and underscores — but cannot start with a digit</li>
+  <li>Avoid single-letter names (except loop counters <code>i</code>, <code>j</code>, or math variables)</li>
+</ul>
+
+<h2>print() — Your Most Used Function</h2>
+<p><code>print()</code> outputs to stdout. It accepts multiple arguments separated by commas, with a space between them by default.</p>
+
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">print("Hello", "World")         # Hello World
+print("Score:", 95)             # Score: 95
+print("a", "b", sep="-")       # a-b
+print("Line 1", end=" | ")     # Line 1 | (no newline)
+print("Line 2")                 # Line 2</pre>
+
+<h2>f-Strings — The Modern Way to Format</h2>
+<p>f-strings (formatted string literals) are the cleanest, fastest way to build strings with values embedded. Use them exclusively — avoid old-style <code>%</code> formatting.</p>
+
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">name = "Alice"
+score = 98.5
+print(f"Name: {name}, Score: {score:.1f}%")  # Name: Alice, Score: 98.5%
+print(f"2 + 2 = {2 + 2}")                    # 2 + 2 = 4
+print(f"Name upper: {name.upper()}")</pre>
+
+<h2>Arithmetic Operators</h2>
+<table style="width:100%;font-size:.85rem;border-collapse:collapse;margin:.75rem 0">
+  <tr style="border-bottom:1px solid var(--border);color:var(--text-muted)"><th style="text-align:left;padding:.4rem .6rem">Operator</th><th style="text-align:left;padding:.4rem .6rem">Operation</th><th style="text-align:left;padding:.4rem .6rem">Example</th><th style="text-align:left;padding:.4rem .6rem">Result</th></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>+</code></td><td style="padding:.4rem .6rem">Addition</td><td style="padding:.4rem .6rem"><code>7 + 3</code></td><td style="padding:.4rem .6rem">10</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>-</code></td><td style="padding:.4rem .6rem">Subtraction</td><td style="padding:.4rem .6rem"><code>7 - 3</code></td><td style="padding:.4rem .6rem">4</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>*</code></td><td style="padding:.4rem .6rem">Multiplication</td><td style="padding:.4rem .6rem"><code>7 * 3</code></td><td style="padding:.4rem .6rem">21</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>/</code></td><td style="padding:.4rem .6rem">True division</td><td style="padding:.4rem .6rem"><code>7 / 3</code></td><td style="padding:.4rem .6rem">2.333…</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>//</code></td><td style="padding:.4rem .6rem">Floor division</td><td style="padding:.4rem .6rem"><code>7 // 3</code></td><td style="padding:.4rem .6rem">2</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>%</code></td><td style="padding:.4rem .6rem">Modulo (remainder)</td><td style="padding:.4rem .6rem"><code>7 % 3</code></td><td style="padding:.4rem .6rem">1</td></tr>
+  <tr><td style="padding:.4rem .6rem"><code>**</code></td><td style="padding:.4rem .6rem">Exponentiation</td><td style="padding:.4rem .6rem"><code>7 ** 3</code></td><td style="padding:.4rem .6rem">343</td></tr>
+</table>
+
+<div class="callout warn">
+  <span class="callout-icon">⚠️</span>
+  <div class="callout-body">
+    <strong>Python 2 Trap (still asked in interviews)</strong>
+    <p>In Python 2, <code>5 / 2</code> returned <code>2</code> (integer division). In Python 3, it returns <code>2.5</code>. Use <code>//</code> when you explicitly want integer division. This trips up engineers coming from Python 2 or other languages.</p>
+  </div>
+</div>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Common in coding screens</div>
+  <p>The modulo operator <code>%</code> is used constantly in algorithms: checking even/odd (<code>n % 2 == 0</code>), cycling through values (<code>i % len(arr)</code>), and digit extraction (<code>n % 10</code> gives the last digit). Know it well.</p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-1-3-1",
+            title: "Variables & Types",
+            description: "Python infers types automatically. Use type() to check, and notice how natural the syntax is.",
+            code: `# Variables — no type declaration needed
+name = "Alice"         # str
+age = 23               # int
+gpa = 8.7              # float
+is_placed = True       # bool
+hometown = None        # NoneType (absence of value)
+
+# Check types at runtime
+print(type(name))      # <class 'str'>
+print(type(age))       # <class 'int'>
+print(type(gpa))       # <class 'float'>
+print(type(is_placed)) # <class 'bool'>
+print(type(hometown))  # <class 'NoneType'>
+
+# Everything in Python is an object
+print(isinstance(age, int))   # True
+print(isinstance(gpa, float)) # True
+
+# Multiple assignment (very Pythonic)
+x = y = z = 0
+a, b, c = 10, 20, 30
+print(f"a={a}, b={b}, c={c}")`
+          },
+          {
+            id: "ce-1-3-2",
+            title: "f-Strings & String Operations",
+            description: "f-strings are the modern standard for string formatting in Python 3.6+. Master them — they appear everywhere.",
+            code: `name = "Alice"
+score = 92.5
+rank = 3
+
+# Basic f-string
+print(f"Hello, {name}!")
+
+# Expressions inside f-strings
+print(f"Score: {score:.1f}%")        # 1 decimal place
+print(f"Rank: #{rank}")
+print(f"Pass: {score >= 60}")         # expression evaluated
+print(f"Name length: {len(name)}")   # call functions
+print(f"Upper: {name.upper()}")
+
+# Padding / alignment
+print(f"{'Name':<10} {'Score':>8}")  # left/right align
+print(f"{'Alice':<10} {92.5:>8.1f}")
+print(f"{'Bob':<10} {87.3:>8.1f}")
+
+# Number formatting
+big_num = 1_000_000   # underscores in numbers (readability)
+print(f"Population: {big_num:,}")    # 1,000,000
+print(f"Pi: {3.14159265:.4f}")`
+          },
+          {
+            id: "ce-1-3-3",
+            title: "Arithmetic & Operators",
+            description: "All arithmetic operators in action. Pay special attention to // and % — they are the most commonly used in algorithm problems.",
+            code: `# All arithmetic operators
+a, b = 17, 5
+
+print(f"{a} + {b} = {a + b}")   # 22  addition
+print(f"{a} - {b} = {a - b}")   # 12  subtraction
+print(f"{a} * {b} = {a * b}")   # 85  multiplication
+print(f"{a} / {b} = {a / b}")   # 3.4 true division (always float)
+print(f"{a} // {b} = {a // b}") # 3   floor division (integer result)
+print(f"{a} % {b} = {a % b}")   # 2   modulo (remainder)
+print(f"{a} ** {b} = {a ** b}") # 1419857 exponentiation
+
+# Common patterns in interview problems
+number = 12345
+print(f"\\nLast digit of {number}: {number % 10}")     # 5
+print(f"Is {number} even? {number % 2 == 0}")          # False
+print(f"Integer part of 7/2: {7 // 2}")               # 3
+
+# Augmented assignment
+score = 100
+score += 10   # same as: score = score + 10
+score -= 5
+score *= 2
+print(f"\\nFinal score: {score}")  # 210`
+          }
+        ],
+        playground: {
+          title: "🎮 Build a Mini Calculator",
+          description: "Modify this to compute any formula. Practice using variables, operators, and f-strings together.",
+          starterCode: `# Mini Calculator — change the values and formulas
+
+# ── Circle calculations ────────────────────────────
+import math
+
+radius = 7
+area = math.pi * radius ** 2
+circumference = 2 * math.pi * radius
+
+print("Circle Calculator")
+print(f"  Radius:        {radius} cm")
+print(f"  Area:          {area:.2f} cm²")
+print(f"  Circumference: {circumference:.2f} cm")
+
+# ── Simple interest ────────────────────────────────
+principal = 10000   # rupees
+rate = 8.5          # % per year
+time = 3            # years
+
+interest = (principal * rate * time) / 100
+total = principal + interest
+
+print(f"\\nSimple Interest Calculator")
+print(f"  Principal: ₹{principal:,}")
+print(f"  Rate:      {rate}% per year")
+print(f"  Time:      {time} years")
+print(f"  Interest:  ₹{interest:,.2f}")
+print(f"  Total:     ₹{total:,.2f}")`
+        },
+        exercises: [
+          {
+            id: "exe-1-3-1",
+            title: "BMI Calculator",
+            difficulty: "easy",
+            description: "Calculate the Body Mass Index (BMI). Formula: <code>BMI = weight_kg / (height_m ** 2)</code>. Print the result to 2 decimal places and print the category: Underweight (< 18.5), Normal (18.5–24.9), Overweight (25–29.9), Obese (≥ 30).",
+            starterCode: `weight_kg = 70
+height_m = 1.75
+
+# Calculate BMI
+bmi = # your formula here
+
+print(f"BMI: {bmi:.2f}")
+
+# Print category
+if bmi < 18.5:
+    print("Category: Underweight")
+# Add elif/else for other categories
+`,
+            solution: `weight_kg = 70
+height_m = 1.75
+
+bmi = weight_kg / (height_m ** 2)
+print(f"BMI: {bmi:.2f}")
+
+if bmi < 18.5:
+    print("Category: Underweight")
+elif bmi < 25:
+    print("Category: Normal weight")
+elif bmi < 30:
+    print("Category: Overweight")
+else:
+    print("Category: Obese")`,
+            solutionExplanation: "BMI = weight / height². Using ** 2 for squaring is idiomatic Python. elif chains let you test multiple conditions in order — Python stops at the first True condition."
+          },
+          {
+            id: "exe-1-3-2",
+            title: "Time Converter",
+            difficulty: "easy",
+            description: "Given a total number of seconds (e.g., 3661), print it as hours, minutes, and seconds. Use floor division <code>//</code> and modulo <code>%</code>.",
+            starterCode: `total_seconds = 3661
+
+# Hint: 1 hour = 3600 seconds, 1 minute = 60 seconds
+hours = total_seconds // 3600
+remaining = # seconds after removing hours
+minutes = # your code
+seconds = # your code
+
+print(f"{total_seconds} seconds = {hours}h {minutes}m {seconds}s")
+`,
+            solution: `total_seconds = 3661
+
+hours = total_seconds // 3600
+remaining = total_seconds % 3600
+minutes = remaining // 60
+seconds = remaining % 60
+
+print(f"{total_seconds} seconds = {hours}h {minutes}m {seconds}s")`,
+            solutionExplanation: "This is a classic // and % pattern. total // 3600 gives whole hours. total % 3600 gives remaining seconds after removing hours. Apply the same pattern to get minutes and seconds from the remainder."
+          },
+          {
+            id: "exe-1-3-3",
+            title: "Grade Report Generator",
+            difficulty: "medium",
+            description: "Given marks in 5 subjects, compute: total, average, percentage, and grade (A+ ≥ 90, A ≥ 80, B ≥ 70, C ≥ 60, F < 60). Print a formatted report.",
+            starterCode: `math_marks = 88
+physics_marks = 76
+chemistry_marks = 92
+english_marks = 84
+cs_marks = 95
+
+# Calculate totals
+total = # sum all 5 subjects
+max_marks = 500
+average = # total / 5
+percentage = # (total / max_marks) * 100
+
+# Determine grade
+if percentage >= 90:
+    grade = "A+"
+# Add more elif for A, B, C, F
+
+print("=" * 35)
+print("        GRADE REPORT")
+print("=" * 35)
+# Print formatted report
+`,
+            solution: `math_marks = 88
+physics_marks = 76
+chemistry_marks = 92
+english_marks = 84
+cs_marks = 95
+
+total = math_marks + physics_marks + chemistry_marks + english_marks + cs_marks
+max_marks = 500
+average = total / 5
+percentage = (total / max_marks) * 100
+
+if percentage >= 90:
+    grade = "A+"
+elif percentage >= 80:
+    grade = "A"
+elif percentage >= 70:
+    grade = "B"
+elif percentage >= 60:
+    grade = "C"
+else:
+    grade = "F"
+
+print("=" * 35)
+print("        GRADE REPORT")
+print("=" * 35)
+print(f"Math:       {math_marks}/100")
+print(f"Physics:    {physics_marks}/100")
+print(f"Chemistry:  {chemistry_marks}/100")
+print(f"English:    {english_marks}/100")
+print(f"CS:         {cs_marks}/100")
+print("-" * 35)
+print(f"Total:      {total}/{max_marks}")
+print(f"Average:    {average:.1f}")
+print(f"Percentage: {percentage:.1f}%")
+print(f"Grade:      {grade}")
+print("=" * 35)`,
+            solutionExplanation: "This exercise combines arithmetic, conditionals, and f-string formatting. The '*' operator on strings repeats them (useful for dividers). Percentage calculation and grade determination are common patterns in real applications."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "What is the difference between / and // in Python?",
+            a: "/ is true division — it always returns a float (e.g., 7/2 = 3.5, even 4/2 = 2.0). // is floor division — it returns the largest integer less than or equal to the result (e.g., 7//2 = 3, -7//2 = -4 not -3 because floor rounds toward negative infinity). This is important: in Python 2, / performed integer division for integers, which caused many bugs. Python 3 fixed this."
+          },
+          {
+            q: "What is dynamic typing in Python?",
+            a: "Dynamic typing means types are checked at runtime, not at compile time. You don't declare variable types — Python infers them from the assigned value. The same variable name can hold different types at different times (though this is usually bad practice). This contrasts with statically-typed languages like Java or C++ where you must declare int x = 5. Python 3.5+ added optional type hints (def greet(name: str) -> str:) which are checked by tools like mypy but ignored at runtime."
+          },
+          {
+            q: "What are f-strings and why are they preferred over other formatting methods?",
+            a: "f-strings (formatted string literals, introduced in Python 3.6) let you embed expressions directly in strings: f'Hello {name}'. They are preferred because: (1) most readable — expressions right where they appear; (2) fastest — benchmarks show they're faster than .format() and % formatting; (3) support arbitrary expressions including function calls and arithmetic. Avoid old-style % formatting (printf-style from Python 2) and .format() in new code."
+          }
+        ]
+      }
+    ]
+  },
+
+  // ══════════════════════════════════════════════════════════════
+  // MODULE 2 — Data Types & Variables
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 2,
+    title: "Data Types & Variables",
+    icon: "🧬",
+    color: "#00c48c",
+    difficulty: "beginner",
+    duration: "3–4 hours",
+    description: "Deep-dive into Python's type system, memory model, strings, numbers, and the subtle internals that trip up engineers in interviews.",
+    objectives: [
+      "Identify and use all of Python's built-in types",
+      "Understand how Python stores variables in memory (id, references)",
+      "Explain the difference between is and == with confidence",
+      "Master string manipulation, slicing, and formatting",
+      "Understand integer caching, string interning, and mutability"
+    ],
+    lessons: [
+      // ── Lesson 2.1 ──────────────────────────────────────────
+      {
+        id: "2.1",
+        title: "Python's Type System — Everything is an Object",
+        duration: "20 min",
+        content: `
+<h2>Everything in Python is an Object</h2>
+<p>In Python, <strong>every value is an object</strong> — integers, strings, functions, classes, modules, even <code>None</code>. Every object has three things: an <strong>identity</strong> (memory address), a <strong>type</strong>, and a <strong>value</strong>.</p>
+<p>This is different from C/Java where primitive types like <code>int</code> and <code>char</code> are not objects. In Python, even the number <code>5</code> is an object with methods.</p>
+
+<h2>Python's Built-in Types</h2>
+<table style="width:100%;font-size:.85rem;border-collapse:collapse;margin:.75rem 0">
+  <tr style="border-bottom:1px solid var(--border);color:var(--text-muted)"><th style="text-align:left;padding:.4rem .6rem">Type</th><th style="text-align:left;padding:.4rem .6rem">Example</th><th style="text-align:left;padding:.4rem .6rem">Mutable?</th><th style="text-align:left;padding:.4rem .6rem">Notes</th></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>int</code></td><td style="padding:.4rem .6rem"><code>42, -7, 0</code></td><td style="padding:.4rem .6rem">No</td><td style="padding:.4rem .6rem">Arbitrary precision</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>float</code></td><td style="padding:.4rem .6rem"><code>3.14, -0.5</code></td><td style="padding:.4rem .6rem">No</td><td style="padding:.4rem .6rem">IEEE 754 double</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>bool</code></td><td style="padding:.4rem .6rem"><code>True, False</code></td><td style="padding:.4rem .6rem">No</td><td style="padding:.4rem .6rem">Subclass of int</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>str</code></td><td style="padding:.4rem .6rem"><code>"hello"</code></td><td style="padding:.4rem .6rem">No</td><td style="padding:.4rem .6rem">Unicode by default</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>bytes</code></td><td style="padding:.4rem .6rem"><code>b"hello"</code></td><td style="padding:.4rem .6rem">No</td><td style="padding:.4rem .6rem">Raw byte sequences</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>list</code></td><td style="padding:.4rem .6rem"><code>[1, 2, 3]</code></td><td style="padding:.4rem .6rem"><strong>Yes</strong></td><td style="padding:.4rem .6rem">Ordered, flexible</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>tuple</code></td><td style="padding:.4rem .6rem"><code>(1, 2, 3)</code></td><td style="padding:.4rem .6rem">No</td><td style="padding:.4rem .6rem">Ordered, immutable</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>dict</code></td><td style="padding:.4rem .6rem"><code>{"a": 1}</code></td><td style="padding:.4rem .6rem"><strong>Yes</strong></td><td style="padding:.4rem .6rem">Key-value, ordered (3.7+)</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>set</code></td><td style="padding:.4rem .6rem"><code>{1, 2, 3}</code></td><td style="padding:.4rem .6rem"><strong>Yes</strong></td><td style="padding:.4rem .6rem">Unordered, unique</td></tr>
+  <tr><td style="padding:.4rem .6rem"><code>NoneType</code></td><td style="padding:.4rem .6rem"><code>None</code></td><td style="padding:.4rem .6rem">No</td><td style="padding:.4rem .6rem">Absence of value</td></tr>
+</table>
+
+<h2>Mutable vs Immutable</h2>
+<p>This is one of the most important concepts in Python and is asked in nearly every technical interview.</p>
+<ul>
+  <li><strong>Immutable</strong>: once created, the object's value cannot change. If you "change" it, Python creates a new object. Examples: int, float, str, tuple, bool, None.</li>
+  <li><strong>Mutable</strong>: the object's contents can be changed in-place. Multiple variables can reference the same object and both see changes. Examples: list, dict, set.</li>
+</ul>
+
+<div class="callout error">
+  <span class="callout-icon">🚨</span>
+  <div class="callout-body">
+    <strong>Classic Bug: Mutable Default Argument</strong>
+    <p>Never use a mutable object (list, dict) as a default argument in a function. It is shared across all calls! We'll cover this deeply in the Functions module.</p>
+  </div>
+</div>
+
+<h2>type() vs isinstance()</h2>
+<p><code>type(x)</code> returns the exact type. <code>isinstance(x, T)</code> returns True if x is T or a subclass of T. Prefer <code>isinstance()</code> in production code — it works correctly with inheritance.</p>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Asked at Microsoft, Flipkart, Paytm</div>
+  <p>"What is the difference between mutable and immutable types in Python?" This question tests whether you understand Python's memory model. Key answer: immutables can be used as dictionary keys and set members; mutables cannot (they aren't hashable). That's why <code>{[1,2]: "value"}</code> raises a TypeError.</p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-2-1-1",
+            title: "Every Value is an Object",
+            description: "In Python, even primitive-looking values like 5 and True are full objects with identities, types, and methods.",
+            code: `# Every value is an object with identity, type, and value
+x = 42
+print(f"Value:    {x}")
+print(f"Type:     {type(x)}")
+print(f"Identity: {id(x)}")   # memory address
+
+# Even integers have methods
+print(f"Bit length of 42: {x.bit_length()}")  # 6
+print(f"As bytes: {x.to_bytes(2, 'big')}")
+
+# bool is a subclass of int — surprising fact!
+print(f"\\nTrue + True = {True + True}")   # 2
+print(f"True * 5 = {True * 5}")            # 5
+print(f"False + 1 = {False + 1}")          # 1
+print(f"isinstance(True, int) = {isinstance(True, int)}")  # True
+
+# None is its own type
+print(f"\\ntype(None) = {type(None)}")
+print(f"None == False: {None == False}")   # False
+print(f"None == 0: {None == 0}")           # False
+print(f"None is None: {None is None}")     # True (always use 'is' for None)`
+          },
+          {
+            id: "ce-2-1-2",
+            title: "Mutable vs Immutable Demonstrated",
+            description: "See the real difference between mutable and immutable types — critical for understanding Python bugs.",
+            code: `# IMMUTABLE: str — cannot change in place
+s = "hello"
+print(f"id(s) before: {id(s)}")
+s = s + " world"   # creates a NEW string object
+print(f"id(s) after:  {id(s)}")   # different id!
+print(f"s = {s}")
+
+# MUTABLE: list — changes in place
+a = [1, 2, 3]
+b = a              # b points to the SAME list
+print(f"\\nid(a): {id(a)}, id(b): {id(b)}")  # same!
+b.append(4)        # modifying through b...
+print(f"a = {a}")  # ...affects a too! [1, 2, 3, 4]
+
+# To make an independent copy:
+c = a.copy()       # shallow copy
+c.append(5)
+print(f"a = {a}")  # unchanged
+print(f"c = {c}")  # [1, 2, 3, 4, 5]
+
+# type() vs isinstance() — always prefer isinstance
+print(f"\\ntype(True) == int: {type(True) == int}")         # False
+print(f"isinstance(True, int): {isinstance(True, int)}")   # True`
+          }
+        ],
+        playground: {
+          title: "🎮 Explore Python's Type System",
+          description: "Experiment with types, mutability, and the id() function.",
+          starterCode: `# Explore types and mutability
+
+# Check types of various values
+values = [42, 3.14, "hello", True, None, [1,2,3], (1,2), {"a":1}, {1,2}]
+
+print(f"{'Value':<15} {'Type':<20} {'Mutable'}")
+print("-" * 50)
+mutable_types = (list, dict, set)
+for v in values:
+    is_mutable = isinstance(v, mutable_types)
+    print(f"{str(v):<15} {type(v).__name__:<20} {'Yes' if is_mutable else 'No'}")`
+        },
+        exercises: [
+          {
+            id: "exe-2-1-1",
+            title: "Type Detective",
+            difficulty: "easy",
+            description: "Write a function <code>describe_value(v)</code> that prints the value, its type name, and whether it is mutable. Test it with: 42, 3.14, 'hello', True, [1,2], (1,2), {'a':1}, {1,2}, None.",
+            starterCode: `def describe_value(v):
+    mutable_types = (list, dict, set)
+    is_mutable = # your code
+    type_name = # your code — just the name, not <class 'x'>
+    print(f"Value: {str(v):<12} Type: {type_name:<10} Mutable: {is_mutable}")
+
+# Test it:
+test_values = [42, 3.14, "hello", True, [1, 2], (1, 2), {"a": 1}, {1, 2}, None]
+for v in test_values:
+    describe_value(v)
+`,
+            solution: `def describe_value(v):
+    mutable_types = (list, dict, set)
+    is_mutable = isinstance(v, mutable_types)
+    type_name = type(v).__name__
+    print(f"Value: {str(v):<12} Type: {type_name:<10} Mutable: {is_mutable}")
+
+test_values = [42, 3.14, "hello", True, [1, 2], (1, 2), {"a": 1}, {1, 2}, None]
+for v in test_values:
+    describe_value(v)`,
+            solutionExplanation: "type(v).__name__ gives just the class name as a string. isinstance(v, (list, dict, set)) checks if v is any of those types. The :<12 and :<10 in f-strings are column widths for alignment."
+          },
+          {
+            id: "exe-2-1-2",
+            title: "Mutable Alias Bug",
+            difficulty: "medium",
+            description: "This code has a bug caused by mutable aliasing. Identify what the output will be and fix it so that modifying <code>team_b</code> does not affect <code>team_a</code>.",
+            starterCode: `team_a = ["Alice", "Bob", "Charlie"]
+team_b = team_a   # is this a copy or alias?
+
+team_b.append("Dave")
+team_b[0] = "Alex"
+
+# What will these print? Try to predict, then run.
+print(f"team_a: {team_a}")
+print(f"team_b: {team_b}")
+
+# Fix: make team_b a true independent copy
+# team_b = ???
+`,
+            solution: `team_a = ["Alice", "Bob", "Charlie"]
+# Bug: team_b = team_a creates an alias, not a copy
+# Fix: use .copy() or list() or slicing [:]
+team_b = team_a.copy()
+
+team_b.append("Dave")
+team_b[0] = "Alex"
+
+print(f"team_a: {team_a}")   # ["Alice", "Bob", "Charlie"] — unchanged
+print(f"team_b: {team_b}")   # ["Alex", "Bob", "Charlie", "Dave"]`,
+            solutionExplanation: "When you write b = a for a list, both names point to the same object. Modifying through b changes what a sees. Fix: team_a.copy() creates a new list with the same elements. For nested lists, you need copy.deepcopy() to avoid aliasing nested mutable objects."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "What does 'everything in Python is an object' mean?",
+            a: "Every value in Python — including integers, strings, functions, classes, and None — is an instance of some class and has an identity (id()), type (type()), and value. This means even basic types like int have methods (e.g., int.bit_length()), you can pass any value to a function, store anything in a list, and assign anything to a variable. This contrasts with C/Java where primitive types like int are not objects and have no methods."
+          },
+          {
+            q: "Why can't you use a list as a dictionary key?",
+            a: "Dictionary keys must be hashable. An object is hashable if it has a __hash__ method that returns a consistent integer throughout its lifetime. Lists are mutable — their contents can change after creation. If a list were used as a dict key and then modified, the hash would change, making the key unfindable. Immutable types (int, str, tuple, frozenset) are hashable. Mutable types (list, dict, set) are not. TypeError: unhashable type: 'list'."
+          },
+          {
+            q: "What is the difference between type() and isinstance()?",
+            a: "type(x) returns the exact class of x — it does not consider inheritance. isinstance(x, T) returns True if x is an instance of T or any subclass of T. Example: isinstance(True, int) is True because bool is a subclass of int, but type(True) == int is False because type(True) is bool. Always prefer isinstance() in production code because it correctly handles inheritance hierarchies."
+          }
+        ]
+      },
+
+      // ── Lesson 2.2 ──────────────────────────────────────────
+      {
+        id: "2.2",
+        title: "Variables & Python's Memory Model",
+        duration: "25 min",
+        content: `
+<h2>Variables are Labels, Not Boxes</h2>
+<p>The most important mental model shift when learning Python: <strong>a variable is a name that refers to an object — it is not a container that holds a value.</strong></p>
+<p>Think of it like this: the object (e.g., the integer 42) lives in memory. A variable is just a sticky label attached to it. Multiple labels can point to the same object. Removing a label does not destroy the object — it just loses one reference.</p>
+
+<h2>id() — Memory Address</h2>
+<p><code>id(obj)</code> returns the memory address of an object (in CPython). Two variables with the same id point to the exact same object in memory.</p>
+
+<h2>is vs == — The Critical Distinction</h2>
+<p>This is one of the most commonly asked Python interview questions:</p>
+<ul>
+  <li><code>==</code> compares <strong>values</strong> (calls <code>__eq__</code>)</li>
+  <li><code>is</code> compares <strong>identities</strong> — are these the exact same object? (compares id())</li>
+</ul>
+<p>Always use <code>is</code> for: <code>None</code>, <code>True</code>, <code>False</code>. Always use <code>==</code> for value comparison.</p>
+
+<div class="callout error">
+  <span class="callout-icon">🚨</span>
+  <div class="callout-body">
+    <strong>Common Bug</strong>
+    <p>Never write <code>if x == None:</code>. The correct idiom is <code>if x is None:</code>. A custom class could override <code>__eq__</code> to return True when compared to None, which is dangerous. <code>is None</code> cannot be fooled.</p>
+  </div>
+</div>
+
+<h2>Integer Caching (-5 to 256)</h2>
+<p>CPython caches small integers from <strong>-5 to 256</strong>. For these values, Python reuses the same object — so <code>a is b</code> will be True even if assigned independently. This is a CPython implementation detail, not a language guarantee.</p>
+<p>For integers outside this range (like 1000), two separately assigned variables will have different ids, so <code>a is b</code> returns False even if they hold the same value.</p>
+
+<div class="callout warn">
+  <span class="callout-icon">⚠️</span>
+  <div class="callout-body">
+    <strong>Don't rely on integer caching in production code</strong>
+    <p>The cache range is a CPython implementation detail. Other Python implementations may cache different ranges. Always use <code>==</code> for value comparison, never <code>is</code> for integers.</p>
+  </div>
+</div>
+
+<h2>Reference Counting & Garbage Collection</h2>
+<p>CPython uses <strong>reference counting</strong> to manage memory. Every object tracks how many names (references) point to it. When the count reaches zero, the memory is reclaimed immediately. Python also has a cyclic garbage collector to handle circular references (A → B → A).</p>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Very commonly asked · Amazon, Google, FAANG interviews</div>
+  <p>"What is the difference between <code>is</code> and <code>==</code>?" is asked in almost every Python interview. Give the complete answer: == compares values, is compares object identities. Mention the integer caching fact as a bonus — it shows you understand CPython internals.</p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-2-2-1",
+            title: "is vs == and id()",
+            description: "The most important Python memory concept. Study this example carefully.",
+            code: `# == compares VALUES, 'is' compares IDENTITIES
+a = [1, 2, 3]
+b = [1, 2, 3]   # same values, different objects
+c = a           # c points to the SAME object as a
+
+print(f"a == b:  {a == b}")   # True  — same values
+print(f"a is b:  {a is b}")   # False — different objects
+print(f"a is c:  {a is c}")   # True  — same object
+print(f"id(a): {id(a)}")
+print(f"id(b): {id(b)}")   # different
+print(f"id(c): {id(c)}")   # same as a
+
+# Always use 'is' for None, True, False
+x = None
+print(f"\\nx is None: {x is None}")      # correct idiom
+print(f"x == None: {x == None}")        # works but bad style
+
+# Strings
+s1 = "hello"
+s2 = "hello"
+print(f"\\ns1 == s2: {s1 == s2}")   # True
+print(f"s1 is s2: {s1 is s2}")    # True (string interning — see Lesson 2.3)`
+          },
+          {
+            id: "ce-2-2-2",
+            title: "Integer Caching — CPython's Surprising Behavior",
+            description: "CPython caches integers from -5 to 256. Outside this range, separately assigned integers are different objects.",
+            code: `# Small integers are cached (-5 to 256)
+a = 100
+b = 100
+print(f"a = 100, b = 100")
+print(f"a is b: {a is b}")   # True — same cached object
+print(f"id(a): {id(a)}, id(b): {id(b)}")  # same id
+
+# Large integers are NOT cached
+x = 1000
+y = 1000
+print(f"\\nx = 1000, y = 1000")
+print(f"x is y: {x is y}")   # False — different objects in most cases
+print(f"x == y: {x == y}")   # True — same value
+print(f"id(x): {id(x)}, id(y): {id(y)}")  # different ids
+
+# Edge of the cache
+n256 = 256
+m256 = 256
+print(f"\\n256 is 256: {n256 is m256}")   # True (at the edge)
+
+# Key takeaway: NEVER use 'is' to compare integers
+# Always use == for value comparison`
+          }
+        ],
+        playground: {
+          title: "🎮 Explore Memory & References",
+          description: "Use id() and is to explore Python's memory model. Try changing values and observe the behavior.",
+          starterCode: `# Explore variable references and identity
+
+# Multiple names, one object
+original = [10, 20, 30]
+alias = original
+copy = original.copy()
+
+print("Before modification:")
+print(f"  original: {original}  id: {id(original)}")
+print(f"  alias:    {alias}     id: {id(alias)}")
+print(f"  copy:     {copy}      id: {id(copy)}")
+
+alias.append(40)
+
+print("\\nAfter alias.append(40):")
+print(f"  original: {original}")  # also changed!
+print(f"  alias:    {alias}")
+print(f"  copy:     {copy}")      # unchanged
+
+# Try: change 'alias = original' to 'alias = original.copy()'
+# and see what happens`
+        },
+        exercises: [
+          {
+            id: "exe-2-2-1",
+            title: "Predict the Output",
+            difficulty: "medium",
+            description: "Before running, predict the output of each print statement. Then run to verify. This tests your understanding of Python's reference model.",
+            starterCode: `# Predict what each print outputs — then run to check
+
+a = 5
+b = a
+b = 10
+print(f"1. a = {a}")   # predict: ?
+
+x = [1, 2, 3]
+y = x
+y.append(4)
+print(f"2. x = {x}")   # predict: ?
+
+p = [1, 2, 3]
+q = p[:]       # slice copy
+q.append(4)
+print(f"3. p = {p}")   # predict: ?
+
+# Swap values (Pythonic way)
+m, n = 10, 20
+m, n = n, m
+print(f"4. m={m}, n={n}")  # predict: ?
+`,
+            solution: `a = 5
+b = a
+b = 10
+print(f"1. a = {a}")   # a = 5  (ints are immutable; b = 10 creates new int object)
+
+x = [1, 2, 3]
+y = x
+y.append(4)
+print(f"2. x = {x}")   # x = [1, 2, 3, 4]  (y is alias for x, mutable)
+
+p = [1, 2, 3]
+q = p[:]       # slice creates a new list
+q.append(4)
+print(f"3. p = {p}")   # p = [1, 2, 3]  (q is a copy, p unchanged)
+
+m, n = 10, 20
+m, n = n, m   # tuple packing/unpacking — no temp variable needed
+print(f"4. m={m}, n={n}")  # m=20, n=10`,
+            solutionExplanation: "Key insights: (1) Reassigning b to a new int doesn't affect a. (2) y = x creates an alias; mutation through y affects x. (3) p[:] creates an independent copy via slicing. (4) Python's tuple swap m, n = n, m is elegant and idiomatic — no temp variable needed."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "What is the difference between is and == in Python?",
+            a: "== compares the values of two objects by calling __eq__(). is compares object identities — it checks whether both sides point to the same object in memory (same id()). Use == for value comparison. Use is only for singletons: None, True, False. Example: a = [1,2,3]; b = [1,2,3] → a == b is True but a is b is False. a = b → a is b is True because they reference the same list."
+          },
+          {
+            q: "What is Python's integer caching and why does it exist?",
+            a: "CPython caches small integer objects from -5 to 256. These values are frequently used, so pre-allocating them avoids repeatedly creating and destroying objects, which improves performance. Because of this, for small integers, independently created variables with the same value will pass an identity check (is). For larger integers (outside -5 to 256), new objects are created each time. Important: this is a CPython implementation detail — do not write code that depends on it. Always use == for integer comparison."
+          },
+          {
+            q: "How does Python's memory management work?",
+            a: "CPython uses reference counting as its primary memory management strategy. Each object maintains a count of how many references point to it. When an assignment is made, the count increases; when a variable goes out of scope or is reassigned, the count decreases. When the count hits zero, memory is freed immediately. For circular references (A references B which references A), reference counting alone cannot collect them. Python's cyclic garbage collector (gc module) handles this by periodically detecting and collecting cycles."
+          }
+        ]
+      },
+
+      // ── Lesson 2.3 ──────────────────────────────────────────
+      {
+        id: "2.3",
+        title: "Strings In-Depth",
+        duration: "30 min",
+        content: `
+<h2>Strings are Immutable Sequences</h2>
+<p>A Python string is an <strong>ordered, immutable sequence of Unicode characters</strong>. "Immutable" means once created, you cannot change individual characters. Any operation that looks like it modifies a string actually creates a new one.</p>
+
+<h2>String Creation</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">s1 = 'single quotes'        # most common for short strings
+s2 = "double quotes"        # also fine, required if string contains apostrophe
+s3 = """triple quotes       # multi-line strings
+span multiple lines"""
+s4 = r"raw string \\n"      # raw: backslashes not interpreted
+s5 = b"bytes literal"       # bytes, not str</pre>
+
+<h2>Indexing & Slicing</h2>
+<p>Python strings support zero-based indexing and negative indexing (from the end):</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">s = "Python"
+#    0 1 2 3 4 5   (positive indices)
+#   -6-5-4-3-2-1   (negative indices)
+
+s[0]    # 'P'   first character
+s[-1]   # 'n'   last character
+s[1:4]  # 'yth' slice [start:stop) — stop is exclusive
+s[:3]   # 'Pyt' from start
+s[3:]   # 'hon' to end
+s[::2]  # 'Pto' every 2nd character
+s[::-1] # 'nohtyP' reversed string</pre>
+
+<div class="callout info">
+  <span class="callout-icon">💡</span>
+  <div class="callout-body">
+    <strong>Slice Notation: [start:stop:step]</strong>
+    <p>All three are optional. start defaults to 0, stop to len(s), step to 1. Negative step reverses direction. s[::-1] is the Pythonic way to reverse a string or list.</p>
+  </div>
+</div>
+
+<h2>Essential String Methods</h2>
+<p>These 15 methods cover 90% of string operations in real code:</p>
+
+<table style="width:100%;font-size:.83rem;border-collapse:collapse;margin:.75rem 0">
+  <tr style="border-bottom:1px solid var(--border);color:var(--text-muted)"><th style="text-align:left;padding:.4rem .6rem">Method</th><th style="text-align:left;padding:.4rem .6rem">Result</th></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.upper() / .lower()</code></td><td style="padding:.4rem .6rem">Case conversion</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.strip() / .lstrip() / .rstrip()</code></td><td style="padding:.4rem .6rem">Remove whitespace (or chars)</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.split(sep)</code></td><td style="padding:.4rem .6rem">Split into list</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>sep.join(iterable)</code></td><td style="padding:.4rem .6rem">Join list into string</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.replace(old, new)</code></td><td style="padding:.4rem .6rem">Replace substrings</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.find(sub) / .index(sub)</code></td><td style="padding:.4rem .6rem">Find position (-1 vs error)</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.startswith() / .endswith()</code></td><td style="padding:.4rem .6rem">Prefix/suffix check</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.count(sub)</code></td><td style="padding:.4rem .6rem">Count non-overlapping occurrences</td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>.isdigit() / .isalpha() / .isalnum()</code></td><td style="padding:.4rem .6rem">Character class checks</td></tr>
+  <tr><td style="padding:.4rem .6rem"><code>.zfill(width)</code></td><td style="padding:.4rem .6rem">Zero-pad (useful for IDs)</td></tr>
+</table>
+
+<h2>String Interning</h2>
+<p>Python may <em>intern</em> strings — reuse the same object for strings that look like valid Python identifiers (letters, digits, underscores). This is an optimization, not a guarantee. Use <code>==</code> for string comparison, never <code>is</code>.</p>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Top string interview topics</div>
+  <p>Most string algorithm problems test: reversal (<code>s[::-1]</code>), palindrome checking, anagram detection (Counter), string parsing with split/join, and character-level iteration. Master slicing and the join pattern: <code>"-".join(words)</code> is O(n) — much better than concatenating in a loop.</p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-2-3-1",
+            title: "Indexing, Slicing, and Reversal",
+            description: "The slice syntax [start:stop:step] is used everywhere in Python — strings, lists, numpy arrays. Master it.",
+            code: `s = "Hello, Python!"
+#    0123456789...
+
+print(f"Original:    {s}")
+print(f"Length:      {len(s)}")
+print(f"First char:  {s[0]}")        # 'H'
+print(f"Last char:   {s[-1]}")       # '!'
+print(f"s[0:5]:      {s[0:5]}")      # 'Hello'
+print(f"s[7:]:       {s[7:]}")       # 'Python!'
+print(f"s[:5]:       {s[:5]}")       # 'Hello'
+print(f"s[::2]:      {s[::2]}")      # every 2nd char
+print(f"Reversed:    {s[::-1]}")     # reverse the string
+
+# Immutability — cannot change in place
+try:
+    s[0] = "h"           # TypeError!
+except TypeError as e:
+    print(f"\\nCannot modify string: {e}")
+
+# To 'modify', create a new string
+modified = "h" + s[1:]
+print(f"New string:  {modified}")`
+          },
+          {
+            id: "ce-2-3-2",
+            title: "Essential String Methods",
+            description: "The most frequently used string methods in production code and interview problems.",
+            code: `# Data cleaning — very common in real jobs
+raw = "  Hello, World!  "
+print(f"strip:      '{raw.strip()}'")
+print(f"lower:      '{raw.strip().lower()}'")
+print(f"upper:      '{raw.strip().upper()}'")
+
+# Split and join — used in parsing, CSV, NLP
+csv_line = "Alice,25,Engineer,Mumbai"
+parts = csv_line.split(",")
+print(f"\\nsplit: {parts}")
+print(f"join:  {' | '.join(parts)}")
+
+# Find, replace, check
+sentence = "Python is great and Python is fun"
+print(f"\\nCount 'Python': {sentence.count('Python')}")
+print(f"Find 'great':   {sentence.find('great')}")
+print(f"Find 'xyz':     {sentence.find('xyz')}")  # -1 if not found
+print(f"Replace:        {sentence.replace('Python', 'Coding')}")
+
+# Checking type of content
+print(f"\\n'123'.isdigit(): {'123'.isdigit()}")
+print(f"'abc'.isalpha(): {'abc'.isalpha()}")
+print(f"'abc123'.isalnum(): {'abc123'.isalnum()}")
+print(f"'007'.zfill(6): {'007'.zfill(6)}")`
+          },
+          {
+            id: "ce-2-3-3",
+            title: "f-Strings Advanced & String Formatting",
+            description: "Advanced f-string formatting — number precision, alignment, padding, and expressions.",
+            code: `# Format specification: {value:format_spec}
+pi = 3.14159265
+salary = 125000.75
+name = "Bob"
+score = 94.5
+
+# Number formatting
+print(f"Pi (2 dec):     {pi:.2f}")
+print(f"Pi (sci):       {pi:.2e}")
+print(f"Salary:         {salary:,.2f}")   # comma separators
+print(f"Salary (₹):    ₹{salary:>12,.0f}")  # right-aligned
+
+# String alignment
+print(f"\\n{'Name':<15} {'Score':>8} {'Grade':^10}")
+print("-" * 35)
+for student, sc in [("Alice", 92.5), ("Bob", 87.3), ("Charlie", 95.0)]:
+    grade = "A+" if sc >= 90 else "A" if sc >= 80 else "B"
+    print(f"{student:<15} {sc:>8.1f} {grade:^10}")
+
+# Expressions and method calls in f-strings
+items = ["apple", "banana", "cherry"]
+print(f"\\nItems: {', '.join(items)}")
+print(f"Count: {len(items)}")`
+          }
+        ],
+        playground: {
+          title: "🎮 String Manipulation Lab",
+          description: "Practice string slicing, methods, and f-strings. Modify the code to experiment.",
+          starterCode: `# String Manipulation Lab
+
+text = "  The Quick Brown Fox Jumps Over The Lazy Dog  "
+
+# Clean and analyze
+cleaned = text.strip()
+words = cleaned.split()
+word_count = len(words)
+char_count = len(cleaned.replace(" ", ""))
+
+print("Analysis:")
+print(f"  Original (with spaces): '{text}'")
+print(f"  Cleaned:                '{cleaned}'")
+print(f"  Word count:             {word_count}")
+print(f"  Char count (no spaces): {char_count}")
+print(f"  Reversed:               '{cleaned[::-1]}'")
+print(f"  Lower:                  '{cleaned.lower()}'")
+print(f"  Words sorted:           {sorted(words)}")`
+        },
+        exercises: [
+          {
+            id: "exe-2-3-1",
+            title: "Palindrome Checker",
+            difficulty: "easy",
+            description: "Write a function that checks if a string is a palindrome (reads the same forwards and backwards). Ignore case and spaces. Examples: 'racecar' → True, 'A man a plan a canal Panama' → True, 'hello' → False.",
+            starterCode: `def is_palindrome(s):
+    # Step 1: clean the string (lower, remove spaces)
+    cleaned = s.lower().replace(" ", "")
+    # Step 2: compare with its reverse
+    return # your code here
+
+# Test cases
+print(is_palindrome("racecar"))                         # True
+print(is_palindrome("hello"))                           # False
+print(is_palindrome("A man a plan a canal Panama"))     # True
+print(is_palindrome("Was it a car or a cat I saw"))     # True
+`,
+            solution: `def is_palindrome(s):
+    cleaned = s.lower().replace(" ", "")
+    return cleaned == cleaned[::-1]
+
+print(is_palindrome("racecar"))                         # True
+print(is_palindrome("hello"))                           # False
+print(is_palindrome("A man a plan a canal Panama"))     # True
+print(is_palindrome("Was it a car or a cat I saw"))     # True`,
+            solutionExplanation: "Clean the string first (lowercase, no spaces), then compare it to its reverse using slicing [::-1]. This is the most Pythonic approach. Alternative: cleaned == ''.join(reversed(cleaned))."
+          },
+          {
+            id: "exe-2-3-2",
+            title: "Word Frequency Counter",
+            difficulty: "medium",
+            description: "Given a paragraph, find the top 5 most frequent words (case-insensitive, ignore punctuation). Print them in descending frequency order.",
+            starterCode: `text = """Python is great Python is fun
+Python makes programming easy and fun programming
+Python developers are in high demand for Python jobs"""
+
+# Hint: use split(), lower(), and sort with key=
+# Remove punctuation by replacing common chars
+
+words = text.lower().split()
+# Count frequencies using a dict
+
+freq = {}
+for word in words:
+    # your code here
+    pass
+
+# Sort and print top 5
+`,
+            solution: `text = """Python is great Python is fun
+Python makes programming easy and fun programming
+Python developers are in high demand for Python jobs"""
+
+words = text.lower().split()
+
+freq = {}
+for word in words:
+    freq[word] = freq.get(word, 0) + 1
+
+# Sort by frequency descending
+sorted_words = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+
+print("Top 5 words:")
+for word, count in sorted_words[:5]:
+    print(f"  {word:<15} {count} times")`,
+            solutionExplanation: "dict.get(key, default) returns the value or a default if key doesn't exist — cleaner than checking 'if key in dict'. sorted() with key=lambda and reverse=True sorts by frequency descending. In production code, use collections.Counter — it does this in one line!"
+          },
+          {
+            id: "exe-2-3-3",
+            title: "Caesar Cipher",
+            difficulty: "hard",
+            description: "Implement a Caesar cipher that shifts each letter by a given amount. Non-letters remain unchanged. Example: encrypt('Hello!', 3) → 'Khoor!'. The cipher should wrap around (z shifted by 1 = a).",
+            starterCode: `def caesar_cipher(text, shift):
+    result = []
+    for char in text:
+        if char.isalpha():
+            # Determine base: 'a' for lowercase, 'A' for uppercase
+            base = ord('a') if char.islower() else ord('A')
+            # Shift the character and wrap with modulo
+            shifted = # your code here
+            result.append(shifted)
+        else:
+            result.append(char)
+    return ''.join(result)
+
+print(caesar_cipher("Hello, World!", 3))    # Khoor, Zruog!
+print(caesar_cipher("Khoor, Zruog!", -3))   # Hello, World!
+print(caesar_cipher("xyz", 3))              # abc
+`,
+            solution: `def caesar_cipher(text, shift):
+    result = []
+    for char in text:
+        if char.isalpha():
+            base = ord('a') if char.islower() else ord('A')
+            shifted = chr((ord(char) - base + shift) % 26 + base)
+            result.append(shifted)
+        else:
+            result.append(char)
+    return ''.join(result)
+
+print(caesar_cipher("Hello, World!", 3))    # Khoor, Zruog!
+print(caesar_cipher("Khoor, Zruog!", -3))   # Hello, World!
+print(caesar_cipher("xyz", 3))              # abc`,
+            solutionExplanation: "ord() converts a character to its ASCII code. chr() converts back. Subtracting the base normalizes to 0-25, adding shift moves it, % 26 wraps around, then adding base back converts to the correct letter. Using ''.join(list) to build strings is more efficient than concatenation in a loop (O(n) vs O(n²))."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "Why are strings immutable in Python and what are the implications?",
+            a: "Strings are immutable for several reasons: (1) Safety — shared strings can't be accidentally modified. (2) Hashability — immutable objects can be used as dict keys and set members. (3) Performance — Python can intern (reuse) identical string objects. The implication is that operations like concatenation (s += 'x') create new objects each time. Building a string in a loop with += is O(n²). The Pythonic fix is to collect parts in a list and join: ''.join(parts) — which is O(n)."
+          },
+          {
+            q: "What is string interning in Python?",
+            a: "String interning is an optimization where Python stores only one copy of a string value and reuses it for multiple variables. CPython automatically interns strings that look like identifiers (contain only letters, digits, underscores). Interned strings compare with 'is' instead of '==', which is faster. You can explicitly intern a string with sys.intern(s). Important: never rely on interning for correctness — always use == for string comparison."
+          },
+          {
+            q: "What is the most efficient way to concatenate many strings?",
+            a: "Use ''.join(list_of_strings). String concatenation with + or += in a loop creates a new string object each iteration because strings are immutable, giving O(n²) time complexity. ''.join() collects all parts first then creates one string in O(n). Example: instead of result = '' followed by result += word for each word, use result = ' '.join(words). This is a common interview follow-up: 'How would you optimize your string building?'"
+          },
+          {
+            q: "What is the difference between find() and index() for strings?",
+            a: "Both search for a substring. find() returns -1 if not found. index() raises a ValueError if not found. Use find() when absence is a valid case (check against -1). Use index() when absence would be a programming error you want to catch immediately. Similarly, list has both .index() (raises ValueError) and the 'in' operator (returns bool)."
+          }
+        ]
+      },
+
+      // ── Lesson 2.4 ──────────────────────────────────────────
+      {
+        id: "2.4",
+        title: "Numbers & Booleans",
+        duration: "20 min",
+        content: `
+<h2>Integers — Arbitrary Precision</h2>
+<p>Python integers have <strong>no size limit</strong>. Unlike C/Java where an <code>int</code> is 32 or 64 bits, Python integers can be as large as your RAM allows. This makes Python perfect for cryptography, big-data calculations, and competitive programming.</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">big = 2 ** 1000   # Python handles this; C/Java would overflow</pre>
+
+<h2>Floats — IEEE 754 Double Precision</h2>
+<p>Floats use 64-bit IEEE 754 representation. This means they <strong>cannot represent all decimal numbers exactly</strong>. This is a hardware limitation, not a Python bug.</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">0.1 + 0.2 == 0.3   # False — 0.30000000000000004
+# Fix: round(0.1 + 0.2, 2) == 0.3  or use decimal.Decimal</pre>
+<p>For financial calculations, use the <code>decimal</code> module. For approximate comparisons, use <code>math.isclose(a, b)</code>.</p>
+
+<h2>bool — A Subclass of int</h2>
+<p>Python's <code>bool</code> type is a subclass of <code>int</code>. <code>True == 1</code> and <code>False == 0</code>. This means you can use booleans in arithmetic — a fact exploited in many interview problems.</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">sum([True, True, False, True])  # 3 — count of True values</pre>
+
+<h2>Truthiness & Falsy Values</h2>
+<p>Every Python object has a truth value. The following are <strong>falsy</strong> (evaluate to False in boolean context):</p>
+<ul>
+  <li><code>None</code></li>
+  <li><code>False</code></li>
+  <li><code>0</code>, <code>0.0</code>, <code>0j</code></li>
+  <li><code>""</code> (empty string)</li>
+  <li><code>[]</code> (empty list), <code>()</code> (empty tuple), <code>{}</code> (empty dict), <code>set()</code></li>
+</ul>
+<p>Everything else is <strong>truthy</strong>. This lets you write <code>if items:</code> instead of <code>if len(items) > 0:</code>.</p>
+
+<h2>Boolean Operators & Short-Circuit Evaluation</h2>
+<p><code>and</code> and <code>or</code> return one of their operands, not necessarily True/False. This enables the "or default" pattern:</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">name = user_input or "Anonymous"  # if user_input is empty/None, use "Anonymous"
+result = cache.get(key) or compute_expensive(key)</pre>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Asked at data science & backend interviews</div>
+  <p>"Why is 0.1 + 0.2 != 0.3 in Python?" This is a famous question. Answer: floating-point numbers use binary IEEE 754 representation, which cannot represent 0.1 or 0.2 exactly. The fix is <code>round()</code>, <code>math.isclose()</code>, or <code>decimal.Decimal</code> for financial applications.</p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-2-4-1",
+            title: "Integers, Floats, and Precision",
+            description: "Python's arbitrary-precision integers and the famous floating-point gotcha.",
+            code: `import math
+
+# Integers — no overflow!
+big = 2 ** 100
+print(f"2^100 = {big}")
+print(f"Factorial of 30 = {math.factorial(30)}")  # huge number, no overflow
+
+# Floats — IEEE 754 precision issue
+print(f"\\n0.1 + 0.2 = {0.1 + 0.2}")         # 0.30000000000000004
+print(f"0.1 + 0.2 == 0.3: {0.1 + 0.2 == 0.3}")   # False!
+
+# Fix 1: round
+print(f"round fix: {round(0.1 + 0.2, 2) == 0.3}")   # True
+
+# Fix 2: math.isclose (preferred for comparisons)
+print(f"isclose fix: {math.isclose(0.1 + 0.2, 0.3)}")   # True
+
+# Fix 3: decimal module (for financial calculations)
+from decimal import Decimal
+result = Decimal("0.1") + Decimal("0.2")
+print(f"Decimal: {result}")           # 0.3 (exact)
+print(f"Decimal == 0.3: {result == Decimal('0.3')}")  # True
+
+# Numeric operations
+print(f"\\nabs(-42): {abs(-42)}")
+print(f"round(3.7): {round(3.7)}")    # 4
+print(f"round(2.5): {round(2.5)}")    # 2 (banker's rounding!)`
+          },
+          {
+            id: "ce-2-4-2",
+            title: "Boolean Logic & Truthiness",
+            description: "Understanding truthiness and short-circuit evaluation unlocks elegant, Pythonic code.",
+            code: `# Falsy values
+falsy_values = [None, False, 0, 0.0, "", [], (), {}, set()]
+print("Falsy values:")
+for v in falsy_values:
+    print(f"  bool({repr(v):<8}) = {bool(v)}")
+
+# Truthiness in conditions (Pythonic)
+items = []
+if not items:           # same as: if len(items) == 0
+    print("\\nList is empty")
+
+name = ""
+greeting = f"Hello, {name}" if name else "Hello, stranger"
+print(greeting)
+
+# Short-circuit evaluation
+# 'and' returns first falsy value, or last value
+print(f"\\n1 and 2:     {1 and 2}")      # 2 (both truthy, returns last)
+print(f"0 and 2:     {0 and 2}")        # 0 (short-circuits at 0)
+print(f"1 or 2:      {1 or 2}")         # 1 (first truthy)
+print(f"0 or 2:      {0 or 2}")         # 2
+
+# Or-default pattern (very common in Python code)
+config_value = None
+timeout = config_value or 30    # use 30 if config_value is falsy
+print(f"timeout = {timeout}")
+
+# Bool is int — count True values
+results = [True, False, True, True, False]
+print(f"\\nPassed: {sum(results)} out of {len(results)}")`
+          }
+        ],
+        playground: {
+          title: "🎮 Number & Boolean Lab",
+          description: "Experiment with numbers and boolean logic in Python.",
+          starterCode: `import math
+
+# ── Integer precision demo ──────────────────────────
+print("Python integers have no overflow:")
+for n in [10, 20, 50, 100]:
+    print(f"  2^{n:<4} = {2**n}")
+
+# ── Float precision ─────────────────────────────────
+print("\\nFloat precision (IEEE 754):")
+expressions = [
+    ("0.1 + 0.2", 0.1 + 0.2),
+    ("0.1 + 0.1 + 0.1", 0.1 + 0.1 + 0.1),
+    ("1.0 - 0.9", 1.0 - 0.9),
+]
+for expr, val in expressions:
+    print(f"  {expr:<25} = {val}")
+
+# ── Truthiness ──────────────────────────────────────
+print("\\nTruthiness:")
+test = [0, 1, -1, "", "0", [], [0], None, False, True]
+for v in test:
+    print(f"  bool({repr(v):<8}) = {bool(v)}")`
+        },
+        exercises: [
+          {
+            id: "exe-2-4-1",
+            title: "Safe Division Function",
+            difficulty: "easy",
+            description: "Write a function <code>safe_divide(a, b)</code> that divides a by b, but returns 0 if b is 0 (instead of raising ZeroDivisionError). Use a truthiness check, not an explicit <code>== 0</code> check.",
+            starterCode: `def safe_divide(a, b):
+    # Use 'if b:' (truthiness) instead of 'if b != 0:'
+    # Return a/b if b is truthy, else return 0
+    pass
+
+print(safe_divide(10, 2))    # 5.0
+print(safe_divide(10, 0))    # 0
+print(safe_divide(7, 3))     # 2.333...
+`,
+            solution: `def safe_divide(a, b):
+    if b:
+        return a / b
+    return 0
+
+print(safe_divide(10, 2))    # 5.0
+print(safe_divide(10, 0))    # 0
+print(safe_divide(7, 3))     # 2.3333333333333335`,
+            solutionExplanation: "if b: checks truthiness — 0 is falsy, so it catches division by zero without explicitly comparing to 0. This is more Pythonic than if b != 0. Note: this also catches b=None, b='' etc., which may or may not be desired."
+          },
+          {
+            id: "exe-2-4-2",
+            title: "Statistics Calculator",
+            difficulty: "medium",
+            description: "Given a list of numbers, compute: mean, median, and mode. Use only built-in Python (no statistics module). Handle the case where the list is empty gracefully.",
+            starterCode: `def statistics_report(numbers):
+    if not numbers:   # truthiness check for empty list
+        print("No data provided")
+        return
+
+    n = len(numbers)
+    mean = sum(numbers) / n
+
+    # Median: sort and pick middle
+    sorted_nums = sorted(numbers)
+    mid = n // 2
+    if n % 2 == 0:
+        median = (sorted_nums[mid - 1] + sorted_nums[mid]) / 2
+    else:
+        median = sorted_nums[mid]
+
+    # Mode: most frequent value
+    freq = {}
+    for num in numbers:
+        freq[num] = freq.get(num, 0) + 1
+    mode = max(freq, key=freq.get)
+
+    print(f"Count:  {n}")
+    print(f"Mean:   {mean:.2f}")
+    print(f"Median: {median}")
+    print(f"Mode:   {mode}")
+
+statistics_report([4, 7, 2, 7, 3, 9, 7, 1])
+print()
+statistics_report([])
+`,
+            solution: `def statistics_report(numbers):
+    if not numbers:
+        print("No data provided")
+        return
+
+    n = len(numbers)
+    mean = sum(numbers) / n
+    sorted_nums = sorted(numbers)
+    mid = n // 2
+    if n % 2 == 0:
+        median = (sorted_nums[mid - 1] + sorted_nums[mid]) / 2
+    else:
+        median = sorted_nums[mid]
+    freq = {}
+    for num in numbers:
+        freq[num] = freq.get(num, 0) + 1
+    mode = max(freq, key=freq.get)
+
+    print(f"Count:  {n}")
+    print(f"Mean:   {mean:.2f}")
+    print(f"Median: {median}")
+    print(f"Mode:   {mode}")
+
+statistics_report([4, 7, 2, 7, 3, 9, 7, 1])
+print()
+statistics_report([])`,
+            solutionExplanation: "max(freq, key=freq.get) finds the key in freq with the maximum value — elegant use of the key parameter. Sorting and indexing to find the median is a common algorithm question. Note: the statistics module (Python 3.4+) provides all these functions, but knowing how to implement them is essential for interviews."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "Why does 0.1 + 0.2 not equal 0.3 in Python?",
+            a: "This is a floating-point representation issue, not a Python bug. Computers store numbers in binary (base-2). Numbers like 0.1 and 0.2 cannot be represented exactly in binary (similar to how 1/3 cannot be represented exactly in decimal). The result of 0.1 + 0.2 is 0.30000000000000004 due to accumulated rounding errors. Fix: use round(result, n) for display, math.isclose(a, b) for comparisons (tolerates small errors), or decimal.Decimal for exact decimal arithmetic in financial applications."
+          },
+          {
+            q: "How does Python handle integer overflow differently from C/Java?",
+            a: "Python integers are arbitrary precision — they can grow as large as available memory. C and Java use fixed-width integers (32 or 64 bits) that overflow and wrap around. For example, in C, INT_MAX + 1 wraps to INT_MIN. In Python, there is no overflow — 2**1000 works perfectly. This is implemented in CPython by using arrays of C digits internally, dynamically resizing as needed. The downside is that Python integers take more memory and are slower than C fixed-width integers."
+          },
+          {
+            q: "What are falsy values in Python?",
+            a: "Falsy values are: None, False, 0 (int), 0.0 (float), 0j (complex zero), '' (empty string), [] (empty list), () (empty tuple), {} (empty dict), set() (empty set), and any object whose __bool__ returns False or __len__ returns 0. Everything else is truthy. This allows writing if items: instead of if len(items) > 0: — which is more Pythonic. Note: '0', [0], (False,) are all truthy."
+          }
+        ]
+      },
+
+      // ── Lesson 2.5 ──────────────────────────────────────────
+      {
+        id: "2.5",
+        title: "Type Conversion & Common Pitfalls",
+        duration: "20 min",
+        content: `
+<h2>Explicit Type Conversion</h2>
+<p>Python does not implicitly convert between unrelated types. You must be explicit. These built-in functions convert between types:</p>
+
+<table style="width:100%;font-size:.85rem;border-collapse:collapse;margin:.75rem 0">
+  <tr style="border-bottom:1px solid var(--border);color:var(--text-muted)"><th style="padding:.4rem .6rem">Function</th><th style="padding:.4rem .6rem">Converts to</th><th style="padding:.4rem .6rem">Example</th></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>int(x)</code></td><td style="padding:.4rem .6rem">Integer</td><td style="padding:.4rem .6rem"><code>int("42") → 42</code></td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>float(x)</code></td><td style="padding:.4rem .6rem">Float</td><td style="padding:.4rem .6rem"><code>float("3.14") → 3.14</code></td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>str(x)</code></td><td style="padding:.4rem .6rem">String</td><td style="padding:.4rem .6rem"><code>str(42) → "42"</code></td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>bool(x)</code></td><td style="padding:.4rem .6rem">Boolean</td><td style="padding:.4rem .6rem"><code>bool(0) → False</code></td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>list(x)</code></td><td style="padding:.4rem .6rem">List</td><td style="padding:.4rem .6rem"><code>list("abc") → ['a','b','c']</code></td></tr>
+  <tr style="border-bottom:1px solid var(--border)"><td style="padding:.4rem .6rem"><code>tuple(x)</code></td><td style="padding:.4rem .6rem">Tuple</td><td style="padding:.4rem .6rem"><code>tuple([1,2,3]) → (1,2,3)</code></td></tr>
+  <tr><td style="padding:.4rem .6rem"><code>set(x)</code></td><td style="padding:.4rem .6rem">Set</td><td style="padding:.4rem .6rem"><code>set([1,1,2]) → {1,2}</code></td></tr>
+</table>
+
+<h2>Implicit Conversion (Coercion)</h2>
+<p>Python does coerce in specific, well-defined cases:</p>
+<ul>
+  <li><code>int + float → float</code> (e.g., <code>3 + 1.5 == 4.5</code>)</li>
+  <li><code>bool + int → int</code> (e.g., <code>True + 2 == 3</code>)</li>
+</ul>
+<p>It does NOT auto-convert between str and numbers — <code>"5" + 3</code> raises a TypeError.</p>
+
+<h2>Common Conversion Errors to Know</h2>
+<ul>
+  <li><code>int("3.14")</code> → ValueError (use <code>int(float("3.14"))</code>)</li>
+  <li><code>int("hello")</code> → ValueError</li>
+  <li><code>"5" + 3</code> → TypeError (use <code>int("5") + 3</code>)</li>
+  <li><code>int(None)</code> → TypeError</li>
+</ul>
+
+<div class="callout info">
+  <span class="callout-icon">💡</span>
+  <div class="callout-body">
+    <strong>Type Annotations (Python 3.5+)</strong>
+    <p>Python supports optional type hints: <code>def add(a: int, b: int) -> int:</code>. These are not enforced at runtime but are checked by tools like mypy and are shown in IDE autocomplete. Modern Python codebases use them heavily. They make code self-documenting and catch bugs early.</p>
+  </div>
+</div>
+
+<div class="interview-tip">
+  <div class="interview-tip-label">🎯 Live coding sessions</div>
+  <p>When processing user input from the console, remember that <code>input()</code> always returns a string. Forgetting to convert to int/float is one of the most common bugs in live coding interviews. Always do: <code>n = int(input("Enter a number: "))</code>.</p>
+</div>`,
+        codeExamples: [
+          {
+            id: "ce-2-5-1",
+            title: "Type Conversion in Practice",
+            description: "All common conversion scenarios, including error cases and edge cases.",
+            code: `# Basic conversions
+print(int("42"))        # 42
+print(float("3.14"))    # 3.14
+print(str(100))         # "100"
+print(bool(0))          # False
+print(bool(""))         # False
+print(bool("False"))    # True! Non-empty strings are truthy
+
+# Number base conversion
+print(f"\\nBinary 1010 as int: {int('1010', 2)}")   # 10
+print(f"Hex 'ff' as int:    {int('ff', 16)}")        # 255
+print(f"42 in binary:       {bin(42)}")               # 0b101010
+print(f"255 in hex:         {hex(255)}")              # 0xff
+
+# Edge cases
+print("\\n--- Error cases (caught) ---")
+try:
+    int("3.14")          # can't go directly string-float to int
+except ValueError as e:
+    print(f"int('3.14'): {e}")
+
+try:
+    "5" + 3             # no implicit str-to-int conversion
+except TypeError as e:
+    print(f"'5' + 3: {e}")
+
+# Correct way to convert "3.14" to int
+result = int(float("3.14"))   # step 1: to float, step 2: to int
+print(f"int(float('3.14')) = {result}")  # 3`
+          },
+          {
+            id: "ce-2-5-2",
+            title: "Type Hints — Modern Python Practice",
+            description: "Type hints make code self-documenting and enable IDE support and static analysis. Used in all modern Python codebases.",
+            code: `# Type hints — not enforced at runtime but essential in production code
+def calculate_grade(score: float, max_score: float = 100.0) -> str:
+    """Returns letter grade for a given score."""
+    percentage = (score / max_score) * 100
+    if percentage >= 90:
+        return "A+"
+    elif percentage >= 80:
+        return "A"
+    elif percentage >= 70:
+        return "B"
+    elif percentage >= 60:
+        return "C"
+    return "F"
+
+# Python does NOT enforce types — this still runs (but mypy would warn)
+print(calculate_grade(88))      # A
+print(calculate_grade(92, 100)) # A+
+print(calculate_grade(45, 100)) # F
+
+# List, dict, tuple type hints (Python 3.9+ syntax)
+def process_names(names: list[str]) -> dict[str, int]:
+    """Returns name → length mapping."""
+    return {name: len(name) for name in names}
+
+result = process_names(["Alice", "Bob", "Charlie"])
+print(result)   # {'Alice': 5, 'Bob': 3, 'Charlie': 7}`
+          }
+        ],
+        playground: {
+          title: "🎮 Conversion & Types Sandbox",
+          description: "Practice type conversions and see how Python handles different types.",
+          starterCode: `# Safe type conversion with error handling
+
+def safe_int(value, default=0):
+    """Convert to int safely, return default on failure."""
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return default
+
+def safe_float(value, default=0.0):
+    """Convert to float safely."""
+    try:
+        return float(value)
+    except (ValueError, TypeError):
+        return default
+
+# Test with various inputs
+test_inputs = ["42", "3.14", "hello", None, True, False, "", "  17  "]
+print(f"{'Input':<12} {'safe_int':>10} {'safe_float':>12}")
+print("-" * 38)
+for val in test_inputs:
+    print(f"{repr(val):<12} {safe_int(val):>10} {safe_float(val):>12}")`
+        },
+        exercises: [
+          {
+            id: "exe-2-5-1",
+            title: "Input Validator",
+            difficulty: "medium",
+            description: "Write a function <code>parse_student_record(record)</code> that takes a comma-separated string like <code>'Alice,23,8.9'</code> and returns a dict with keys name (str), age (int), gpa (float). Handle conversion errors gracefully with default values.",
+            starterCode: `def parse_student_record(record: str) -> dict:
+    """Parse 'name,age,gpa' string into a structured dict."""
+    parts = record.split(",")
+
+    name = parts[0].strip() if len(parts) > 0 else "Unknown"
+
+    try:
+        age = int(parts[1].strip()) if len(parts) > 1 else 0
+    except ValueError:
+        age = 0
+
+    # Your code: parse gpa (float), handle errors
+    gpa = # your code here
+
+    return {"name": name, "age": age, "gpa": gpa}
+
+# Test
+records = ["Alice,23,8.9", "Bob,twenty,7.5", "Charlie,22,abc", "Dave"]
+for r in records:
+    print(parse_student_record(r))
+`,
+            solution: `def parse_student_record(record: str) -> dict:
+    parts = record.split(",")
+    name = parts[0].strip() if len(parts) > 0 else "Unknown"
+    try:
+        age = int(parts[1].strip()) if len(parts) > 1 else 0
+    except (ValueError, IndexError):
+        age = 0
+    try:
+        gpa = float(parts[2].strip()) if len(parts) > 2 else 0.0
+    except (ValueError, IndexError):
+        gpa = 0.0
+    return {"name": name, "age": age, "gpa": gpa}
+
+records = ["Alice,23,8.9", "Bob,twenty,7.5", "Charlie,22,abc", "Dave"]
+for r in records:
+    print(parse_student_record(r))`,
+            solutionExplanation: "Real-world data is messy. Using try/except around each conversion handles invalid values gracefully without crashing. Catching (ValueError, IndexError) in one tuple is cleaner than separate blocks. This pattern — parse input, validate, provide defaults — is fundamental in data engineering."
+          }
+        ],
+        interviewQuestions: [
+          {
+            q: "What is the difference between implicit and explicit type conversion in Python?",
+            a: "Explicit conversion uses constructor functions: int(), float(), str(), list() etc. — you explicitly request the conversion. Implicit conversion (coercion) happens automatically in limited cases: Python promotes int to float when mixing them (3 + 1.5 = 4.5), and bool to int (True + 2 = 3). Python does NOT implicitly convert between str and numbers — '5' + 3 raises TypeError, unlike JavaScript which gives '53'. This explicit design prevents hidden type-coercion bugs."
+          },
+          {
+            q: "What are Python type hints and why are they useful?",
+            a: "Type hints (PEP 484, Python 3.5+) allow annotating function signatures and variables with types: def greet(name: str) -> str. They are not enforced at runtime — Python still runs the code even if types are wrong. Their value: (1) documentation — code is self-explanatory; (2) IDE support — autocomplete and refactoring work better; (3) static analysis tools like mypy catch type errors before runtime; (4) required in many professional Python codebases. Python 3.10+ simplified syntax: list[int] instead of List[int] from typing."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  // ══════════════════════════════════════════════════════════════
+  // MODULE 3 — Control Flow & Loops
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 3,
+    title: "Control Flow & Loops",
+    icon: "🔀",
+    color: "#ffb300",
+    difficulty: "beginner",
+    duration: "3–4 hours",
+    description: "Master Python's decision-making and iteration tools — including the unique for-else construct and powerful comprehensions.",
+    objectives: [
+      "Write clean conditional logic using if/elif/else",
+      "Understand and use truthiness in boolean contexts",
+      "Iterate with for loops using range, enumerate, and zip",
+      "Use the unique for-else and while-else constructs",
+      "Write concise list, dict, and set comprehensions"
+    ],
+    lessons: [
+      {
+        id: "3.1",
+        title: "Conditional Statements & Truthiness",
+        duration: "25 min",
+        content: `
+<h2>if / elif / else</h2>
+<p>Python uses <strong>indentation</strong> (not braces) to define code blocks — 4 spaces per level (PEP 8). The elif and else clauses are optional.</p>
+<h2>Truthiness in Conditions</h2>
+<p>Any object can be used in a boolean context. Falsy values: <code>None, False, 0, 0.0, "", [], (), {}, set()</code>. Everything else is truthy. Write <code>if items:</code> not <code>if len(items) > 0:</code>.</p>
+<h2>Chained Comparisons</h2>
+<p>Python supports mathematical chaining: <code>0 &lt; x &lt; 10</code> is equivalent to <code>x &gt; 0 and x &lt; 10</code>. Cleaner and more readable.</p>
+<h2>Ternary Expression</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">result = value_if_true if condition else value_if_false</pre>
+<div class="callout warn"><span class="callout-icon">⚠️</span><div class="callout-body"><strong>Always use is None</strong><p>Write <code>if x is None:</code> not <code>if x == None:</code> — PEP 8 and safe against custom __eq__.</p></div></div>
+<div class="interview-tip"><div class="interview-tip-label">🎯 Coding interviews — Amazon, startups</div><p>Using <code>if items:</code> and chained comparisons signals Python fluency. Interviewers notice the difference between idiomatic Python and Java-style code.</p></div>`,
+        codeExamples: [
+          {
+            id: "ce-3-1-1",
+            title: "Conditions, Chaining, Truthiness",
+            description: "Core conditional patterns used in every Python codebase.",
+            code: `score = 85
+grade = "A+" if score >= 90 else "A" if score >= 80 else "B" if score >= 70 else "C" if score >= 60 else "F"
+print(f"Score {score} → {grade}")
+
+# Chained comparisons
+age = 25
+if 18 <= age < 65:
+    print("Working adult")
+
+# Truthiness
+items = []
+if not items:
+    print("Cart is empty")
+
+# in / not in
+valid_roles = {"admin", "editor", "viewer"}
+role = "editor"
+print(f"Access: {role in valid_roles}")`
+          },
+          {
+            id: "ce-3-1-2",
+            title: "Ternary & or-default patterns",
+            description: "Idiomatic Python patterns for concise conditional logic.",
+            code: `# Ternary
+nums = [5, -3, 0, 8, -1]
+for n in nums:
+    print(f"{n:>4}: {'pos' if n > 0 else ('neg' if n < 0 else 'zero')}")
+
+# or-default pattern
+def greet(name=None):
+    display = name or "stranger"
+    return f"Hello, {display}!"
+
+print(greet())           # Hello, stranger!
+print(greet("Alice"))    # Hello, Alice!
+
+# Truthiness-based guard
+def safe_first(lst):
+    return lst[0] if lst else None
+
+print(safe_first([10, 20]))  # 10
+print(safe_first([]))        # None`
+          }
+        ],
+        playground: {
+          title: "🎮 Conditional Logic Lab",
+          description: "Build a real-world validator with chained conditions.",
+          starterCode: `def check_loan(age, income, credit_score):
+    issues = []
+    if not (21 <= age <= 65):
+        issues.append(f"Age {age} must be 21-65")
+    if income < 300000:
+        issues.append(f"Income {income} below minimum 300000")
+    if credit_score < 700:
+        issues.append(f"Credit score {credit_score} below 700")
+    status = "APPROVED ✓" if not issues else "REJECTED ✗"
+    return status, issues
+
+for applicant in [(30, 500000, 750), (19, 400000, 800), (35, 250000, 680)]:
+    age, inc, cs = applicant
+    status, reasons = check_loan(age, inc, cs)
+    print(f"Age={age}, Inc={inc}, CS={cs}: {status}")
+    for r in reasons:
+        print(f"  - {r}")`
+        },
+        exercises: [
+          {
+            id: "exe-3-1-1", title: "FizzBuzz", difficulty: "easy",
+            description: "Print 1–30. For multiples of 3: 'Fizz'. Multiples of 5: 'Buzz'. Both: 'FizzBuzz'.",
+            starterCode: `for n in range(1, 31):
+    pass  # your logic here`,
+            solution: `for n in range(1, 31):
+    if n % 15 == 0: print("FizzBuzz")
+    elif n % 3 == 0: print("Fizz")
+    elif n % 5 == 0: print("Buzz")
+    else: print(n)`,
+            solutionExplanation: "Check 15 first — it must come before 3 and 5 checks, otherwise multiples of 15 would only print 'Fizz'. Modulo % gives remainder; divisibility means remainder is 0."
+          },
+          {
+            id: "exe-3-1-2", title: "Triangle Classifier", difficulty: "medium",
+            description: "Given 3 sides, return 'Equilateral', 'Isosceles', 'Scalene', or 'Invalid' (fails triangle inequality).",
+            starterCode: `def classify_triangle(a, b, c):
+    if not (a + b > c and b + c > a and a + c > b):
+        return "Invalid"
+    # your classification here
+    pass
+
+for sides in [(3,3,3),(3,3,5),(3,4,5),(1,2,10)]:
+    print(f"{sides} → {classify_triangle(*sides)}")`,
+            solution: `def classify_triangle(a, b, c):
+    if not (a + b > c and b + c > a and a + c > b):
+        return "Invalid"
+    if a == b == c: return "Equilateral"
+    if a == b or b == c or a == c: return "Isosceles"
+    return "Scalene"
+
+for sides in [(3,3,3),(3,3,5),(3,4,5),(1,2,10)]:
+    print(f"{sides} → {classify_triangle(*sides)}")`,
+            solutionExplanation: "a == b == c chains two equality checks. The triangle inequality must be verified before classification. Spreading tuple with * unpacks it into positional args."
+          }
+        ],
+        interviewQuestions: [
+          { q: "What are truthy and falsy values in Python?", a: "Falsy: None, False, 0, 0.0, 0j, '', [], (), {}, set(), and any object whose __bool__ returns False or __len__ returns 0. Everything else is truthy. This enables idiomatic patterns like 'if items:' instead of 'if len(items) > 0:'. Note: '0', [0], and (False,) are all truthy — non-empty containers are always truthy." },
+          { q: "How do chained comparisons work?", a: "Python evaluates 0 < x < 10 as (0 < x) and (x < 10) with short-circuit evaluation and without evaluating x twice. Unlike C where 0 < x < 10 would be (0 < x) < 10 (always True). You can chain any number of comparisons: 1 <= a <= b <= 100." },
+          { q: "When should you use the ternary expression?", a: "Use for simple one-liners where both branches are single expressions: grade = 'Pass' if score >= 60 else 'Fail'. Avoid nesting ternaries — use if/elif/else for multi-branch logic. Never use it for side effects like printing." }
+        ]
+      },
+      {
+        id: "3.2",
+        title: "For Loops & Iterables",
+        duration: "30 min",
+        content: `
+<h2>for Loops over Any Iterable</h2>
+<p>Python's <code>for</code> iterates over any iterable — lists, strings, tuples, dicts, sets, files, generators. No index needed.</p>
+<h2>range()</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">range(stop)             # 0..stop-1
+range(start, stop, step) # with step (negative for reverse)</pre>
+<p><code>range()</code> is lazy — generates values on demand. <code>range(1_000_000)</code> uses negligible memory.</p>
+<h2>enumerate() and zip()</h2>
+<p>Never use <code>for i in range(len(items)): item = items[i]</code>. Use <code>enumerate()</code> for index+value, <code>zip()</code> for parallel iteration.</p>
+<h2>for-else — Python's Secret Weapon</h2>
+<p>The <code>else</code> runs only if the loop finished <em>without</em> hitting a <code>break</code>. Use it to detect "not found" without a flag variable.</p>
+<div class="interview-tip"><div class="interview-tip-label">🎯 Amazon, Microsoft — distinguishes Python experts</div><p>"Explain for-else." Most candidates have never heard of it. Knowing it — with a prime-number or search example — sets you apart from the crowd.</p></div>`,
+        codeExamples: [
+          {
+            id: "ce-3-2-1",
+            title: "range, enumerate, zip",
+            description: "The three core loop helpers — essential for idiomatic Python.",
+            code: `fruits = ["apple", "banana", "cherry"]
+prices = [1.20, 0.50, 2.00]
+
+# enumerate — index + value
+for i, fruit in enumerate(fruits, 1):
+    print(f"{i}. {fruit}")
+
+# zip — parallel iteration
+print()
+for fruit, price in zip(fruits, prices):
+    print(f"  {fruit:<10} \${price:.2f}")
+
+# range variants
+print(list(range(5)))           # [0,1,2,3,4]
+print(list(range(1, 10, 2)))    # [1,3,5,7,9]
+print(list(range(10, 0, -2)))   # [10,8,6,4,2]`
+          },
+          {
+            id: "ce-3-2-2",
+            title: "for-else — Eliminating Flag Variables",
+            description: "for-else elegantly handles 'did I find it?' without a boolean flag.",
+            code: `def is_prime(n):
+    if n < 2: return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            break           # found factor — not prime
+    else:
+        return True         # no factor found — prime!
+    return False
+
+print([n for n in range(2, 20) if is_prime(n)])
+
+# Without for-else you'd need:
+# found = False
+# for i in ...:
+#     if ...: found = True; break
+# if not found: return True  ← for-else is cleaner`
+          }
+        ],
+        playground: {
+          title: "🎮 Loop Mastery",
+          description: "Combine enumerate, zip, and for-else in a real scenario.",
+          starterCode: `names  = ["Alice", "Bob", "Charlie", "Dave"]
+scores = [92, 78, 85, 91]
+grades = ["A+", "B", "A", "A+"]
+
+print(f"{'Rank':<6}{'Name':<10}{'Score':>6}{'Grade':>7}")
+print("-" * 30)
+for rank, (name, score, grade) in enumerate(zip(names, scores, grades), 1):
+    print(f"{rank:<6}{name:<10}{score:>6}{grade:>7}")
+
+# Find first A+ using for-else
+print()
+for i, grade in enumerate(grades):
+    if grade == "A+":
+        print(f"First A+ at rank {i+1}: {names[i]}")
+        break
+else:
+    print("No A+ found")`
+        },
+        exercises: [
+          {
+            id: "exe-3-2-1", title: "Flatten a Nested List", difficulty: "easy",
+            description: "Flatten [[1,2],[3,4],[5]] → [1,2,3,4,5] using nested loops, then as a one-line comprehension.",
+            starterCode: `data = [[1,2,3],[4,5],[6,7,8]]
+flat = []
+for sublist in data:
+    for item in sublist:
+        flat.append(item)
+print(flat)
+# One-liner:
+flat2 = [item for sublist in data for item in sublist]
+print(flat2)`,
+            solution: `data = [[1,2,3],[4,5],[6,7,8]]
+flat = []
+for sublist in data:
+    for item in sublist:
+        flat.append(item)
+print(flat)
+flat2 = [item for sublist in data for item in sublist]
+print(flat2)`,
+            solutionExplanation: "The comprehension mirrors the nested loop: outer 'for sublist in data', inner 'for item in sublist'. Standard list.extend(sublist) inside the loop also works."
+          },
+          {
+            id: "exe-3-2-2", title: "Find Primes with for-else", difficulty: "hard",
+            description: "Print all prime numbers from 2 to 50 using a nested for-else.",
+            starterCode: `for n in range(2, 51):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            break
+    else:
+        print(n, end=" ")
+print()`,
+            solution: `for n in range(2, 51):
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            break
+    else:
+        print(n, end=" ")
+print()`,
+            solutionExplanation: "The inner for-else: if break fires, we found a factor (not prime), else clause is skipped. If the loop finishes naturally (no factor found), else runs and we print the prime. Checking up to sqrt(n) is the classic optimization: if n has a factor > sqrt(n), the corresponding factor < sqrt(n) would already have been found."
+          }
+        ],
+        interviewQuestions: [
+          { q: "Explain Python's for-else construct.", a: "The else clause on a for (or while) loop runs only when the loop completes without hitting break. If break executes, else is skipped. Classic use: search algorithms — loop through items, break when found, else means 'not found'. Eliminates flag variables. Works identically on while loops." },
+          { q: "Why use enumerate() instead of range(len(items))?", a: "enumerate() is more Pythonic: cleaner syntax, works on any iterable (not just sequences), communicates intent clearly, avoids off-by-one errors, and supports custom start values. range(len(x)) is considered an anti-pattern in Python." },
+          { q: "What happens when zip() receives sequences of different lengths?", a: "zip() stops at the shortest. Use itertools.zip_longest(a, b, fillvalue=None) to pad shorter sequences. Unzipping: keys, vals = zip(*list_of_pairs)." }
+        ]
+      },
+      {
+        id: "3.3",
+        title: "While Loops & Loop Control",
+        duration: "20 min",
+        content: `
+<h2>while Loops</h2>
+<p>Use <code>while</code> when the number of iterations is unknown. The loop runs as long as its condition is True.</p>
+<h2>break, continue, pass</h2>
+<ul><li><strong>break</strong>: exit the loop immediately</li><li><strong>continue</strong>: skip rest of current iteration, next cycle</li><li><strong>pass</strong>: no-op placeholder</li></ul>
+<h2>while-else</h2>
+<p>Same as for-else: else runs only if the while condition becomes False naturally (not via break).</p>
+<div class="callout error"><span class="callout-icon">🚨</span><div class="callout-body"><strong>Common Bug</strong><p>Forgetting to update the loop variable: <code>i = 0; while i &lt; 10: print(i)</code> — infinite loop. Always advance toward termination.</p></div></div>
+<div class="interview-tip"><div class="interview-tip-label">🎯 Algorithm interviews</div><p>Binary search and two-pointer algorithms naturally use while loops — the termination depends on two indices converging.</p></div>`,
+        codeExamples: [
+          {
+            id: "ce-3-3-1",
+            title: "while, break, continue",
+            description: "All loop control statements in practical scenarios.",
+            code: `# break — stop early
+data = [3, 7, 2, 9, 1, 5]
+for item in data:
+    if item == 9:
+        print(f"Found 9!")
+        break
+else:
+    print("Not found")
+
+# continue — skip evens
+print("Odds:", end=" ")
+for n in range(10):
+    if n % 2 == 0:
+        continue
+    print(n, end=" ")
+print()
+
+# while True + break — event loop pattern
+n = 27
+steps = 0
+while True:
+    if n == 1: break
+    n = n // 2 if n % 2 == 0 else 3 * n + 1
+    steps += 1
+print(f"Collatz: {steps} steps to reach 1")`
+          },
+          {
+            id: "ce-3-3-2",
+            title: "Binary Search (while loop)",
+            description: "Classic O(log n) search — finds any element in a sorted million-item list in ≤20 steps.",
+            code: `def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:   return mid
+        elif arr[mid] < target:  left = mid + 1
+        else:                    right = mid - 1
+    return -1
+
+arr = [2, 5, 8, 12, 16, 23, 38, 45, 56, 72, 91]
+for t in [23, 91, 100]:
+    idx = binary_search(arr, t)
+    print(f"  {t}: {'index ' + str(idx) if idx != -1 else 'not found'}")`
+          }
+        ],
+        playground: {
+          title: "🎮 Loop Control Lab",
+          description: "Build a number guessing AI using binary search + while.",
+          starterCode: `import random
+secret = random.randint(1, 100)
+low, high, guess = 1, 100, 50
+attempts = []
+print(f"Guessing secret ({secret}) using binary search:")
+while True:
+    attempts.append(guess)
+    print(f"  Guess #{len(attempts)}: {guess}", end=" → ")
+    if guess == secret:   print("Correct!"); break
+    elif guess < secret:  print("Too low");  low = guess + 1
+    else:                 print("Too high"); high = guess - 1
+    guess = (low + high) // 2
+print(f"Found in {len(attempts)} attempts")`
+        },
+        exercises: [
+          {
+            id: "exe-3-3-1", title: "GCD — Euclidean Algorithm", difficulty: "medium",
+            description: "Implement GCD using a while loop: GCD(a,b) = GCD(b, a%b).",
+            starterCode: `def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+for a, b in [(48,18),(100,75),(270,192)]:
+    print(f"GCD({a},{b}) = {gcd(a,b)}")`,
+            solution: `def gcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+for a, b in [(48,18),(100,75),(270,192)]:
+    print(f"GCD({a},{b}) = {gcd(a,b)}")`,
+            solutionExplanation: "The Euclidean algorithm: replace (a,b) with (b, a%b) until b=0. The tuple swap a,b = b, a%b is atomic in Python — no temp variable needed."
+          }
+        ],
+        interviewQuestions: [
+          { q: "When should you use while vs for?", a: "Use for when iterating over a known sequence or a fixed number of iterations. Use while when: the number of iterations is unknown (reading until a condition), two indices are converging (binary search, two-pointer), or implementing an event loop (while True: ... break). In practice, for loops are more common in Python." },
+          { q: "What is the difference between break and continue?", a: "break exits the entire loop — no more iterations. continue skips the rest of the current iteration and proceeds to the next. Both work in for and while loops. break also prevents the else clause from running; continue does not." }
+        ]
+      },
+      {
+        id: "3.4",
+        title: "Comprehensions",
+        duration: "30 min",
+        content: `
+<h2>List Comprehensions</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">[expression for item in iterable if condition]</pre>
+<p>Replaces for+append with one readable line. CPython optimizes list comprehension construction — faster than the loop equivalent.</p>
+<h2>Dict & Set Comprehensions</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">{k: v for item in iterable}    # dict
+{expr for item in iterable}     # set</pre>
+<h2>Generator Expressions</h2>
+<p>Use <code>()</code> instead of <code>[]</code> for a lazy iterator. Use with sum/max/any/all to avoid building a full list in memory.</p>
+<div class="callout warn"><span class="callout-icon">⚠️</span><div class="callout-body"><strong>When NOT to Use</strong><p>Never use comprehensions for side effects: <code>[print(x) for x in items]</code> is bad. Avoid more than 2 levels of nesting.</p></div></div>
+<div class="interview-tip"><div class="interview-tip-label">🎯 Technical screens — frequent</div><p>Interviewers ask "rewrite this loop as a comprehension" or "what does this comprehension produce?" Both test Pythonic thinking. Comprehensions are faster than for+append due to C-level optimization.</p></div>`,
+        codeExamples: [
+          {
+            id: "ce-3-4-1",
+            title: "List, Dict, Set Comprehensions",
+            description: "All comprehension forms with practical examples.",
+            code: `# List comprehension
+squares = [x**2 for x in range(1, 11) if x % 2 == 0]
+print("Even squares:", squares)
+
+# String processing
+words = ["  hello  ", "WORLD", "  python  "]
+clean = [w.strip().lower() for w in words]
+print("Cleaned:", clean)
+
+# Dict comprehension
+students = ["Alice", "Bob", "Charlie"]
+scores   = [92, 78, 85]
+grade_book = {s: sc for s, sc in zip(students, scores)}
+print("Grades:", grade_book)
+
+# Inverted dict
+inv = {v: k for k, v in grade_book.items()}
+print("Inverted:", inv)
+
+# Set comprehension (deduplicate)
+words2 = ["Hello", "hello", "HELLO", "world", "World"]
+unique = {w.lower() for w in words2}
+print("Unique:", unique)
+
+# Generator expression (no list built)
+total = sum(x**2 for x in range(1, 101))
+print("Sum of squares 1-100:", total)`
+          }
+        ],
+        playground: {
+          title: "🎮 Comprehension Workshop",
+          description: "Data transformation with comprehensions.",
+          starterCode: `employees = [
+    {"name": "Alice",   "dept": "Eng", "salary": 95000},
+    {"name": "Bob",     "dept": "Mkt", "salary": 72000},
+    {"name": "Charlie", "dept": "Eng", "salary": 88000},
+    {"name": "Dave",    "dept": "HR",  "salary": 65000},
+]
+# 1. Names of all engineers
+engineers = [e["name"] for e in employees if e["dept"] == "Eng"]
+print("Engineers:", engineers)
+
+# 2. Salary dict
+salaries = {e["name"]: e["salary"] for e in employees}
+print("Salaries:", salaries)
+
+# 3. Unique departments
+depts = {e["dept"] for e in employees}
+print("Departments:", depts)
+
+# 4. Average salary (generator)
+avg = sum(e["salary"] for e in employees) / len(employees)
+print(f"Avg salary: \${avg:,.0f}")`
+        },
+        exercises: [
+          {
+            id: "exe-3-4-1", title: "Comprehension Rewrites", difficulty: "easy",
+            description: "Rewrite as one-line comprehensions: (1) cubes of odd numbers 1-20; (2) C→F for [0,20,37,100]; (3) words longer than 4 chars, uppercased.",
+            starterCode: `cubes = [n**3 for n in range(1,21) if n % 2 != 0]
+print(cubes)
+
+fahr = [(c*9/5)+32 for c in [0,20,37,100]]
+print(fahr)
+
+words = ["hi","python","is","amazing","fun","powerful"]
+long_up = [w.upper() for w in words if len(w) > 4]
+print(long_up)`,
+            solution: `cubes = [n**3 for n in range(1,21) if n % 2 != 0]
+print(cubes)
+
+fahr = [(c*9/5)+32 for c in [0,20,37,100]]
+print(fahr)
+
+words = ["hi","python","is","amazing","fun","powerful"]
+long_up = [w.upper() for w in words if len(w) > 4]
+print(long_up)`,
+            solutionExplanation: "Pattern: [expr for item in iterable if cond]. The if clause filters first; the expression transforms what passes. Reads left-to-right like English: 'for each n in range 1-20, if n is odd, cube it'."
+          },
+          {
+            id: "exe-3-4-2", title: "Group Anagrams", difficulty: "hard",
+            description: "Group words by anagram signature: sorted letters joined. ['eat','tea','tan','ate'] → {'aet':['eat','tea','ate'],'ant':['tan']}.",
+            starterCode: `def group_anagrams(words):
+    groups = {}
+    for word in words:
+        key = "".join(sorted(word))
+        groups.setdefault(key, []).append(word)
+    return groups
+
+result = group_anagrams(["eat","tea","tan","ate","nat","bat"])
+for key, group in result.items():
+    print(f"{key}: {group}")`,
+            solution: `def group_anagrams(words):
+    groups = {}
+    for word in words:
+        key = "".join(sorted(word))
+        groups.setdefault(key, []).append(word)
+    return groups
+
+result = group_anagrams(["eat","tea","tan","ate","nat","bat"])
+for key, group in result.items():
+    print(f"{key}: {group}")`,
+            solutionExplanation: "sorted(word) gives a sorted list of characters; ''.join() makes it a string key. setdefault(key, []) gets or creates the list. This is a classic LeetCode problem (Group Anagrams #49)."
+          }
+        ],
+        interviewQuestions: [
+          { q: "What is a list comprehension and why is it faster than a for loop?", a: "A list comprehension [expr for x in it if cond] creates a list in one expression. It's faster because CPython optimizes list building at the C level — the list allocation is done once and appending is done directly, bypassing Python-level attribute lookups. Use loops for side effects, comprehensions for data transformation." },
+          { q: "What is the difference between a list comprehension and a generator expression?", a: "List comprehension [x for x in ...] creates the entire list immediately — O(n) space. Generator expression (x for x in ...) is lazy — O(1) space, computes values on demand. Use generators with sum(), max(), any(), all() — they process one item at a time and never build a full list." },
+          { q: "How do you write a dict comprehension?", a: "{key_expr: val_expr for item in iterable if cond}. Common uses: invert dict ({v:k for k,v in d.items()}), build lookup table ({x['id']:x for x in records}), filter dict ({k:v for k,v in d.items() if v>0})." }
+        ]
+      }
+    ]
+  },
+
+  // ══════════════════════════════════════════════════════════════
+  // MODULE 4 — Functions
+  // ══════════════════════════════════════════════════════════════
+  {
+    id: 4,
+    title: "Functions",
+    icon: "⚙️",
+    color: "#ff5757",
+    difficulty: "intermediate",
+    duration: "4–5 hours",
+    description: "Functions are the building blocks of every Python program. Master parameters, scope, closures, and functional programming patterns.",
+    objectives: [
+      "Define functions with proper docstrings and return values",
+      "Use all parameter types: positional, keyword, *args, **kwargs",
+      "Avoid the mutable default argument trap",
+      "Understand Python's LEGB scope rule and use global/nonlocal",
+      "Write closures and understand when they form",
+      "Use lambda, map, filter, and sorted() effectively"
+    ],
+    lessons: [
+      {
+        id: "4.1",
+        title: "Defining & Using Functions",
+        duration: "25 min",
+        content: `
+<h2>Defining Functions</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">def function_name(param1, param2):
+    """Docstring explaining the function."""
+    return result</pre>
+<p>Functions return <code>None</code> by default. Python functions are first-class objects — pass them to other functions, store in lists, assign to variables.</p>
+<h2>Multiple Return Values</h2>
+<p>Python "returns multiple values" by returning a tuple that is auto-unpacked: <code>min_val, max_val = min_max(data)</code>.</p>
+<h2>Docstrings</h2>
+<p>First statement in a function body — accessible via <code>func.__doc__</code> and <code>help(func)</code>. Required in professional code.</p>
+<div class="interview-tip"><div class="interview-tip-label">🎯 Code quality discussions</div><p>Always write docstrings. Returning tuples and unpacking them is idiomatic Python. Functions as first-class objects is the foundation of decorators.</p></div>`,
+        codeExamples: [
+          {
+            id: "ce-4-1-1",
+            title: "Function Basics & Multiple Returns",
+            description: "Core function patterns every Python engineer uses daily.",
+            code: `def stats(numbers):
+    """Return (min, max, mean) of a list."""
+    if not numbers:
+        return None, None, None
+    return min(numbers), max(numbers), sum(numbers)/len(numbers)
+
+data = [4, 7, 2, 9, 1, 5, 8]
+lo, hi, avg = stats(data)
+print(f"Min: {lo}, Max: {hi}, Avg: {avg:.2f}")
+
+# Functions as first-class objects
+def double(x): return x * 2
+def square(x): return x ** 2
+
+transforms = [double, square]
+for func in transforms:
+    print(f"{func.__name__}(5) = {func(5)}")`
+          }
+        ],
+        playground: {
+          title: "🎮 Function Design Lab",
+          description: "Build a mini statistics library.",
+          starterCode: `def describe(data):
+    """Return stats dict for a numeric list."""
+    if not data: return None
+    n = len(data)
+    mean = sum(data) / n
+    s = sorted(data)
+    median = s[n//2] if n%2 else (s[n//2-1]+s[n//2])/2
+    return {"n": n, "min": min(data), "max": max(data),
+            "mean": round(mean,2), "median": median}
+
+scores = [78, 92, 85, 67, 91, 88, 74, 95, 63, 82]
+d = describe(scores)
+for k, v in d.items():
+    print(f"  {k}: {v}")`
+        },
+        exercises: [
+          {
+            id: "exe-4-1-1", title: "Dispatch Calculator", difficulty: "easy",
+            description: "Write add, subtract, multiply, divide functions. Then calculate(a, op, b) dispatches using a dict.",
+            starterCode: `def add(a,b): return a+b
+def subtract(a,b): return a-b
+def multiply(a,b): return a*b
+def divide(a,b): return a/b if b else None
+
+def calculate(a, op, b):
+    ops = {"+":add, "-":subtract, "*":multiply, "/":divide}
+    return ops.get(op, lambda a,b: f"Unknown: {op}")(a,b)
+
+for a,op,b in [(10,"+",5),(10,"-",3),(4,"*",7),(15,"/",3),(5,"/",0)]:
+    print(f"{a} {op} {b} = {calculate(a,op,b)}")`,
+            solution: `def add(a,b): return a+b
+def subtract(a,b): return a-b
+def multiply(a,b): return a*b
+def divide(a,b): return a/b if b else None
+
+def calculate(a, op, b):
+    ops = {"+":add, "-":subtract, "*":multiply, "/":divide}
+    return ops.get(op, lambda a,b: f"Unknown: {op}")(a,b)
+
+for a,op,b in [(10,"+",5),(10,"-",3),(4,"*",7),(15,"/",3),(5,"/",0)]:
+    print(f"{a} {op} {b} = {calculate(a,op,b)}")`,
+            solutionExplanation: "Storing functions in a dict is the Pythonic dispatch pattern — cleaner than if/elif chains. Functions are first-class objects and are perfectly valid as dict values."
+          }
+        ],
+        interviewQuestions: [
+          { q: "What are first-class functions?", a: "In Python, functions are objects. They can be assigned to variables, passed as arguments, returned from functions, and stored in data structures. This enables decorators, callbacks, and functional programming. Every function has __name__, __doc__, and __code__ attributes." },
+          { q: "What does a function return without a return statement?", a: "It returns None implicitly. A bare 'return' also returns None. This causes bugs when callers expect a value. Always be explicit: either return a value or document that the function is used for side effects only." }
+        ]
+      },
+      {
+        id: "4.2",
+        title: "Parameters & Arguments Deep Dive",
+        duration: "35 min",
+        content: `
+<h2>Five Parameter Types</h2>
+<ol><li>Positional — matched by position</li><li>Keyword — passed by name</li><li>Default — fallback value</li><li>*args — extra positionals → tuple</li><li>**kwargs — extra keywords → dict</li></ol>
+<h2>The Mutable Default Argument Trap 🚨</h2>
+<p>Default values are evaluated <strong>once at function definition time</strong>, not on each call. A mutable default (list, dict) is shared across all calls.</p>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">def bad(items=[]):   # WRONG — shared list!
+    items.append(1); return items
+
+def good(items=None):   # CORRECT
+    if items is None: items = []
+    items.append(1); return items</pre>
+<h2>Keyword-Only Arguments</h2>
+<p>Parameters after <code>*</code> must be passed by name — prevents accidental positional misuse.</p>
+<div class="callout error"><span class="callout-icon">🚨</span><div class="callout-body"><strong>Asked in Almost Every Python Interview</strong><p>Know the mutable default trap, explain it clearly, and demonstrate the None-based fix.</p></div></div>`,
+        codeExamples: [
+          {
+            id: "ce-4-2-1",
+            title: "Mutable Default Trap & Fix",
+            description: "The most famous Python gotcha — understand it deeply.",
+            code: `# WRONG: shared mutable default
+def add_bad(item, cart=[]):
+    cart.append(item)
+    return cart
+
+print(add_bad("apple"))   # ['apple']
+print(add_bad("banana"))  # ['apple','banana'] — same list!
+
+# CORRECT: None default, fresh list inside
+def add_good(item, cart=None):
+    if cart is None:
+        cart = []
+    cart.append(item)
+    return cart
+
+print(add_good("apple"))   # ['apple']
+print(add_good("banana"))  # ['banana'] — independent`
+          },
+          {
+            id: "ce-4-2-2",
+            title: "*args and **kwargs",
+            description: "Variable arguments — fundamental for flexible APIs and decorators.",
+            code: `def log(message, *tags, level="INFO", **metadata):
+    tag_str = " ".join(f"[{t}]" for t in tags)
+    meta_str = " ".join(f"{k}={v}" for k,v in metadata.items())
+    print(f"[{level}] {tag_str} {message} {meta_str}".strip())
+
+log("Server started")
+log("Login", "auth", level="INFO", user="alice", ip="127.0.0.1")
+log("Disk full", "storage", level="WARNING")
+
+# Unpacking with * and **
+def add(a, b, c): return a+b+c
+nums = [1, 2, 3]
+print(add(*nums))                      # unpack list as positional
+print(add(**{"a":1,"b":2,"c":3}))     # unpack dict as keywords`
+          }
+        ],
+        playground: {
+          title: "🎮 Parameters Lab",
+          description: "Experiment with all five parameter types.",
+          starterCode: `def generate_report(title, *items, sep="-", width=40, **meta):
+    print(sep * width)
+    print(title.center(width))
+    print(sep * width)
+    for i, item in enumerate(items, 1):
+        print(f"  {i}. {item}")
+    if meta:
+        print(sep * width)
+        for k, v in meta.items():
+            print(f"  {k.replace('_',' ').title()}: {v}")
+    print(sep * width)
+
+generate_report(
+    "Sales Report",
+    "North: ₹4.5L", "South: ₹6.2L", "East: ₹3.8L",
+    sep="=", width=45,
+    generated_by="Analytics Team", date="2024-01"
+)`
+        },
+        exercises: [
+          {
+            id: "exe-4-2-1", title: "Fix Mutable Defaults", difficulty: "medium",
+            description: "Fix all three functions that have the mutable default bug.",
+            starterCode: `def append_to(el, to=None):
+    if to is None: to = []
+    to.append(el); return to
+
+def add_student(name, grade, students=None):
+    if students is None: students = {}
+    students[name] = grade; return students
+
+def process(items, results=None):
+    if results is None: results = []
+    results.extend(x.upper() for x in items); return results
+
+print(append_to("a"))
+print(append_to("b"))
+print(add_student("Alice","A"))
+print(add_student("Bob","B"))`,
+            solution: `def append_to(el, to=None):
+    if to is None: to = []
+    to.append(el); return to
+
+def add_student(name, grade, students=None):
+    if students is None: students = {}
+    students[name] = grade; return students
+
+def process(items, results=None):
+    if results is None: results = []
+    results.extend(x.upper() for x in items); return results
+
+print(append_to("a"))
+print(append_to("b"))
+print(add_student("Alice","A"))
+print(add_student("Bob","B"))`,
+            solutionExplanation: "Always use None as the default for mutable parameters. Check 'if param is None: param = mutable_type()' at the start of the function body. This creates a fresh mutable on each call while still allowing callers to pass an existing container."
+          }
+        ],
+        interviewQuestions: [
+          { q: "Explain the mutable default argument trap.", a: "Default values are evaluated once when the function is defined, stored on the function object. A mutable default (list, dict) is shared across all calls. def f(lst=[]): lst.append(1); return lst — consecutive calls return [1], [1,1], [1,1,1]. Fix: use None as default, create the mutable inside the function body." },
+          { q: "What is the difference between *args and **kwargs?", a: "*args captures extra positional arguments into a tuple. **kwargs captures extra keyword arguments into a dict. Order in signature: (positional, *args, keyword-only, **kwargs). At call site, *list unpacks as positional; **dict unpacks as keywords." },
+          { q: "What are keyword-only arguments?", a: "Parameters after * (or *args) must be passed by name. Example: def process(data, *, verbose=False) — verbose can only be called as process(d, verbose=True), never as process(d, True). Prevents accidental positional misuse. Used heavily in Python stdlib (sorted, open, etc.)." }
+        ]
+      },
+      {
+        id: "4.3",
+        title: "Scope & The LEGB Rule",
+        duration: "25 min",
+        content: `
+<h2>LEGB — The Four Scopes</h2>
+<p>Python resolves names by searching four scopes in order:</p>
+<ul><li><strong>L</strong>: Local — current function</li><li><strong>E</strong>: Enclosing — outer functions (for nested functions)</li><li><strong>G</strong>: Global — module level</li><li><strong>B</strong>: Built-in — print, len, range, etc.</li></ul>
+<h2>global and nonlocal</h2>
+<p><code>global x</code>: tells Python to use the module-level x, not create a local one. <code>nonlocal x</code>: use a variable from the enclosing (not global) scope — key for closures with state.</p>
+<div class="callout error"><span class="callout-icon">🚨</span><div class="callout-body"><strong>UnboundLocalError</strong><p>If Python sees an assignment to a name anywhere in a function, that name is treated as local throughout the entire function — even before the assignment. Causes UnboundLocalError if used before the assignment line.</p></div></div>`,
+        codeExamples: [
+          {
+            id: "ce-4-3-1",
+            title: "LEGB in Action",
+            description: "Watch Python resolve names through Local → Enclosing → Global → Built-in.",
+            code: `x = "global"
+
+def outer():
+    x = "enclosing"
+    def inner():
+        x = "local"
+        print(f"inner: {x}")   # local
+    inner()
+    print(f"outer: {x}")       # enclosing
+
+outer()
+print(f"module: {x}")          # global
+
+# global keyword
+count = 0
+def increment():
+    global count
+    count += 1
+
+increment(); increment()
+print(f"count: {count}")       # 2
+
+# nonlocal keyword
+def make_counter():
+    n = 0
+    def inc():
+        nonlocal n
+        n += 1
+        return n
+    return inc
+
+c = make_counter()
+print(c(), c(), c())           # 1 2 3`
+          }
+        ],
+        playground: {
+          title: "🎮 Scope Explorer",
+          description: "Test LEGB resolution and the UnboundLocalError trap.",
+          starterCode: `x = "global"
+def level1():
+    x = "enclosing"
+    def level2():
+        print(f"level2 sees: {x}")    # enclosing
+    level2()
+    print(f"level1 sees: {x}")        # enclosing
+
+level1()
+print(f"module sees: {x}")            # global
+
+# UnboundLocalError demo
+y = 10
+def broken():
+    try:
+        print(y)   # UnboundLocalError: y is 'local' due to assignment below
+        y = 20
+    except UnboundLocalError as e:
+        print(f"Error: {e}")
+broken()`
+        },
+        exercises: [
+          {
+            id: "exe-4-3-1", title: "Scope Prediction", difficulty: "medium",
+            description: "Predict the output of each print before running. Understand why UnboundLocalError occurs.",
+            starterCode: `x = 1
+def f():
+    x = 2
+    def g():
+        x = 3
+        print(f"g: {x}")
+    g()
+    print(f"f: {x}")
+f()
+print(f"module: {x}")
+
+y = 10
+def h():
+    print(y)   # what happens here?
+    y = 20
+try: h()
+except UnboundLocalError as e: print(f"Error: {type(e).__name__}")`,
+            solution: `x = 1
+def f():
+    x = 2
+    def g():
+        x = 3
+        print(f"g: {x}")
+    g()
+    print(f"f: {x}")
+f()
+print(f"module: {x}")
+
+y = 10
+def h():
+    print(y)
+    y = 20
+try: h()
+except UnboundLocalError as e: print(f"Error: {type(e).__name__}")`,
+            solutionExplanation: "First block: g sees 3 (local), f sees 2 (local), module sees 1 (global unchanged). Second block: h() raises UnboundLocalError because Python sees y=20 and treats y as local throughout h — the print(y) before the assignment references an unbound local."
+          }
+        ],
+        interviewQuestions: [
+          { q: "Explain Python's LEGB scope rule.", a: "LEGB: Local (current function), Enclosing (outer functions), Global (module level), Built-in (builtins module). Python searches in this order. If the name isn't found anywhere, NameError is raised. Assignment inside a function always creates a local variable unless declared with global or nonlocal." },
+          { q: "What is UnboundLocalError?", a: "Occurs when a variable is referenced before assignment in a function where Python knows (from seeing an assignment later in the function) that it should be local. Fix: use global/nonlocal if you mean the outer variable, or rename the local variable." }
+        ]
+      },
+      {
+        id: "4.4",
+        title: "Closures — Functions That Remember",
+        duration: "25 min",
+        content: `
+<h2>What Is a Closure?</h2>
+<p>A <strong>closure</strong> is a nested function that captures variables from its enclosing scope and retains access to them even after the outer function has returned. Three requirements: (1) nested function, (2) references enclosing variable, (3) outer function returns the inner.</p>
+<h2>Why Closures Matter</h2>
+<p>Closures power: decorators, factory functions, stateful callbacks, partial application. Understanding closures is a prerequisite for understanding decorators.</p>
+<h2>Late-Binding Gotcha in Loops</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">funcs = [lambda: i for i in range(3)]
+funcs[0]()  # 2, not 0! All close over the same 'i'
+# Fix: lambda i=i: i  (capture value as default)</pre>
+<div class="interview-tip"><div class="interview-tip-label">🎯 Advanced Python interviews</div><p>"What is a closure?" → "How do decorators work?" These two are deeply connected. Master closures first.</p></div>`,
+        codeExamples: [
+          {
+            id: "ce-4-4-1",
+            title: "Closures & the Late-Binding Bug",
+            description: "Closures capture variables by reference — not by value. This causes the loop bug.",
+            code: `def make_multiplier(n):
+    def multiply(x):
+        return x * n    # n from enclosing scope
+    return multiply
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+print(double(5), triple(5))   # 10  15
+print(double.__closure__[0].cell_contents)  # 2
+
+# Late-binding bug in loops
+bad = [lambda: i for i in range(5)]
+print([f() for f in bad])   # [4,4,4,4,4] — all see final i
+
+# Fix 1: default argument captures value
+good = [lambda i=i: i for i in range(5)]
+print([f() for f in good])  # [0,1,2,3,4]`
+          }
+        ],
+        playground: {
+          title: "🎮 Closure Factory",
+          description: "Build validators using factory functions (closures).",
+          starterCode: `def make_range_validator(lo, hi):
+    def validate(v):
+        ok = lo <= v <= hi
+        return ok, f"{v} {'OK' if ok else f'out of [{lo},{hi}]'}"
+    return validate
+
+validate_age   = make_range_validator(0, 150)
+validate_score = make_range_validator(0, 100)
+
+for fn, val in [(validate_age, 25),(validate_age,-1),(validate_score,95),(validate_score,110)]:
+    ok, msg = fn(val)
+    print(f"  {'✓' if ok else '✗'} {msg}")`
+        },
+        exercises: [
+          {
+            id: "exe-4-4-1", title: "Memoize Decorator", difficulty: "hard",
+            description: "Implement memoize(func) using a closure. Cache results in a dict keyed by *args.",
+            starterCode: `def memoize(func):
+    cache = {}
+    def wrapper(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+        return cache[args]
+    wrapper.cache = cache
+    return wrapper
+
+@memoize
+def fib(n):
+    if n <= 1: return n
+    return fib(n-1) + fib(n-2)
+
+print([fib(i) for i in range(10)])
+print(f"Cache entries: {len(fib.cache)}")`,
+            solution: `def memoize(func):
+    cache = {}
+    def wrapper(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+        return cache[args]
+    wrapper.cache = cache
+    return wrapper
+
+@memoize
+def fib(n):
+    if n <= 1: return n
+    return fib(n-1) + fib(n-2)
+
+print([fib(i) for i in range(10)])
+print(f"Cache entries: {len(fib.cache)}")`,
+            solutionExplanation: "The cache dict is captured by the closure. *args as dict key works because tuples are hashable. Exposing cache as wrapper.cache enables inspection. This converts O(2^n) Fibonacci to O(n). functools.lru_cache is the production version."
+          }
+        ],
+        interviewQuestions: [
+          { q: "What is a closure in Python?", a: "A closure is a nested function that captures variables from its enclosing function's scope, retaining access even after the outer function returns. Three requirements: nested function, references enclosing variable, outer returns inner. Inspect with func.__closure__. Powers decorators, factories, and stateful callbacks." },
+          { q: "Explain the late-binding closure bug.", a: "Closures capture variables by reference, not value. In a loop, all closures share the same loop variable — when called, they all see its final value. Fix: capture current value as a default argument (lambda i=i: i) or use a factory function (def make(n): return lambda: n)." }
+        ]
+      },
+      {
+        id: "4.5",
+        title: "Lambda & Functional Basics",
+        duration: "25 min",
+        content: `
+<h2>Lambda Functions</h2>
+<pre style="background:var(--bg-code);padding:.75rem 1rem;border-radius:8px;font-size:.85rem;color:var(--teal);font-family:var(--font-mono)">lambda params: expression</pre>
+<p>Use only as inline throwaway functions — never assign to variables (PEP 8). Lambdas shine as the <code>key=</code> argument for sorted().</p>
+<h2>sorted() with key=</h2>
+<p>The key function is called once per element — not on every comparison. This makes complex sort keys efficient. Tuple keys enable multi-column sorting.</p>
+<h2>map() and filter()</h2>
+<p>Both return lazy iterators in Python 3. List comprehensions are usually clearer, but map with a built-in function (no lambda) is often more efficient: <code>map(str.strip, items)</code>.</p>
+<h2>functools.partial</h2>
+<p>Pre-fill arguments to create specialized functions. Useful for adapting function signatures.</p>
+<div class="interview-tip"><div class="interview-tip-label">🎯 Practical Python knowledge</div><p>sorted() is stable. key= is called once per element (Schwartzian transform). map/filter return iterators in Python 3 — wrap in list() to materialize.</p></div>`,
+        codeExamples: [
+          {
+            id: "ce-4-5-1",
+            title: "sorted() with Complex Keys",
+            description: "Multi-column sorts using tuple keys — essential for data processing.",
+            code: `students = [
+    {"name": "Charlie", "gpa": 3.7, "age": 22},
+    {"name": "Alice",   "gpa": 3.9, "age": 21},
+    {"name": "Bob",     "gpa": 3.7, "age": 23},
+]
+
+by_gpa = sorted(students, key=lambda s: s["gpa"], reverse=True)
+print("By GPA desc:", [s["name"] for s in by_gpa])
+
+# Multi-key: GPA desc, then name asc
+by_gpa_name = sorted(students, key=lambda s: (-s["gpa"], s["name"]))
+print("By GPA↓ name↑:", [(s["name"],s["gpa"]) for s in by_gpa_name])
+
+# No lambda needed for built-in key
+words = ["banana","Apple","cherry","DATE"]
+print("Case-insensitive:", sorted(words, key=str.lower))`
+          },
+          {
+            id: "ce-4-5-2",
+            title: "map, filter, functools.partial",
+            description: "Functional tools — understand map/filter and the partial pattern.",
+            code: `from functools import partial, reduce
+
+nums = [1, 4, 9, 16, 25]
+print("Roots:", list(map(lambda x: x**0.5, nums)))
+
+strs = ["  hello  ", " world "]
+print("Stripped:", list(map(str.strip, strs)))  # no lambda!
+
+data = [0, 1, -2, 3, -4, 5]
+print("Positives:", list(filter(lambda x: x > 0, data)))
+
+product = reduce(lambda acc, x: acc*x, [1,2,3,4,5])
+print(f"Product: {product}")   # 120
+
+def power(base, exp): return base ** exp
+square = partial(power, exp=2)
+cube   = partial(power, exp=3)
+print(f"square(5)={square(5)}, cube(3)={cube(3)}")`
+          }
+        ],
+        playground: {
+          title: "🎮 Functional Pipeline Lab",
+          description: "Build a data processing pipeline using functional tools.",
+          starterCode: `products = [
+    {"name":"Laptop", "price":75000,"cat":"Electronics","rating":4.5},
+    {"name":"Phone",  "price":45000,"cat":"Electronics","rating":4.2},
+    {"name":"Pad",    "price":150,  "cat":"Stationery", "rating":4.8},
+    {"name":"Tablet", "price":35000,"cat":"Electronics","rating":4.7},
+]
+
+electronics = sorted(
+    filter(lambda p: p["cat"]=="Electronics", products),
+    key=lambda p: p["rating"], reverse=True
+)
+print("Electronics by rating:")
+for p in electronics:
+    print(f"  {p['name']:<10} ₹{p['price']:>7,}  ⭐{p['rating']}")`
+        },
+        exercises: [
+          {
+            id: "exe-4-5-1", title: "Multi-Column Sort", difficulty: "medium",
+            description: "Sort employees: dept asc, salary desc, name asc — in ONE sorted() call.",
+            starterCode: `employees = [
+    {"name":"Alice",  "dept":"Eng","salary":95000},
+    {"name":"Bob",    "dept":"Mkt","salary":72000},
+    {"name":"Charlie","dept":"Eng","salary":88000},
+    {"name":"Dave",   "dept":"Mkt","salary":72000},
+    {"name":"Eve",    "dept":"Eng","salary":95000},
+]
+sorted_emps = sorted(employees, key=lambda e: (e["dept"], -e["salary"], e["name"]))
+for e in sorted_emps:
+    print(f"  {e['dept']:<5} {e['name']:<10} ₹{e['salary']:,}")`,
+            solution: `employees = [
+    {"name":"Alice",  "dept":"Eng","salary":95000},
+    {"name":"Bob",    "dept":"Mkt","salary":72000},
+    {"name":"Charlie","dept":"Eng","salary":88000},
+    {"name":"Dave",   "dept":"Mkt","salary":72000},
+    {"name":"Eve",    "dept":"Eng","salary":95000},
+]
+sorted_emps = sorted(employees, key=lambda e: (e["dept"], -e["salary"], e["name"]))
+for e in sorted_emps:
+    print(f"  {e['dept']:<5} {e['name']:<10} ₹{e['salary']:,}")`,
+            solutionExplanation: "Tuple comparison is lexicographic. Negating salary reverses sort order for that field while other fields stay ascending. This one-key-tuple approach is the canonical Python multi-column sort."
+          }
+        ],
+        interviewQuestions: [
+          { q: "When should you use lambda vs def?", a: "Lambda: only as an inline throwaway passed immediately to another function (sorted key, map, filter). Never assign lambda to a variable — use def instead (better tracebacks, docstrings, reuse). PEP 8: 'the use of lambda is... never necessary'." },
+          { q: "List comprehensions vs map/filter?", a: "Comprehensions are usually preferred: more readable, no lambda needed, slightly faster for complex cases. map/filter preferred when: using a built-in function (map(str.strip, items) — no lambda), composing functional pipelines, or working with infinite iterators. Both return lazy iterators in Python 3 (map/filter) or immediate lists (comprehensions)." },
+          { q: "What does functools.partial do?", a: "partial(func, *args, **kwargs) returns a new callable with some arguments pre-filled. Useful for: adapting function signatures to callbacks, creating specialized versions of general functions, reducing repetition. Alternative: lambda — partial is cleaner when pre-filling many arguments." }
+        ]
+      }
+    ]
+  },
+
+  // ══════════════════════════════════════════════════════════════
+  // MODULES 5–17  (Detailed Outlines)
+  // ══════════════════════════════════════════════════════════════
+
+  {
+    id: 5, title: "Data Structures", icon: "📚", color: "#00d4ff",
+    difficulty: "intermediate", duration: "4–5 hours",
+    description: "Deep-dive into Python's built-in data structures — lists, tuples, dicts, and sets — with time complexity, use cases, and interview patterns.",
+    objectives: [
+      "Use lists as stacks and queues correctly",
+      "Know when to use tuple vs list vs namedtuple",
+      "Master dict operations and understand its O(1) magic",
+      "Use sets for membership testing and set algebra",
+      "Know the time complexity of every major operation"
+    ],
+    outline: true,
+    topics: [
+      { title: "Lists — The Swiss Army Knife", subtopics: ["Indexing, slicing, negative indices", "list methods: append, extend, insert, pop, remove, sort, reverse", "List as stack (append/pop) and deque (collections.deque) for queue", "Time complexity: O(1) append, O(n) insert/search", "Sorting: sort() vs sorted(), key=, stable sort guarantee"] },
+      { title: "Tuples — Immutable Sequences", subtopics: ["Tuple vs list: when to use which", "Namedtuple for readable record-like structures", "Tuple packing and unpacking", "Tuples as dictionary keys (hashable)", "Single-element tuple: (42,) not (42)"] },
+      { title: "Dictionaries — Hash Maps", subtopics: ["dict internals: hash table, O(1) average lookup", "All dict methods: get, setdefault, update, pop, items, keys, values", "Dict ordering (insertion order guaranteed since Python 3.7)", "defaultdict and Counter from collections", "Dict comprehensions and merging dicts ({**d1, **d2})"] },
+      { title: "Sets — Unique Collections", subtopics: ["Set operations: union, intersection, difference, symmetric difference", "Frozen sets for immutable sets", "Membership testing O(1) — use set instead of list for large lookups", "Set comprehensions", "Interview patterns: removing duplicates, finding common elements"] }
+    ],
+    keyExamples: [
+      { title: "Time Complexity Comparison", code: `import timeit
+
+# List lookup: O(n)
+data_list = list(range(100000))
+# Set lookup: O(1)
+data_set = set(range(100000))
+
+target = 99999
+t_list = timeit.timeit(lambda: target in data_list, number=1000)
+t_set  = timeit.timeit(lambda: target in data_set,  number=1000)
+
+print(f"List lookup: {t_list:.4f}s")
+print(f"Set  lookup: {t_set:.4f}s")
+print(f"Set is {t_list/t_set:.0f}x faster!")` },
+      { title: "collections.Counter", code: `from collections import Counter, defaultdict, deque
+
+# Counter — word frequency in one line
+text = "the quick brown fox jumps over the lazy fox"
+freq = Counter(text.split())
+print("Top 3:", freq.most_common(3))
+
+# defaultdict — no KeyError on missing keys
+graph = defaultdict(list)
+edges = [(1,2),(1,3),(2,4),(3,4)]
+for u, v in edges:
+    graph[u].append(v)
+print("Graph:", dict(graph))
+
+# deque — O(1) append and appendleft (queue/stack)
+q = deque()
+q.append(1); q.append(2); q.appendleft(0)
+print("Deque:", q)
+print("Pop left:", q.popleft())` }
+    ],
+    interviewFocus: [
+      "Time complexity of list vs set membership testing",
+      "When to use list vs tuple vs set vs dict",
+      "How Python dicts achieve O(1) average case",
+      "Two-sum problem using a set/dict",
+      "Sliding window with deque"
+    ]
+  },
+
+  {
+    id: 6, title: "Object-Oriented Programming", icon: "🏛️", color: "#9d8fff",
+    difficulty: "intermediate", duration: "5–6 hours",
+    description: "Deep understanding of classes, objects, inheritance, MRO, dunder methods, and dataclasses.",
+    objectives: [
+      "Design classes with proper attributes and methods",
+      "Implement inheritance and understand the MRO",
+      "Use dunder methods to make objects Pythonic",
+      "Use @property, @staticmethod, @classmethod",
+      "Use dataclasses for clean data containers"
+    ],
+    outline: true,
+    topics: [
+      { title: "Classes & Objects", subtopics: ["__init__, self, instance vs class attributes", "Methods, properties, and encapsulation", "__str__ vs __repr__", "Object identity vs equality"] },
+      { title: "Inheritance & MRO", subtopics: ["Single and multiple inheritance", "super() and its importance", "Method Resolution Order (C3 linearization)", "Abstract base classes (abc module)", "isinstance() and issubclass()"] },
+      { title: "Dunder (Magic) Methods", subtopics: ["__len__, __getitem__, __contains__ — make containers", "__eq__, __hash__, __lt__ — comparison protocol", "__enter__, __exit__ — context managers", "__call__ — make callable objects", "__slots__ — memory optimization"] },
+      { title: "Class Decorators", subtopics: ["@property — getters/setters/deleters", "@staticmethod — no self, no cls", "@classmethod — alternative constructors", "@abstractmethod"] },
+      { title: "Dataclasses (Python 3.7+)", subtopics: ["@dataclass reduces boilerplate", "field() for defaults and metadata", "frozen=True for immutable dataclasses", "Comparison to NamedTuple"] }
+    ],
+    keyExamples: [
+      { title: "Dunder Methods", code: `class Vector:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+    def __add__(self, other):
+        return Vector(self.x+other.x, self.y+other.y)
+    def __len__(self):
+        return int((self.x**2 + self.y**2)**0.5)
+    def __eq__(self, other):
+        return self.x==other.x and self.y==other.y
+
+v1 = Vector(3, 4)
+v2 = Vector(1, 2)
+print(v1 + v2)    # Vector(4, 6)
+print(len(v1))    # 5 (magnitude)
+print(v1 == v2)   # False` },
+      { title: "Dataclasses", code: `from dataclasses import dataclass, field
+
+@dataclass(order=True)
+class Student:
+    name: str
+    gpa: float
+    courses: list = field(default_factory=list)
+
+    def add_course(self, course):
+        self.courses.append(course)
+
+alice = Student("Alice", 3.9)
+alice.add_course("Python")
+print(alice)
+print(alice.gpa > 3.5)` }
+    ],
+    interviewFocus: [
+      "What is __init__ vs __new__?",
+      "Explain Python's MRO and diamond inheritance",
+      "What are dunder methods? Give 5 examples",
+      "Difference between @staticmethod and @classmethod",
+      "When to use dataclass vs namedtuple vs regular class"
+    ]
+  },
+
+  {
+    id: 7, title: "Functional Programming in Python", icon: "λ", color: "#00c48c",
+    difficulty: "intermediate", duration: "3–4 hours",
+    description: "Pure functions, immutability, higher-order functions, itertools, functools, and functional design patterns.",
+    outline: true,
+    topics: [
+      { title: "Core Concepts", subtopics: ["Pure functions and side effects", "Immutability and why it matters", "First-class functions recap", "Function composition"] },
+      { title: "itertools — The Secret Weapon", subtopics: ["chain, cycle, repeat", "islice, dropwhile, takewhile", "groupby — group sorted data", "combinations, permutations, product", "accumulate"] },
+      { title: "functools", subtopics: ["reduce — fold sequences", "lru_cache — memoization decorator", "partial — pre-fill arguments", "wraps — preserve function metadata in decorators", "total_ordering — complete comparison protocol"] }
+    ],
+    keyExamples: [
+      { title: "itertools Showcase", code: `import itertools
+
+# chain — flatten iterables
+print(list(itertools.chain([1,2],[3,4],[5])))  # [1,2,3,4,5]
+
+# groupby — group consecutive equal elements
+data = sorted([1,1,2,2,2,3], key=lambda x:x)
+for key, group in itertools.groupby(data):
+    print(f"{key}: {list(group)}")
+
+# combinations
+print(list(itertools.combinations("ABC", 2)))  # [('A','B'),('A','C'),('B','C')]
+
+# accumulate — running totals
+import operator
+sales = [100, 200, 150, 300]
+running = list(itertools.accumulate(sales))
+print("Running total:", running)` }
+    ],
+    interviewFocus: ["Pure functions vs side effects", "itertools.groupby — what does it require?", "functools.lru_cache usage and limits", "Function composition patterns"]
+  },
+
+  {
+    id: 8, title: "Modules, Packages & Virtual Environments", icon: "📦", color: "#ffb300",
+    difficulty: "beginner", duration: "2–3 hours",
+    description: "How Python's import system works, how to structure packages, and professional virtual environment management.",
+    outline: true,
+    topics: [
+      { title: "Import System", subtopics: ["import, from...import, import...as", "How Python finds modules (sys.path)", "__init__.py and package structure", "Relative vs absolute imports", "__all__ for controlling exports"] },
+      { title: "Standard Library Highlights", subtopics: ["os and pathlib — file system", "sys — interpreter interface", "json — serialization", "datetime — date/time handling", "re — regular expressions"] },
+      { title: "Virtual Environments & pip", subtopics: ["venv — creating isolated environments", "pip install, freeze, requirements.txt", "pyproject.toml and modern packaging", "Environment variables with python-dotenv"] }
+    ],
+    keyExamples: [
+      { title: "pathlib — Modern File System", code: `from pathlib import Path
+
+# pathlib is cleaner than os.path
+project = Path("/home/user/project")
+src = project / "src" / "main.py"
+print(src.suffix)      # .py
+print(src.stem)        # main
+print(src.parent)      # /home/user/project/src
+
+# List Python files
+for f in project.rglob("*.py"):
+    print(f.relative_to(project))` }
+    ],
+    interviewFocus: ["How does Python's import system work?", "What is __init__.py?", "How do you manage dependencies in a project?", "Difference between a module and a package"]
+  },
+
+  {
+    id: 9, title: "File Handling & Context Managers", icon: "📁", color: "#7c6af7",
+    difficulty: "intermediate", duration: "2–3 hours",
+    description: "Reading and writing files, CSV and JSON, and implementing custom context managers with __enter__/__exit__.",
+    outline: true,
+    topics: [
+      { title: "File I/O", subtopics: ["open(), modes (r, w, a, rb, wb)", "Reading: read(), readline(), readlines(), iteration", "Writing: write(), writelines()", "with statement — always use it", "Text vs binary mode"] },
+      { title: "CSV and JSON", subtopics: ["csv module: reader, writer, DictReader, DictWriter", "json: loads, dumps, load, dump", "indent and sort_keys parameters", "Handling non-serializable objects (default=str)"] },
+      { title: "Custom Context Managers", subtopics: ["__enter__ and __exit__", "@contextmanager from contextlib", "Exception handling in __exit__", "Practical examples: timing, temp files, DB connections"] }
+    ],
+    keyExamples: [
+      { title: "Context Manager with contextlib", code: `from contextlib import contextmanager
+import time
+
+@contextmanager
+def timer(label=""):
+    start = time.perf_counter()
+    try:
+        yield
+    finally:
+        elapsed = time.perf_counter() - start
+        print(f"{label}: {elapsed:.4f}s")
+
+with timer("Sorting 1M numbers"):
+    sorted(range(1_000_000, 0, -1))` }
+    ],
+    interviewFocus: ["Why use 'with' for file handling?", "How do context managers work internally?", "Difference between json.loads and json.load"]
+  },
+
+  {
+    id: 10, title: "Exception Handling & Logging", icon: "🛡️", color: "#ff5757",
+    difficulty: "intermediate", duration: "2–3 hours",
+    description: "Production-grade error handling, custom exceptions, and structured logging.",
+    outline: true,
+    topics: [
+      { title: "Exception Handling", subtopics: ["try/except/else/finally", "Catching specific exceptions (never bare except)", "Exception hierarchy", "raise and raise from", "Exception chaining"] },
+      { title: "Custom Exceptions", subtopics: ["Defining exception classes", "Adding context to exceptions", "Exception groups (Python 3.11+)"] },
+      { title: "Production Logging", subtopics: ["logging module vs print", "Log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL", "Handlers, Formatters, and Loggers", "Structured logging with JSON", "Never log sensitive data"] }
+    ],
+    keyExamples: [
+      { title: "Proper Exception Handling", code: `import logging
+
+logging.basicConfig(level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger(__name__)
+
+class ValidationError(ValueError):
+    """Raised when input validation fails."""
+    pass
+
+def process_age(value):
+    try:
+        age = int(value)
+        if not 0 <= age <= 150:
+            raise ValidationError(f"Age {age} out of range")
+        return age
+    except ValueError as e:
+        raise ValidationError(f"Invalid age '{value}'") from e
+
+try:
+    print(process_age("25"))
+    print(process_age("abc"))
+except ValidationError as e:
+    logger.error("Validation failed: %s", e)` }
+    ],
+    interviewFocus: ["Why avoid bare except?", "What is the difference between raise and raise from?", "What are the logging levels and when to use each?", "finally vs else in try blocks"]
+  },
+
+  {
+    id: 11, title: "Iterators & Generators", icon: "🔄", color: "#00d4ff",
+    difficulty: "intermediate", duration: "3–4 hours",
+    description: "One of the most interview-relevant topics: iterators, generators, yield, send(), and memory-efficient data pipelines.",
+    outline: true,
+    topics: [
+      { title: "Iterators Protocol", subtopics: ["__iter__ and __next__", "StopIteration", "iter() and next() builtins", "Building a custom iterator class"] },
+      { title: "Generators", subtopics: ["yield keyword — lazy evaluation", "Generator functions vs generator expressions", "Memory efficiency — process GB files line by line", "Infinite sequences with generators", "yield from — delegate to sub-generator"] },
+      { title: "Advanced Generator Features", subtopics: ["send() — two-way communication", "Generator pipelines — Unix-pipe style", "Coroutines basics", "return value in generators"] }
+    ],
+    keyExamples: [
+      { title: "Generator vs List — Memory", code: `import sys
+
+# List — stores ALL values
+squares_list = [x**2 for x in range(100000)]
+print(f"List size: {sys.getsizeof(squares_list):,} bytes")
+
+# Generator — stores only the current frame
+squares_gen = (x**2 for x in range(100000))
+print(f"Generator size: {sys.getsizeof(squares_gen)} bytes")
+
+# Infinite generator
+def count_up(start=0):
+    n = start
+    while True:
+        yield n
+        n += 1
+
+counter = count_up(10)
+print([next(counter) for _ in range(5)])  # [10,11,12,13,14]
+
+# File processing — handles files larger than RAM
+def read_large_file(path):
+    with open(path) as f:
+        for line in f:            # each line is yielded
+            yield line.strip()
+# for line in read_large_file("huge.log"): process(line)` }
+    ],
+    interviewFocus: [
+      "What is the difference between an iterator and an iterable?",
+      "What does yield do?",
+      "How are generators more memory efficient?",
+      "What is yield from?",
+      "Implement range() as a generator"
+    ]
+  },
+
+  {
+    id: 12, title: "Decorators & Advanced Context Managers", icon: "🎨", color: "#9d8fff",
+    difficulty: "advanced", duration: "3–4 hours",
+    description: "Write, stack, and parameterize decorators. Build context managers. Understand @property deeply.",
+    outline: true,
+    topics: [
+      { title: "Function Decorators", subtopics: ["What is a decorator — syntactic sugar for wrapping", "Writing a basic decorator using closures", "functools.wraps — preserving metadata", "Stacking decorators", "Parameterized decorators (decorator factories)"] },
+      { title: "Class Decorators", subtopics: ["__call__ for callable class decorators", "Class-based vs function-based decorators", "Decorators with state"] },
+      { title: "Common Built-in Decorators", subtopics: ["@property, @setter, @deleter", "@staticmethod, @classmethod", "@functools.lru_cache, @cache", "@dataclass"] }
+    ],
+    keyExamples: [
+      { title: "Complete Decorator Patterns", code: `import functools, time
+
+def retry(times=3, delay=0):
+    """Retry decorator with configurable attempts."""
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, times+1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if attempt == times:
+                        raise
+                    print(f"Attempt {attempt} failed: {e}. Retrying...")
+                    if delay: time.sleep(delay)
+        return wrapper
+    return decorator
+
+@retry(times=3)
+def unstable_request(url):
+    import random
+    if random.random() < 0.6:
+        raise ConnectionError("Network error")
+    return f"Success: {url}"
+
+try:
+    print(unstable_request("https://api.example.com"))
+except ConnectionError as e:
+    print(f"All attempts failed: {e}")` }
+    ],
+    interviewFocus: [
+      "How do decorators work under the hood?",
+      "Why is functools.wraps important?",
+      "Write a timing decorator from scratch",
+      "What is a parameterized decorator?",
+      "What is @property and why use it?"
+    ]
+  },
+
+  {
+    id: 13, title: "Python Internals", icon: "🔬", color: "#00c48c",
+    difficulty: "advanced", duration: "3–4 hours",
+    description: "CPython internals: GIL, memory management, bytecode, reference counting, and Python performance.",
+    outline: true,
+    topics: [
+      { title: "CPython Memory Management", subtopics: ["Reference counting — how objects are freed", "Cyclic garbage collector (gc module)", "Memory pools — pymalloc", "id() and object identity", "Memory profiling with tracemalloc"] },
+      { title: "The GIL (Global Interpreter Lock)", subtopics: ["What the GIL is and why it exists", "How it affects threading (CPU-bound vs I/O-bound)", "GIL released during I/O and C extensions", "multiprocessing as GIL escape hatch", "GIL removal efforts (Python 3.13+)"] },
+      { title: "Bytecode & dis Module", subtopics: ["How Python compiles to bytecode", "dis.dis() — inspect bytecode", "Code objects and their attributes", ".pyc files and __pycache__"] },
+      { title: "Performance Patterns", subtopics: ["Profile first: cProfile, timeit", "Local variables are faster than globals", "Avoid attribute lookup in tight loops", "When to use PyPy, Cython, Numba"] }
+    ],
+    keyExamples: [
+      { title: "GIL & Threading Implications", code: `import threading, time, multiprocessing
+
+def cpu_task(n):
+    """CPU-bound — GIL limits threading benefit."""
+    count = 0
+    for _ in range(n): count += 1
+    return count
+
+def io_task():
+    """I/O-bound — threads work well (GIL released during I/O)."""
+    time.sleep(0.1)
+
+# Threading is good for I/O-bound
+start = time.time()
+threads = [threading.Thread(target=io_task) for _ in range(10)]
+for t in threads: t.start()
+for t in threads: t.join()
+print(f"10 I/O tasks threaded: {time.time()-start:.2f}s")  # ~0.1s
+
+# For CPU-bound, use multiprocessing (bypasses GIL)
+# pool = multiprocessing.Pool()
+# pool.map(cpu_task, [10**6]*4)` }
+    ],
+    interviewFocus: [
+      "What is the GIL and why does Python have it?",
+      "When does the GIL get released?",
+      "What is reference counting?",
+      "threading vs multiprocessing — when to use which?",
+      "How does Python garbage collect circular references?"
+    ]
+  },
+
+  {
+    id: 14, title: "Useful Standard Library", icon: "🔧", color: "#ffb300",
+    difficulty: "intermediate", duration: "4–5 hours",
+    description: "The standard library modules you'll use in every real Python project.",
+    outline: true,
+    topics: [
+      { title: "collections", subtopics: ["Counter, defaultdict, OrderedDict, deque, namedtuple, ChainMap"] },
+      { title: "itertools & functools", subtopics: ["chain, islice, groupby, combinations, permutations, product, accumulate", "lru_cache, reduce, partial, wraps"] },
+      { title: "datetime", subtopics: ["date, time, datetime objects", "timedelta arithmetic", "strftime/strptime formatting", "timezone-aware datetimes (pytz / zoneinfo)"] },
+      { title: "json, csv, configparser", subtopics: ["Serialization and deserialization", "Handling custom types", "CSV reading/writing"] },
+      { title: "os, pathlib, sys", subtopics: ["File system operations", "Environment variables", "Command-line arguments"] },
+      { title: "re — Regular Expressions", subtopics: ["match, search, findall, sub, compile", "Groups and named groups", "Lookahead/lookbehind"] }
+    ],
+    keyExamples: [
+      { title: "datetime & timedelta", code: `from datetime import datetime, timedelta, date
+
+now = datetime.now()
+print(f"Now: {now.strftime('%Y-%m-%d %H:%M:%S')}")
+
+# Arithmetic
+one_week  = now + timedelta(weeks=1)
+last_year = now - timedelta(days=365)
+print(f"One week later:  {one_week.date()}")
+print(f"One year ago:    {last_year.date()}")
+
+# Parse from string
+dob = datetime.strptime("1999-08-15", "%Y-%m-%d")
+age = (date.today() - dob.date()).days // 365
+print(f"Age: {age} years")` }
+    ],
+    interviewFocus: ["Counter most_common()", "defaultdict vs regular dict", "datetime parsing and formatting", "pathlib vs os.path"]
+  },
+
+  {
+    id: 15, title: "Testing with pytest", icon: "✅", color: "#00c48c",
+    difficulty: "intermediate", duration: "3–4 hours",
+    description: "Write, organize, and run tests using pytest. Mocking, fixtures, parametrize, and TDD basics.",
+    outline: true,
+    topics: [
+      { title: "pytest Basics", subtopics: ["Writing test functions (test_ prefix)", "assert statements — pytest rewrites them", "Running tests: pytest, -v, -k, -x", "Test discovery rules"] },
+      { title: "Fixtures", subtopics: ["@pytest.fixture — setup and teardown", "Fixture scope (function, class, module, session)", "conftest.py — shared fixtures", "yield fixtures for cleanup"] },
+      { title: "Parametrize", subtopics: ["@pytest.mark.parametrize — data-driven tests", "Combining multiple parametrize decorators"] },
+      { title: "Mocking", subtopics: ["unittest.mock — Mock, MagicMock, patch", "Mocking external APIs and DB calls", "Side effects and return values"] }
+    ],
+    keyExamples: [
+      { title: "pytest with fixtures and parametrize", code: `import pytest
+
+def add(a, b): return a + b
+def divide(a, b):
+    if b == 0: raise ZeroDivisionError("Cannot divide by zero")
+    return a / b
+
+@pytest.mark.parametrize("a,b,expected", [
+    (1, 2, 3), (0, 5, 5), (-1, 1, 0), (100, -50, 50)
+])
+def test_add(a, b, expected):
+    assert add(a, b) == expected
+
+def test_divide_normal():
+    assert divide(10, 2) == 5.0
+
+def test_divide_by_zero():
+    with pytest.raises(ZeroDivisionError, match="Cannot divide"):
+        divide(5, 0)
+
+# Run with: pytest -v test_file.py` }
+    ],
+    interviewFocus: ["What is a fixture?", "What is parametrize?", "How do you mock an external API call?", "TDD — write test first, then code"]
+  },
+
+  {
+    id: 16, title: "Common Interview Algorithms in Python", icon: "🏆", color: "#7c6af7",
+    difficulty: "advanced", duration: "6–8 hours",
+    description: "Implement the most frequently tested algorithms using Pythonic patterns: sorting, searching, two-pointer, sliding window, and recursion.",
+    outline: true,
+    topics: [
+      { title: "Sorting Algorithms", subtopics: ["Built-in sort (Timsort) — know it and use it", "Bubble, Selection, Insertion — know complexity", "Merge sort — recursion + divide-and-conquer", "Quick sort — pivot strategy", "Counting sort for bounded integers"] },
+      { title: "Searching & Two Pointer", subtopics: ["Binary search (iterative and recursive)", "Two-pointer: two-sum, palindrome, container with most water", "Sliding window: max subarray, longest unique substring"] },
+      { title: "Recursion & Dynamic Programming", subtopics: ["Recursion with memoization", "Fibonacci, factorial, Tower of Hanoi", "DP: coin change, knapsack, LCS"] },
+      { title: "Graph & Tree Basics", subtopics: ["BFS and DFS in Python", "Representing graphs (adjacency list with defaultdict)", "Binary tree traversals", "Detecting cycles"] }
+    ],
+    keyExamples: [
+      { title: "Two-Pointer & Sliding Window", code: `# Two Sum — O(n) with hash map
+def two_sum(nums, target):
+    seen = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
+    return []
+
+print(two_sum([2, 7, 11, 15], 9))  # [0, 1]
+
+# Maximum subarray (Kadane's algorithm)
+def max_subarray(nums):
+    max_sum = current = nums[0]
+    for num in nums[1:]:
+        current = max(num, current + num)
+        max_sum = max(max_sum, current)
+    return max_sum
+
+print(max_subarray([-2, 1, -3, 4, -1, 2, 1, -5, 4]))  # 6` }
+    ],
+    interviewFocus: ["Two-sum with hash map O(n)", "Binary search template", "Sliding window pattern", "DFS/BFS implementations", "Merge sort complexity"]
+  },
+
+  {
+    id: 17, title: "Bonus: Real-World Python Skills", icon: "🌐", color: "#ff5757",
+    difficulty: "intermediate", duration: "4–5 hours",
+    description: "APIs, web scraping, pandas basics, and automation scripts — the skills that make you immediately useful on day one of the job.",
+    outline: true,
+    topics: [
+      { title: "Working with APIs (requests)", subtopics: ["HTTP methods: GET, POST, PUT, DELETE", "requests library — sessions, headers, auth", "Handling JSON responses", "Error handling: status codes, timeouts, retries", "Rate limiting and pagination"] },
+      { title: "Web Scraping (BeautifulSoup)", subtopics: ["HTML structure basics", "BeautifulSoup selectors: find, find_all, CSS selectors", "Scraping ethically — robots.txt, rate limiting", "Selenium for JavaScript-heavy sites"] },
+      { title: "Pandas Basics", subtopics: ["Series and DataFrame", "read_csv, read_json, read_excel", "Data cleaning: dropna, fillna, astype", "GroupBy aggregation", "Merging DataFrames"] },
+      { title: "Automation Scripts", subtopics: ["File organization scripts", "Email sending (smtplib)", "Scheduling with schedule library", "CLI tools with argparse", "Shell automation with subprocess"] }
+    ],
+    keyExamples: [
+      { title: "API Request with Error Handling", code: `import json
+
+# Simulating an API response (requests not available in sandbox)
+sample_response = {
+    "users": [
+        {"id": 1, "name": "Alice", "email": "alice@example.com", "active": True},
+        {"id": 2, "name": "Bob",   "email": "bob@example.com",   "active": False},
+        {"id": 3, "name": "Carol", "email": "carol@example.com", "active": True},
+    ],
+    "total": 3,
+    "page": 1
+}
+
+def process_users(data):
+    """Process API response and return active users."""
+    users = data.get("users", [])
+    active = [u for u in users if u.get("active")]
+    return active
+
+active_users = process_users(sample_response)
+print(f"Active users ({len(active_users)}):")
+for user in active_users:
+    print(f"  [{user['id']}] {user['name']} — {user['email']}")` }
+    ],
+    interviewFocus: [
+      "How do you handle HTTP errors in requests?",
+      "What is the difference between GET and POST?",
+      "How do you read a CSV with pandas?",
+      "What is a GroupBy aggregation?",
+      "How do you write a CLI tool in Python?"
+    ]
+  }
+
+  ]  // end modules array
+};   // end COURSE_DATA

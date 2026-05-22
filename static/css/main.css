@@ -996,3 +996,144 @@ img { max-width: 100%; }
 @media (min-width: 1280px) {
   .lesson-wrapper { max-width: 960px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   HOME DASHBOARD
+═══════════════════════════════════════════════════════════ */
+.home-dashboard { padding: 2rem clamp(1rem, 4vw, 3rem); }
+
+.home-hero {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-surface) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 2rem 2.5rem;
+  margin-bottom: 2rem;
+}
+.home-hero h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin-bottom: .5rem;
+}
+.home-subtitle { color: var(--text-secondary); margin-bottom: 1.25rem; font-size: .95rem; }
+
+.home-progress-wrap { display: flex; align-items: center; gap: .8rem; }
+.home-progress-bar {
+  flex: 1; height: 8px; background: var(--bg-surface);
+  border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+  max-width: 360px;
+}
+.home-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--teal));
+  border-radius: 4px; transition: width .5s ease;
+}
+.home-progress-label { font-size: .82rem; color: var(--text-secondary); }
+
+/* Module card additions */
+.module-card.complete { border-color: rgba(0,196,140,.35); }
+.module-card.complete::before { background: linear-gradient(90deg, var(--green) 0%, transparent 100%); }
+.module-card.in-progress::before { background: linear-gradient(90deg, var(--accent) 0%, transparent 100%); }
+.module-card.outline { opacity: .85; }
+.module-card.outline::before { background: linear-gradient(90deg, var(--text-muted) 0%, transparent 100%); }
+
+/* ═══════════════════════════════════════════════════════════
+   SIDEBAR ADDITIONS
+═══════════════════════════════════════════════════════════ */
+.module-progress-badge {
+  font-size: .65rem; font-weight: 700;
+  background: var(--accent-glow); color: var(--accent);
+  border-radius: 999px; padding: .1rem .45rem;
+  flex-shrink: 0;
+}
+.module-outline-badge {
+  font-size: .65rem; font-weight: 600;
+  background: var(--bg-surface); color: var(--text-muted);
+  border-radius: 999px; padding: .1rem .45rem;
+  flex-shrink: 0;
+}
+.sidebar-lesson-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sidebar-lesson-duration { font-size: .68rem; color: var(--text-muted); flex-shrink: 0; margin-left: auto; }
+
+/* ═══════════════════════════════════════════════════════════
+   LESSON HEADER ADDITIONS
+═══════════════════════════════════════════════════════════ */
+.lesson-header-actions {
+  display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  margin-top: .75rem;
+}
+.outline-pill {
+  background: rgba(90,90,122,.15); color: var(--text-muted);
+  border-color: var(--border);
+}
+
+/* ─── SECTION HEADING ──────────────────────────────────────── */
+.section-heading {
+  font-size: 1.15rem; font-weight: 700;
+  margin: 2rem 0 1rem;
+  display: flex; align-items: center; gap: .4rem;
+}
+
+/* ─── CODE EXAMPLE DESC ────────────────────────────────────── */
+.code-example-desc {
+  font-size: .82rem; color: var(--text-secondary);
+  padding: .5rem 1rem 0; margin: 0;
+}
+
+/* ─── PLAYGROUND DESC ──────────────────────────────────────── */
+.playground-desc {
+  font-size: .85rem; color: var(--text-secondary);
+  padding: .5rem 1rem; margin: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─── OUTLINE SECTIONS ─────────────────────────────────────── */
+.outline-description {
+  color: var(--text-secondary); font-size: .95rem;
+  margin-bottom: 1.5rem; line-height: 1.7;
+}
+.outline-topics-section, .outline-examples-section { margin: 2rem 0; }
+
+.outline-topic-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.outline-topic-card h3 {
+  font-size: .95rem; font-weight: 700;
+  color: var(--accent); margin-bottom: .6rem;
+}
+.outline-topic-card ul { padding-left: 1.25rem; }
+.outline-topic-card li {
+  font-size: .87rem; color: var(--text-secondary);
+  margin-bottom: .3rem; line-height: 1.5;
+}
+
+.interview-tip ul { padding-left: 1.25rem; margin-top: .5rem; }
+.interview-tip li { font-size: .88rem; color: var(--text-secondary); margin-bottom: .35rem; }
+
+/* ─── IQ ANSWER (open state via class) ───────────────────── */
+.iq-item.open .iq-answer { display: block; padding-top: .8rem; }
+.iq-item.open .iq-chevron { transform: rotate(90deg); }
+
+/* ─── OUTPUT VARIATIONS ────────────────────────────────────── */
+.out-stdout { color: var(--green); white-space: pre-wrap; display: block; }
+.out-stderr { color: var(--red);   white-space: pre-wrap; display: block; }
+.out-info   { color: var(--text-muted); font-style: italic; }
+
+/* code-output inside exercise uses visible toggle */
+.exercise-body .code-output,
+.code-examples-section .code-output { display: none; }
+.exercise-body .code-output.visible,
+.code-examples-section .code-output.visible { display: block; }
+
+/* ─── LESSON NAV LABEL STACKING ────────────────────────────── */
+.lesson-nav-label {
+  display: flex; flex-direction: column; gap: .05rem;
+}
+.lesson-nav-title { font-size: .84rem; }
+.lesson-nav-btn.prev { flex-direction: row; }
+.lesson-nav-btn.next { flex-direction: row-reverse; }
+
