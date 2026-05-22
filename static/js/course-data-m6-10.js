@@ -1656,12 +1656,12 @@ from ..utils import helper     # up one level, then utils</code></pre>
 |   +-- __init__.py      # makes it a package; can be empty
 |   +-- core.py          # mypackage.core
 |   +-- utils.py         # mypackage.utils
-|   `-- sub/
+|   +-- sub/
 |       +-- __init__.py
-|       `-- parser.py    # mypackage.sub.parser
+|       +-- parser.py    # mypackage.sub.parser
 +-- tests/
-|   `-- test_core.py
-`-- pyproject.toml</code></pre>
+|   +-- test_core.py
++-- pyproject.toml</code></pre>
 
 <h3>__init__.py -- Controlling Your Package's API</h3>
 <pre><code># mypackage/__init__.py
@@ -2838,7 +2838,7 @@ finally:
 +-- SystemExit           # sys.exit()
 +-- KeyboardInterrupt    # Ctrl+C
 +-- GeneratorExit
-`-- Exception            # Base for "normal" exceptions
++-- Exception            # Base for "normal" exceptions
     +-- ValueError       # wrong value type/range
     +-- TypeError        # wrong type
     +-- KeyError         # missing dict key
@@ -2847,7 +2847,7 @@ finally:
     +-- FileNotFoundError
     +-- ZeroDivisionError
     +-- StopIteration
-    `-- ... (many more)</code></pre>
+    +-- ... (many more)</code></pre>
 
 <h3>raise and raise from</h3>
 <pre><code># Re-raise the current exception

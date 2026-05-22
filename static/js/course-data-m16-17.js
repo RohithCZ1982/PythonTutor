@@ -798,16 +798,16 @@ for n in [1, 2, 3, 4, 5]:
 <pre>
 my_project/
 +-- src/
-|   `-- my_package/
+|   +-- my_package/
 |       +-- __init__.py
 |       +-- core.py
-|       `-- utils.py
+|       +-- utils.py
 +-- tests/
 |   +-- conftest.py
-|   `-- test_core.py
+|   +-- test_core.py
 +-- pyproject.toml   (or setup.cfg)
 +-- requirements.txt
-`-- README.md
++-- README.md
 </pre>
 
 <h3>Virtual environments</h3>
