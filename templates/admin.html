@@ -45,6 +45,10 @@
     <span class="stat-pill-num">—</span>
     <span class="stat-pill-label">Expired</span>
   </div>
+  <div class="stat-pill online" id="stat-online">
+    <span class="stat-pill-num">—</span>
+    <span class="stat-pill-label">Online Now</span>
+  </div>
 </div>
 
 <!-- ── Main Content ── -->
@@ -77,13 +81,14 @@
             <th>Type</th>
             <th>Expires</th>
             <th>Days Left</th>
+            <th>Last Seen</th>
             <th>Registered</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody id="student-tbody">
           <tr class="table-loading-row">
-            <td colspan="7"><span class="table-loading">Loading students…</span></td>
+            <td colspan="8"><span class="table-loading">Loading students…</span></td>
           </tr>
         </tbody>
       </table>
@@ -191,6 +196,17 @@
     if (!iso) return '—';
     return new Date(iso).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
   }
+  function timeAgo(iso) {
+    if (!iso) return '<span class="last-seen-never">Never</span>';
+    const secs = Math.floor((Date.now() - new Date(iso)) / 1000);
+    let label;
+    if (secs < 60)          label = 'just now';
+    else if (secs < 3600)   label = Math.floor(secs / 60) + ' min ago';
+    else if (secs < 86400)  label = Math.floor(secs / 3600) + 'h ago';
+    else if (secs < 604800) label = Math.floor(secs / 86400) + 'd ago';
+    else label = fmt(iso);
+    return `<span class="last-seen-time">${label}</span>`;
+  }
   function statusBadge(status) {
     const map = {
       'pending':      ['badge-pending',  'Pending'],
@@ -225,6 +241,7 @@
       document.querySelector('#stat-trial   .stat-pill-num').textContent = data.active_trial;
       document.querySelector('#stat-full    .stat-pill-num').textContent = data.active_full;
       document.querySelector('#stat-expired .stat-pill-num').textContent = data.expired;
+      document.querySelector('#stat-online  .stat-pill-num').textContent = data.online_now ?? 0;
     } catch(e) {}
   }
 
@@ -257,7 +274,7 @@
     });
 
     if (!rows.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="table-empty">No students found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="table-empty">No students found.</td></tr>';
       return;
     }
 
@@ -266,7 +283,10 @@
         <td class="td-student">
           <div class="student-avatar">${s.name.charAt(0).toUpperCase()}</div>
           <div>
-            <div class="student-name">${esc(s.name)}</div>
+            <div class="student-name">
+              ${s.online ? '<span class="online-dot" title="Online now"></span>' : ''}
+              ${esc(s.name)}
+            </div>
             <div class="student-email">${esc(s.email)}</div>
           </div>
         </td>
@@ -274,6 +294,7 @@
         <td>${s.approval_type ? `<span class="type-chip ${s.approval_type}">${s.approval_type === 'trial' ? '⏱ Trial' : '🌟 Full'}</span>` : '—'}</td>
         <td>${fmt(s.expires_at)}</td>
         <td>${s.status.startsWith('active') ? `<span class="days-left">${s.days_remaining}d</span>` : '—'}</td>
+        <td class="td-date">${timeAgo(s.last_seen)}</td>
         <td class="td-date">${fmt(s.created_at)}</td>
         <td class="td-actions">
           ${s.status === 'pending'

@@ -82,6 +82,7 @@ def init_db():
                     updated_at    TIMESTAMPTZ DEFAULT NOW()
                 )
             """)
+            cur.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_seen TIMESTAMPTZ")
         conn.commit()
         conn.close()
     except Exception as exc:
@@ -294,6 +295,9 @@ def me(current_user):
         with conn.cursor() as cur:
             cur.execute("SELECT id,name,email,role FROM users WHERE id=%s", (current_user['user_id'],))
             user = cur.fetchone()
+            if user:
+                cur.execute("UPDATE users SET last_seen=NOW() WHERE id=%s", (current_user['user_id'],))
+        conn.commit()
         conn.close()
 
         if not user:
@@ -367,7 +371,7 @@ def list_students(admin_user):
         conn = get_db()
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT u.id, u.name, u.email, u.created_at,
+                SELECT u.id, u.name, u.email, u.created_at, u.last_seen,
                        a.approval_type, a.trial_days, a.approved_at, a.expires_at
                 FROM users u
                 LEFT JOIN approvals a ON a.user_id = u.id
@@ -392,11 +396,18 @@ def list_students(admin_user):
                     status = f"active-{r['approval_type']}"
                     days_remaining = max(0, (exp - now).days)
 
+            last_seen = r['last_seen']
+            if last_seen and last_seen.tzinfo is None:
+                last_seen = last_seen.replace(tzinfo=timezone.utc)
+            online = last_seen is not None and (now - last_seen).total_seconds() < 600
+
             students.append({
                 'id':            r['id'],
                 'name':          r['name'],
                 'email':         r['email'],
                 'created_at':    r['created_at'].isoformat(),
+                'last_seen':     last_seen.isoformat() if last_seen else None,
+                'online':        online,
                 'status':        status,
                 'approval_type': r['approval_type'],
                 'trial_days':    r['trial_days'],
@@ -503,9 +514,12 @@ def admin_stats(admin_user):
             active_full = cur.fetchone()['n']
             cur.execute("SELECT COUNT(*) AS n FROM approvals WHERE expires_at<=%s", (now,))
             expired = cur.fetchone()['n']
+            cur.execute("SELECT COUNT(*) AS n FROM users WHERE last_seen > NOW() - INTERVAL '10 minutes'")
+            online_now = cur.fetchone()['n']
         conn.close()
         return jsonify({'total': total, 'pending': pending,
-                        'active_trial': active_trial, 'active_full': active_full, 'expired': expired})
+                        'active_trial': active_trial, 'active_full': active_full,
+                        'expired': expired, 'online_now': online_now})
     except Exception as exc:
         return jsonify({'error': str(exc)}), 500
 

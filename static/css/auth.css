@@ -541,6 +541,30 @@ html, body { height: 100%; font-family: var(--font); background: var(--bg-base);
 
 
 /* ════════════════════════════════════════════════════════════
+   ONLINE / LAST SEEN
+════════════════════════════════════════════════════════════ */
+.stat-pill.online { border-color: #22c55e33; }
+.stat-pill.online .stat-pill-num { color: #22c55e; }
+
+.online-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px #22c55e44;
+  margin-right: 5px;
+  vertical-align: middle;
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 2px #22c55e44; }
+  50%       { box-shadow: 0 0 0 5px #22c55e22; }
+}
+
+.last-seen-time { color: var(--text-muted, #9090b8); font-size: 13px; }
+.last-seen-never { color: #4a4a6a; font-size: 13px; }
+
+/* ════════════════════════════════════════════════════════════
    RESPONSIVE
 ════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
